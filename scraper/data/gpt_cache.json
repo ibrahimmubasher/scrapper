@@ -1,0 +1,3666 @@
+{
+  "basic precious metals production and refining": {
+    "division": "24",
+    "group": "242",
+    "class": "2420",
+    "matched_activity": "Manufacture of basic precious and other non-ferrous metals",
+    "confidence": 67.41,
+    "method": "OPENAI"
+  },
+  "precious and semi-precious stones in the worked state production": {
+    "division": "32",
+    "group": "321",
+    "class": "3211",
+    "matched_activity": "Manufacture of jewellery and related articles",
+    "confidence": 47.9,
+    "method": "OPENAI"
+  },
+  "machinery and equipment for handling hot metals manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2823",
+    "matched_activity": "Manufacture of machinery for metallurgy",
+    "confidence": 66.79,
+    "method": "OPENAI"
+  },
+  "sterilizers & disinfectants preparation": {
+    "division": "20",
+    "group": "202",
+    "class": "2023",
+    "matched_activity": "Manufacture of soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations",
+    "confidence": 41.08,
+    "method": "OPENAI"
+  },
+  "building plastic products manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 75.72,
+    "method": "OPENAI"
+  },
+  "carbon and graphite fibers and its products manufacturing": {
+    "division": "20",
+    "group": "203",
+    "class": "2030",
+    "matched_activity": "Manufacture of man-made fibres",
+    "confidence": 53.29,
+    "method": "OPENAI"
+  },
+  "precious metal semi-products production": {
+    "division": "24",
+    "group": "242",
+    "class": "2420",
+    "matched_activity": "Manufacture of basic precious and other non-ferrous metals",
+    "confidence": 65.91,
+    "method": "OPENAI"
+  },
+  "medical and surgical equipment manufacturing": {
+    "division": "32",
+    "group": "325",
+    "class": "3250",
+    "matched_activity": "Manufacture of medical and dental instruments and supplies",
+    "confidence": 70.91,
+    "method": "OPENAI"
+  },
+  "smelting, rolling, traction, and extracting basic non-ferrous metals": {
+    "division": "24",
+    "group": "242",
+    "class": "2420",
+    "matched_activity": "Manufacture of basic precious and other non-ferrous metals",
+    "confidence": 67.39,
+    "method": "OPENAI"
+  },
+  "plastic tubes, pipes, hoses and its fittings manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 58.21,
+    "method": "OPENAI"
+  },
+  "welding wire, rods, electrodes and similar products manufacturing": {
+    "division": "24",
+    "group": "239",
+    "class": "2399",
+    "matched_activity": "Manufacture of basic metals",
+    "confidence": 51.44,
+    "method": "OPENAI"
+  },
+  "pens, pencils and others of all kinds manufacturing": {
+    "division": "32",
+    "group": "329",
+    "class": "3290",
+    "matched_activity": "Other manufacturing n.e.c.",
+    "confidence": 49.77,
+    "method": "OPENAI"
+  },
+  "plastic tableware kitchenware and toilet articles manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 57.76,
+    "method": "OPENAI"
+  },
+  "tyres inner tubes manufacturing": {
+    "division": "22",
+    "group": "221",
+    "class": "2211",
+    "matched_activity": "Manufacture of rubber tyres and tubes; retreading and rebuilding of rubber tyres",
+    "confidence": 69.48,
+    "method": "OPENAI"
+  },
+  "equipment and apparatuses trading of e-games and entertainment halls": {
+    "division": "93",
+    "group": "932",
+    "class": "9329",
+    "matched_activity": "Other amusement and recreation activities n.e.c.",
+    "confidence": 45.51,
+    "method": "OPENAI"
+  },
+  "contracting transmission networks and distribution of water": {
+    "division": "36",
+    "group": "353",
+    "class": "3530",
+    "matched_activity": "Water collection, treatment and supply",
+    "confidence": 53.05,
+    "method": "OPENAI"
+  },
+  "electronic vape products manufacturing": {
+    "division": "32",
+    "group": "310",
+    "class": "3100",
+    "matched_activity": "Other manufacturing",
+    "confidence": 52.33,
+    "method": "OPENAI"
+  },
+  "electronic liquid manufacturing": {
+    "division": "20",
+    "group": "202",
+    "class": "2020",
+    "matched_activity": "Manufacture of other chemical products",
+    "confidence": 42.62,
+    "method": "OPENAI"
+  },
+  "filter rods trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 33.65,
+    "method": "OPENAI"
+  },
+  "malt liquors manufacturing": {
+    "division": "11",
+    "group": "108",
+    "class": "1103",
+    "matched_activity": "Manufacture of malt liquors and malt",
+    "confidence": 80.75,
+    "method": "OPENAI"
+  },
+  "consultancy of electricity engineering": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 48.74,
+    "method": "OPENAI"
+  },
+  "auto-storing services": {
+    "division": "52",
+    "group": "521",
+    "class": "5210",
+    "matched_activity": "Warehousing and storage",
+    "confidence": 42.13,
+    "method": "OPENAI"
+  },
+  "wholesale of newspapers and magazines trading": {
+    "division": "46",
+    "group": "469",
+    "class": "4690",
+    "matched_activity": "Non-specialized wholesale trade",
+    "confidence": 55.2,
+    "method": "OPENAI"
+  },
+  "wholesale of mechanical equipment trading": {
+    "division": "46",
+    "group": "465",
+    "class": "4659",
+    "matched_activity": "Wholesale of other machinery and equipment",
+    "confidence": 77.07,
+    "method": "OPENAI"
+  },
+  "power plants engineering consultancy": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 51.39,
+    "method": "OPENAI"
+  },
+  "photographic commercial photos production": {
+    "division": "74",
+    "group": "742",
+    "class": "7420",
+    "matched_activity": "Photographic activities",
+    "confidence": 64.12,
+    "method": "OPENAI"
+  },
+  "wholesale of horses trading": {
+    "division": "46",
+    "group": "462",
+    "class": "4620",
+    "matched_activity": "Wholesale of agricultural raw materials and live animals",
+    "confidence": 65.01,
+    "method": "OPENAI"
+  },
+  "metal industries consultancy": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 46.93,
+    "method": "OPENAI"
+  },
+  "typing and documents photocopying services": {
+    "division": "82",
+    "group": "821",
+    "class": "8219",
+    "matched_activity": "Photocopying, document preparation and other specialized office support activities",
+    "confidence": 65.66,
+    "method": "OPENAI"
+  },
+  "wholesale of solar power equipment and outfit trading": {
+    "division": "46",
+    "group": "465",
+    "class": "4659",
+    "matched_activity": "Wholesale of other machinery and equipment",
+    "confidence": 60.62,
+    "method": "OPENAI"
+  },
+  "oil and gas transportation consultancy": {
+    "division": "52",
+    "group": "522",
+    "class": "5220",
+    "matched_activity": "Support activities for transportation",
+    "confidence": 47.25,
+    "method": "OPENAI"
+  },
+  "electrical conduits and fittings manufacturing": {
+    "division": "27",
+    "group": "273",
+    "class": "2733",
+    "matched_activity": "Manufacture of wiring devices",
+    "confidence": 61.74,
+    "method": "OPENAI"
+  },
+  "artificial stone manufacturing": {
+    "division": "23",
+    "group": "239",
+    "class": "2399",
+    "matched_activity": "Manufacture of other non-metallic mineral products n.e.c.",
+    "confidence": 49.59,
+    "method": "OPENAI"
+  },
+  "agricultural projects management": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 43.8,
+    "method": "OPENAI"
+  },
+  "derricks, cranes, mobile lifting frames, straddle carriers and similar manufacturing": {
+    "division": "28",
+    "group": "281",
+    "class": "2816",
+    "matched_activity": "Manufacture of lifting and handling equipment",
+    "confidence": 65.41,
+    "method": "OPENAI"
+  },
+  "grain starch manufacturing": {
+    "division": "10",
+    "group": "106",
+    "class": "1062",
+    "matched_activity": "Manufacture of starches and starch products",
+    "confidence": 77.71,
+    "method": "OPENAI"
+  },
+  "lifting or handling works trucks manufacturing": {
+    "division": "28",
+    "group": "281",
+    "class": "2816",
+    "matched_activity": "Manufacture of lifting and handling equipment",
+    "confidence": 70.42,
+    "method": "OPENAI"
+  },
+  "working materials machines tools manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2822",
+    "matched_activity": "Manufacture of metal-forming machinery and machine tools",
+    "confidence": 63.3,
+    "method": "OPENAI"
+  },
+  "lifts, escalators and moving walkways manufacturing": {
+    "division": "28",
+    "group": "281",
+    "class": "2816",
+    "matched_activity": "Manufacture of lifting and handling equipment",
+    "confidence": 69.55,
+    "method": "OPENAI"
+  },
+  "power generators manufacturing": {
+    "division": "27",
+    "group": "271",
+    "class": "2710",
+    "matched_activity": "Manufacture of electric motors, generators, transformers and electricity distribution and control apparatus",
+    "confidence": 59.49,
+    "method": "OPENAI"
+  },
+  "metal industrial frameworks manufacturing": {
+    "division": "25",
+    "group": "251",
+    "class": "2511",
+    "matched_activity": "Manufacture of structural metal products",
+    "confidence": 63.89,
+    "method": "OPENAI"
+  },
+  "calcium carbonate powder manufacturing": {
+    "division": "20",
+    "group": "201",
+    "class": "2011",
+    "matched_activity": "Manufacture of basic chemicals",
+    "confidence": 43.45,
+    "method": "OPENAI"
+  },
+  "steel bars preparation": {
+    "division": "25",
+    "group": "259",
+    "class": "2591",
+    "matched_activity": "Forging, pressing, stamping and roll-forming of metal; powder metallurgy",
+    "confidence": 39.59,
+    "method": "OPENAI"
+  },
+  "drainage chambers covers manufacturing": {
+    "division": "25",
+    "group": "251",
+    "class": "2511",
+    "matched_activity": "Manufacture of structural metal products",
+    "confidence": 38.88,
+    "method": "OPENAI"
+  },
+  "manufacture of protective safety equipment": {
+    "division": "14",
+    "group": "139",
+    "class": "1399",
+    "matched_activity": "Manufacture of wearing apparel",
+    "confidence": 63.85,
+    "method": "OPENAI"
+  },
+  "machining and forming of metals": {
+    "division": "25",
+    "group": "259",
+    "class": "2592",
+    "matched_activity": "Treatment and coating of metals; machining",
+    "confidence": 65.95,
+    "method": "OPENAI"
+  },
+  "construction of drilling platforms, floating or submersible": {
+    "division": "30",
+    "group": "301",
+    "class": "3011",
+    "matched_activity": "Building of ships and floating structures",
+    "confidence": 55.56,
+    "method": "OPENAI"
+  },
+  "natural gas liquefaction": {
+    "division": "35",
+    "group": "352",
+    "class": "3520",
+    "matched_activity": "Manufacture of gas; distribution of gaseous fuels through mains",
+    "confidence": 52.99,
+    "method": "OPENAI"
+  },
+  "synthetic rubber in primary forms manufacturing": {
+    "division": "20",
+    "group": "201",
+    "class": "2010",
+    "matched_activity": "Manufacture of basic chemicals, fertilizers and nitrogen compounds, plastics and synthetic rubber in primary forms",
+    "confidence": 67.48,
+    "method": "OPENAI"
+  },
+  "food processing machines and equipment manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2825",
+    "matched_activity": "Manufacture of machinery for food, beverage and tobacco processing",
+    "confidence": 71.19,
+    "method": "OPENAI"
+  },
+  "cleaning and polishing products manufacturing": {
+    "division": "20",
+    "group": "202",
+    "class": "2023",
+    "matched_activity": "Manufacture of soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations",
+    "confidence": 59.03,
+    "method": "OPENAI"
+  },
+  "plastic doors, windows, frames, shutters, and similar manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 58.63,
+    "method": "OPENAI"
+  },
+  "construction metal framework and skeletons and parts thereof manufacturing": {
+    "division": "25",
+    "group": "251",
+    "class": "2511",
+    "matched_activity": "Manufacture of structural metal products",
+    "confidence": 64.46,
+    "method": "OPENAI"
+  },
+  "fireproof wooden doors manufacturing": {
+    "division": "16",
+    "group": "162",
+    "class": "1622",
+    "matched_activity": "Manufacture of builders\u2019 carpentry and joinery",
+    "confidence": 46.09,
+    "method": "OPENAI"
+  },
+  "moulding boxes and moulds - except ingot moulds - manufacturing": {
+    "division": "25",
+    "group": "259",
+    "class": "2599",
+    "matched_activity": "Manufacture of other fabricated metal products n.e.c.",
+    "confidence": 49.54,
+    "method": "OPENAI"
+  },
+  "military combat vehicle manufacturing": {
+    "division": "30",
+    "group": "304",
+    "class": "3040",
+    "matched_activity": "Manufacture of military fighting vehicles",
+    "confidence": 76.82,
+    "method": "OPENAI"
+  },
+  "preparation tobacco and producing its products machinery manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2825",
+    "matched_activity": "Manufacture of machinery for food, beverage and tobacco processing",
+    "confidence": 69.38,
+    "method": "OPENAI"
+  },
+  "compounds basic orgnal chemical manufacturing": {
+    "division": "20",
+    "group": "201",
+    "class": "2011",
+    "matched_activity": "Manufacture of basic chemicals",
+    "confidence": 76.03,
+    "method": "OPENAI"
+  },
+  "flavours & fragrances manufacturing": {
+    "division": "20",
+    "group": "202",
+    "class": "2023",
+    "matched_activity": "Manufacture of soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations",
+    "confidence": 51.88,
+    "method": "OPENAI"
+  },
+  "synthetic or artificial staple fibers manufacturing": {
+    "division": "20",
+    "group": "203",
+    "class": "2030",
+    "matched_activity": "Manufacture of man-made fibres",
+    "confidence": 75.11,
+    "method": "OPENAI"
+  },
+  "vehicles upholstery": {
+    "division": "95",
+    "group": "952",
+    "class": "9524",
+    "matched_activity": "Repair of furniture and home furnishings",
+    "confidence": 51.5,
+    "method": "OPENAI"
+  },
+  "frozen coca cubes melting": {
+    "division": "56",
+    "group": "563",
+    "class": "5630",
+    "matched_activity": "Beverage serving activities",
+    "confidence": 31.48,
+    "method": "OPENAI"
+  },
+  "basic non-ferrous metals products manufacturing": {
+    "division": "24",
+    "group": "242",
+    "class": "2420",
+    "matched_activity": "Manufacture of basic precious and other non-ferrous metals",
+    "confidence": 79.0,
+    "method": "OPENAI"
+  },
+  "asphalt paving industry and asphalt products": {
+    "division": "23",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of other non-metallic mineral products",
+    "confidence": 39.07,
+    "method": "OPENAI"
+  },
+  "sugar candies manufacturing": {
+    "division": "10",
+    "group": "107",
+    "class": "1073",
+    "matched_activity": "Manufacture of cocoa, chocolate and sugar confectionery",
+    "confidence": 63.48,
+    "method": "OPENAI"
+  },
+  "prepared pets feeds manufacturing": {
+    "division": "10",
+    "group": "108",
+    "class": "1080",
+    "matched_activity": "Manufacture of prepared animal feeds",
+    "confidence": 81.17,
+    "method": "OPENAI"
+  },
+  "labeling": {
+    "division": "82",
+    "group": "829",
+    "class": "8292",
+    "matched_activity": "Packaging activities",
+    "confidence": 40.16,
+    "method": "OPENAI"
+  },
+  "boats upholstery": {
+    "division": "95",
+    "group": "952",
+    "class": "9529",
+    "matched_activity": "Repair of other personal and household goods",
+    "confidence": 39.49,
+    "method": "OPENAI"
+  },
+  "prepared farms animals feeds, it's concentrates and supplements manufacturing": {
+    "division": "10",
+    "group": "108",
+    "class": "1080",
+    "matched_activity": "Manufacture of prepared animal feeds",
+    "confidence": 76.27,
+    "method": "OPENAI"
+  },
+  "empty gelatin capsules manufacturing": {
+    "division": "32",
+    "group": "310",
+    "class": "3100",
+    "matched_activity": "Other manufacturing",
+    "confidence": 44.29,
+    "method": "OPENAI"
+  },
+  "automobile outfitting": {
+    "division": "29",
+    "group": "292",
+    "class": "2920",
+    "matched_activity": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers",
+    "confidence": 48.33,
+    "method": "OPENAI"
+  },
+  "sesame halva manufacturing": {
+    "division": "10",
+    "group": "107",
+    "class": "1079",
+    "matched_activity": "Manufacture of other food products n.e.c.",
+    "confidence": 42.39,
+    "method": "OPENAI"
+  },
+  "musical instruments manufacturing": {
+    "division": "32",
+    "group": "322",
+    "class": "3220",
+    "matched_activity": "Manufacture of musical instruments",
+    "confidence": 77.32,
+    "method": "OPENAI"
+  },
+  "liquids filtering or purifying machinery and apparatus manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2829",
+    "matched_activity": "Manufacture of other special-purpose machinery",
+    "confidence": 51.15,
+    "method": "OPENAI"
+  },
+  "fiber optics cables, wires & requisites manufacturing": {
+    "division": "27",
+    "group": "273",
+    "class": "2731",
+    "matched_activity": "Manufacture of fibre optic cables",
+    "confidence": 70.66,
+    "method": "OPENAI"
+  },
+  "electronic gadgets masking": {
+    "division": "32",
+    "group": "329",
+    "class": "3290",
+    "matched_activity": "Other manufacturing n.e.c.",
+    "confidence": 33.7,
+    "method": "OPENAI"
+  },
+  "slippers & sandals manufacturing": {
+    "division": "15",
+    "group": "152",
+    "class": "1520",
+    "matched_activity": "Manufacture of footwear",
+    "confidence": 65.84,
+    "method": "OPENAI"
+  },
+  "cleanroom systems manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2820",
+    "matched_activity": "Manufacture of special-purpose machinery",
+    "confidence": 45.55,
+    "method": "OPENAI"
+  },
+  "repackaging & refilling": {
+    "division": "82",
+    "group": "829",
+    "class": "8292",
+    "matched_activity": "Packaging activities",
+    "confidence": 58.06,
+    "method": "OPENAI"
+  },
+  "disposable aluminium plates & containers manufacturing": {
+    "division": "25",
+    "group": "251",
+    "class": "2512",
+    "matched_activity": "Manufacture of tanks, reservoirs and containers of metal",
+    "confidence": 52.51,
+    "method": "OPENAI"
+  },
+  "surfboards manufacturing": {
+    "division": "32",
+    "group": "323",
+    "class": "3230",
+    "matched_activity": "Manufacture of sports goods",
+    "confidence": 52.08,
+    "method": "OPENAI"
+  },
+  "barbed wires, chains and mesh manufacturing": {
+    "division": "25",
+    "group": "259",
+    "class": "2599",
+    "matched_activity": "Manufacture of other fabricated metal products n.e.c.",
+    "confidence": 45.58,
+    "method": "OPENAI"
+  },
+  "paper plates & dishes manufacturing": {
+    "division": "17",
+    "group": "162",
+    "class": "1709",
+    "matched_activity": "Manufacture of other articles of paper and paperboard",
+    "confidence": 52.54,
+    "method": "OPENAI"
+  },
+  "flour products\u2019 prepared mixes and doughs manufacturing": {
+    "division": "10",
+    "group": "106",
+    "class": "1060",
+    "matched_activity": "Manufacture of grain mill products, starches and starch products",
+    "confidence": 56.5,
+    "method": "OPENAI"
+  },
+  "deodorizing rooms preparations manufacturing": {
+    "division": "20",
+    "group": "202",
+    "class": "2023",
+    "matched_activity": "Manufacture of soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations",
+    "confidence": 55.4,
+    "method": "OPENAI"
+  },
+  "charcoal production & packaging": {
+    "division": "19",
+    "group": "191",
+    "class": "1910",
+    "matched_activity": "Manufacture of coke oven products",
+    "confidence": 51.81,
+    "method": "OPENAI"
+  },
+  "production & distribution of gas": {
+    "division": "35",
+    "group": "352",
+    "class": "3520",
+    "matched_activity": "Manufacture of gas; distribution of gaseous fuels through mains",
+    "confidence": 74.44,
+    "method": "OPENAI"
+  },
+  "artificial limbs manufacturing": {
+    "division": "32",
+    "group": "325",
+    "class": "3250",
+    "matched_activity": "Manufacture of medical and dental instruments and supplies",
+    "confidence": 51.61,
+    "method": "OPENAI"
+  },
+  "cigarettes manufacturing": {
+    "division": "12",
+    "group": "120",
+    "class": "1200",
+    "matched_activity": "Manufacture of tobacco products",
+    "confidence": 75.43,
+    "method": "OPENAI"
+  },
+  "screwing tools and requisites manufacturing": {
+    "division": "25",
+    "group": "259",
+    "class": "2593",
+    "matched_activity": "Manufacture of cutlery, hand tools and general hardware",
+    "confidence": 53.21,
+    "method": "OPENAI"
+  },
+  "treated tobacco manufacturing": {
+    "division": "12",
+    "group": "120",
+    "class": "1200",
+    "matched_activity": "Manufacture of tobacco products",
+    "confidence": 77.19,
+    "method": "OPENAI"
+  },
+  "rock wool manufacturing": {
+    "division": "23",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of other non-metallic mineral products",
+    "confidence": 40.86,
+    "method": "OPENAI"
+  },
+  "fish and marine mammal oils extraction": {
+    "division": "10",
+    "group": "104",
+    "class": "1040",
+    "matched_activity": "Manufacture of vegetable and animal oils and fats",
+    "confidence": 56.11,
+    "method": "OPENAI"
+  },
+  "wholesale of work material trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 66.16,
+    "method": "OPENAI"
+  },
+  "wholesale of chemical material trading for building purposes": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 63.26,
+    "method": "OPENAI"
+  },
+  "retail sale of travel and entertainment services e-trafficking": {
+    "division": "47",
+    "group": "479",
+    "class": "4791",
+    "matched_activity": "Retail sale via mail order houses or via Internet",
+    "confidence": 48.56,
+    "method": "OPENAI"
+  },
+  "tradeing, private cars for transport security": {
+    "division": "",
+    "group": "451",
+    "class": "4510",
+    "matched_activity": "Sale of motor vehicles",
+    "confidence": 43.62,
+    "method": "OPENAI"
+  },
+  "electrical fitting contracting": {
+    "division": "43",
+    "group": "432",
+    "class": "4321",
+    "matched_activity": "Electrical installation",
+    "confidence": 69.15,
+    "method": "OPENAI"
+  },
+  "carpentry works and wood grounds installation": {
+    "division": "43",
+    "group": "432",
+    "class": "4329",
+    "matched_activity": "Other construction installation",
+    "confidence": 54.67,
+    "method": "OPENAI"
+  },
+  "wholesale of plastic plates trading": {
+    "division": "46",
+    "group": "464",
+    "class": "4649",
+    "matched_activity": "Wholesale of other household goods",
+    "confidence": 53.47,
+    "method": "OPENAI"
+  },
+  "wholesale of house pesticides trading": {
+    "division": "46",
+    "group": "464",
+    "class": "4649",
+    "matched_activity": "Wholesale of other household goods",
+    "confidence": 61.52,
+    "method": "OPENAI"
+  },
+  "main roads, streets and related works contracting": {
+    "division": "42",
+    "group": "421",
+    "class": "4210",
+    "matched_activity": "Construction of roads and railways",
+    "confidence": 53.77,
+    "method": "OPENAI"
+  },
+  "electrical construction": {
+    "division": "43",
+    "group": "432",
+    "class": "4320",
+    "matched_activity": "Electrical, plumbing and other construction installation activities",
+    "confidence": 69.62,
+    "method": "OPENAI"
+  },
+  "industrial grade garnet trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 43.51,
+    "method": "OPENAI"
+  },
+  "abrasive & minerals trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 45.51,
+    "method": "OPENAI"
+  },
+  "piling & foundation contracting": {
+    "division": "43",
+    "group": "429",
+    "class": "4290",
+    "matched_activity": "Specialized construction activities",
+    "confidence": 48.72,
+    "method": "OPENAI"
+  },
+  "parts and accessories of aircraft and spacecraft manufacturing": {
+    "division": "30",
+    "group": "303",
+    "class": "3030",
+    "matched_activity": "Manufacture of air and spacecraft and related machinery",
+    "confidence": 70.71,
+    "method": "OPENAI"
+  },
+  "constructional projects management": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 47.44,
+    "method": "OPENAI"
+  },
+  "buildings maintenance": {
+    "division": "81",
+    "group": "803",
+    "class": "8030",
+    "matched_activity": "Services to buildings and landscape activities",
+    "confidence": 57.3,
+    "method": "OPENAI"
+  },
+  "trading cards issuance, sale and substitution": {
+    "division": "47",
+    "group": "476",
+    "class": "4764",
+    "matched_activity": "Retail sale of games and toys in specialized stores",
+    "confidence": 36.4,
+    "method": "OPENAI"
+  },
+  "buses and trucks new spare parts trading": {
+    "division": "",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 57.75,
+    "method": "OPENAI"
+  },
+  "wholesale of aluminium sections and extracts trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 59.48,
+    "method": "OPENAI"
+  },
+  "wholesale of living animals trading": {
+    "division": "46",
+    "group": "462",
+    "class": "4620",
+    "matched_activity": "Wholesale of agricultural raw materials and live animals",
+    "confidence": 75.32,
+    "method": "OPENAI"
+  },
+  "cars used spare parts trading": {
+    "division": "",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 65.94,
+    "method": "OPENAI"
+  },
+  "wholesale of electronic valves and pipes trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 63.6,
+    "method": "OPENAI"
+  },
+  "wholesale of electrical distribution boards trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 58.86,
+    "method": "OPENAI"
+  },
+  "wholesale of crew health and fittings for bathrooms trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 61.68,
+    "method": "OPENAI"
+  },
+  "services and facilities of oil and gas fields of land and sea": {
+    "division": "9",
+    "group": "91",
+    "class": "910",
+    "matched_activity": "Support activities for petroleum and natural gas extraction",
+    "confidence": 58.22,
+    "method": "OPENAI"
+  },
+  "clinker manufacturing": {
+    "division": "23",
+    "group": "239",
+    "class": "2394",
+    "matched_activity": "Manufacture of cement, lime and plaster",
+    "confidence": 59.52,
+    "method": "OPENAI"
+  },
+  "transaction processing": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 47.38,
+    "method": "OPENAI"
+  },
+  "disaster recovery centre": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 35.73,
+    "method": "OPENAI"
+  },
+  "information technology management": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 49.48,
+    "method": "OPENAI"
+  },
+  "operations support": {
+    "division": "82",
+    "group": "829",
+    "class": "8290",
+    "matched_activity": "Business support service activities n.e.c.",
+    "confidence": 42.32,
+    "method": "OPENAI"
+  },
+  "electronic card wholesale": {
+    "division": "46",
+    "group": "465",
+    "class": "4652",
+    "matched_activity": "Wholesale of electronic and telecommunications equipment and parts",
+    "confidence": 52.53,
+    "method": "OPENAI"
+  },
+  "construction of manned and unmanned military ships and their parts": {
+    "division": "30",
+    "group": "301",
+    "class": "3011",
+    "matched_activity": "Building of ships and floating structures",
+    "confidence": 65.51,
+    "method": "OPENAI"
+  },
+  "manufacture of military equipment": {
+    "division": "25",
+    "group": "252",
+    "class": "2520",
+    "matched_activity": "Manufacture of weapons and ammunition",
+    "confidence": 75.17,
+    "method": "OPENAI"
+  },
+  "plating machinery and vehicles": {
+    "division": "28",
+    "group": "282",
+    "class": "2829",
+    "matched_activity": "Manufacture of other special-purpose machinery",
+    "confidence": 52.01,
+    "method": "OPENAI"
+  },
+  "heavy military weapons manufacturing": {
+    "division": "25",
+    "group": "252",
+    "class": "2520",
+    "matched_activity": "Manufacture of weapons and ammunition",
+    "confidence": 71.74,
+    "method": "OPENAI"
+  },
+  "military garments trade": {
+    "division": "46",
+    "group": "464",
+    "class": "4641",
+    "matched_activity": "Wholesale of textiles, clothing and footwear",
+    "confidence": 39.37,
+    "method": "OPENAI"
+  },
+  "military tools and supplies trading": {
+    "division": "46",
+    "group": "465",
+    "class": "4650",
+    "matched_activity": "Wholesale of machinery, equipment and supplies",
+    "confidence": 49.29,
+    "method": "OPENAI"
+  },
+  "trade of military equipment spare parts": {
+    "division": "46",
+    "group": "465",
+    "class": "4659",
+    "matched_activity": "Wholesale of other machinery and equipment",
+    "confidence": 45.56,
+    "method": "OPENAI"
+  },
+  "military consultancy": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 58.73,
+    "method": "OPENAI"
+  },
+  "manufacture of military ammunition and its parts": {
+    "division": "25",
+    "group": "252",
+    "class": "2520",
+    "matched_activity": "Manufacture of weapons and ammunition",
+    "confidence": 82.13,
+    "method": "OPENAI"
+  },
+  "molasses manufacturing": {
+    "division": "10",
+    "group": "107",
+    "class": "1072",
+    "matched_activity": "Manufacture of sugar",
+    "confidence": 71.57,
+    "method": "OPENAI"
+  },
+  "representation of defence and security companies": {
+    "division": "94",
+    "group": "941",
+    "class": "9410",
+    "matched_activity": "Activities of business, employers and professional membership organizations",
+    "confidence": 38.89,
+    "method": "OPENAI"
+  },
+  "compressed ( liquefied ) natural gas wholesale": {
+    "division": "46",
+    "group": "466",
+    "class": "4661",
+    "matched_activity": "Wholesale of solid, liquid and gaseous fuels and related products",
+    "confidence": 55.65,
+    "method": "OPENAI"
+  },
+  "chocolate and chocolate confectionery manufacturing": {
+    "division": "10",
+    "group": "107",
+    "class": "1073",
+    "matched_activity": "Manufacture of cocoa, chocolate and sugar confectionery",
+    "confidence": 80.68,
+    "method": "OPENAI"
+  },
+  "strctural non-refractory clay building products manufacturing": {
+    "division": "23",
+    "group": "239",
+    "class": "2392",
+    "matched_activity": "Manufacture of clay building materials",
+    "confidence": 68.69,
+    "method": "OPENAI"
+  },
+  "trade of military equipment": {
+    "division": "46",
+    "group": "465",
+    "class": "4659",
+    "matched_activity": "Wholesale of other machinery and equipment",
+    "confidence": 44.07,
+    "method": "OPENAI"
+  },
+  "manufacture of plating products for machinery and vehicles": {
+    "division": "25",
+    "group": "243",
+    "class": "2432",
+    "matched_activity": "Manufacture of fabricated metal products, except machinery and equipment",
+    "confidence": 60.93,
+    "method": "OPENAI"
+  },
+  "military drones repair and maintenance and its parts": {
+    "division": "33",
+    "group": "331",
+    "class": "3313",
+    "matched_activity": "Repair of electronic and optical equipment",
+    "confidence": 45.81,
+    "method": "OPENAI"
+  },
+  "textile and related bleaching and dyeing": {
+    "division": "13",
+    "group": "131",
+    "class": "1313",
+    "matched_activity": "Finishing of textiles",
+    "confidence": 59.1,
+    "method": "OPENAI"
+  },
+  "military drones equipping and their parts": {
+    "division": "30",
+    "group": "303",
+    "class": "3030",
+    "matched_activity": "Manufacture of air and spacecraft and related machinery",
+    "confidence": 38.19,
+    "method": "OPENAI"
+  },
+  "engineering projects management consultancy": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 61.19,
+    "method": "OPENAI"
+  },
+  "wholesale of resin stainless thermal decomposition trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 48.57,
+    "method": "OPENAI"
+  },
+  "hand and machine tools interchangeable tools manufacturing": {
+    "division": "28",
+    "group": "282",
+    "class": "2822",
+    "matched_activity": "Manufacture of metal-forming machinery and machine tools",
+    "confidence": 57.72,
+    "method": "OPENAI"
+  },
+  "medical and surgical dressing materials manufacturing": {
+    "division": "32",
+    "group": "325",
+    "class": "3250",
+    "matched_activity": "Manufacture of medical and dental instruments and supplies",
+    "confidence": 62.52,
+    "method": "OPENAI"
+  },
+  "cements prepared additives manufacturing": {
+    "division": "23",
+    "group": "239",
+    "class": "2394",
+    "matched_activity": "Manufacture of cement, lime and plaster",
+    "confidence": 57.62,
+    "method": "OPENAI"
+  },
+  "equipping machinery and vehicles for military use": {
+    "division": "30",
+    "group": "304",
+    "class": "3040",
+    "matched_activity": "Manufacture of military fighting vehicles",
+    "confidence": 60.25,
+    "method": "OPENAI"
+  },
+  "applied generative ai studio": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 29.95,
+    "method": "OPENAI"
+  },
+  "ai agent orchestration & automation services": {
+    "division": "63",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Information service activities",
+    "confidence": 36.16,
+    "method": "OPENAI"
+  },
+  "ai copilots for back-office": {
+    "division": "82",
+    "group": "813",
+    "class": "8130",
+    "matched_activity": "Office administrative, office support and other business support activities",
+    "confidence": 37.87,
+    "method": "OPENAI"
+  },
+  "speech & language ai services": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 27.36,
+    "method": "OPENAI"
+  },
+  "computer vision systems integrator": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 32.85,
+    "method": "OPENAI"
+  },
+  "rpa & intelligent automation": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 27.44,
+    "method": "OPENAI"
+  },
+  "digital twin intelligence studio": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 36.65,
+    "method": "OPENAI"
+  },
+  "synthetic data & privacy ai": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 23.8,
+    "method": "OPENAI"
+  },
+  "ai safety & red-teaming lab": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 33.25,
+    "method": "OPENAI"
+  },
+  "document management": {
+    "division": "82",
+    "group": "821",
+    "class": "8219",
+    "matched_activity": "Photocopying, document preparation and other specialized office support activities",
+    "confidence": 47.38,
+    "method": "OPENAI"
+  },
+  "vibe coding": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 36.1,
+    "method": "OPENAI"
+  },
+  "cloud architecture & finops": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 33.33,
+    "method": "OPENAI"
+  },
+  "data engineering & lakehouse services": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 47.84,
+    "method": "OPENAI"
+  },
+  "medical, surgical, dental and veterinary furniture manufacturing": {
+    "division": "31",
+    "group": "309",
+    "class": "3099",
+    "matched_activity": "Manufacture of furniture",
+    "confidence": 66.61,
+    "method": "OPENAI"
+  },
+  "edge & serverless compute integrator": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 22.19,
+    "method": "OPENAI"
+  },
+  "digital provenance & watermarking": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 31.7,
+    "method": "OPENAI"
+  },
+  "data marketplace operator": {
+    "division": "63",
+    "group": "639",
+    "class": "6390",
+    "matched_activity": "Other information service activities",
+    "confidence": 38.45,
+    "method": "OPENAI"
+  },
+  "privacy-preserving analytics": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 29.07,
+    "method": "OPENAI"
+  },
+  "mlops & model observability": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 26.6,
+    "method": "OPENAI"
+  },
+  "data quality & governance advisory": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 40.22,
+    "method": "OPENAI"
+  },
+  "api platform & integration hub": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 33.18,
+    "method": "OPENAI"
+  },
+  "vector db & retrieval services": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 32.07,
+    "method": "OPENAI"
+  },
+  "secure software supply chain": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 28.9,
+    "method": "OPENAI"
+  },
+  "managed detection & response (mdr/xdr)": {
+    "division": "80",
+    "group": "802",
+    "class": "8020",
+    "matched_activity": "Security systems service activities",
+    "confidence": 29.8,
+    "method": "OPENAI"
+  },
+  "penetration testing & red teaming": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 60.15,
+    "method": "OPENAI"
+  },
+  "hardware security & hsm integration": {
+    "division": "33",
+    "group": "332",
+    "class": "3320",
+    "matched_activity": "Installation of industrial machinery and equipment",
+    "confidence": 27.43,
+    "method": "OPENAI"
+  },
+  "quantum-safe cryptography services": {
+    "division": "72",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Scientific research and development",
+    "confidence": 24.56,
+    "method": "OPENAI"
+  },
+  "data protection & governance": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 33.58,
+    "method": "OPENAI"
+  },
+  "affective computing (vibe coding) lab": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 24.71,
+    "method": "OPENAI"
+  },
+  "fraud & abuse intelligence": {
+    "division": "80",
+    "group": "803",
+    "class": "8030",
+    "matched_activity": "Investigation activities",
+    "confidence": 42.73,
+    "method": "OPENAI"
+  },
+  "quantum readiness consulting": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 37.83,
+    "method": "OPENAI"
+  },
+  "quantum simulation & optimization lab": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 31.41,
+    "method": "OPENAI"
+  },
+  "billing & revenue operations": {
+    "division": "82",
+    "group": "821",
+    "class": "8210",
+    "matched_activity": "Office administrative and support activities",
+    "confidence": 40.26,
+    "method": "OPENAI"
+  },
+  "regtech automation": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 33.47,
+    "method": "OPENAI"
+  },
+  "bioinformatics & ai drug discovery support": {
+    "division": "72",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Scientific research and development",
+    "confidence": 32.41,
+    "method": "OPENAI"
+  },
+  "industrial iot systems integrator": {
+    "division": "33",
+    "group": "332",
+    "class": "3320",
+    "matched_activity": "Installation of industrial machinery and equipment",
+    "confidence": 48.21,
+    "method": "OPENAI"
+  },
+  "edge ai vision kits": {
+    "division": "26",
+    "group": "259",
+    "class": "2599",
+    "matched_activity": "Manufacture of computer, electronic and optical products",
+    "confidence": 21.37,
+    "method": "OPENAI"
+  },
+  "smart building automation": {
+    "division": "43",
+    "group": "432",
+    "class": "4321",
+    "matched_activity": "Electrical installation",
+    "confidence": 35.27,
+    "method": "OPENAI"
+  },
+  "watertech monitoring & leak intelligence": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 40.36,
+    "method": "OPENAI"
+  },
+  "personalized wellness tech": {
+    "division": "96",
+    "group": "952",
+    "class": "9529",
+    "matched_activity": "Other personal service activities",
+    "confidence": 34.21,
+    "method": "OPENAI"
+  },
+  "hd mapping & localization services": {
+    "division": "52",
+    "group": "522",
+    "class": "5221",
+    "matched_activity": "Service activities incidental to land transportation",
+    "confidence": 30.83,
+    "method": "OPENAI"
+  },
+  "fleet telematics & route optimization": {
+    "division": "52",
+    "group": "522",
+    "class": "5220",
+    "matched_activity": "Support activities for transportation",
+    "confidence": 34.93,
+    "method": "OPENAI"
+  },
+  "ev charging network software": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 30.04,
+    "method": "OPENAI"
+  },
+  "ai content studio (responsible genai)": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 34.66,
+    "method": "OPENAI"
+  },
+  "earth observation analytics": {
+    "division": "63",
+    "group": "639",
+    "class": "6390",
+    "matched_activity": "Other information service activities",
+    "confidence": 27.22,
+    "method": "OPENAI"
+  },
+  "quantum algorithm design studio": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 24.23,
+    "method": "OPENAI"
+  },
+  "space-data fusion platforms": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 37.97,
+    "method": "OPENAI"
+  },
+  "proptech & digital property passports": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 36.02,
+    "method": "OPENAI"
+  },
+  "construction tech & bim automation": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 45.64,
+    "method": "OPENAI"
+  },
+  "smart warehousing & wms+": {
+    "division": "52",
+    "group": "521",
+    "class": "5210",
+    "matched_activity": "Warehousing and storage",
+    "confidence": 68.39,
+    "method": "OPENAI"
+  },
+  "trade docs digitization & ebl": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 35.06,
+    "method": "OPENAI"
+  },
+  "in-store intelligence & queue ai": {
+    "division": "63",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Information service activities",
+    "confidence": 30.58,
+    "method": "OPENAI"
+  },
+  "adaptive learning & skills platforms": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 43.47,
+    "method": "OPENAI"
+  },
+  "innovation lab / venture studio": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 34.97,
+    "method": "OPENAI"
+  },
+  "standards & interoperability consortium ops": {
+    "division": "94",
+    "group": "949",
+    "class": "9490",
+    "matched_activity": "Activities of other membership organizations",
+    "confidence": 37.22,
+    "method": "OPENAI"
+  },
+  "brain\u2013computer interface (bci) apps (non-medical)": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 34.3,
+    "method": "OPENAI"
+  },
+  "haptics & sensory design studio": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 41.72,
+    "method": "OPENAI"
+  },
+  "multimodal ai pipelines": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 22.91,
+    "method": "OPENAI"
+  },
+  "crafttech & artisan marketplaces": {
+    "division": "47",
+    "group": "478",
+    "class": "4789",
+    "matched_activity": "Retail sale via stalls and markets of other goods",
+    "confidence": 45.23,
+    "method": "OPENAI"
+  },
+  "code intelligence & test generation": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 40.57,
+    "method": "OPENAI"
+  },
+  "agentic crm automations": {
+    "division": "82",
+    "group": "822",
+    "class": "8220",
+    "matched_activity": "Activities of call centres",
+    "confidence": 42.07,
+    "method": "OPENAI"
+  },
+  "synthetic voice studio (consent-based)": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 29.23,
+    "method": "OPENAI"
+  },
+  "agent safety evaluation-as-a-service": {
+    "division": "66",
+    "group": "662",
+    "class": "6621",
+    "matched_activity": "Risk and damage evaluation",
+    "confidence": 49.77,
+    "method": "OPENAI"
+  },
+  "application security program office": {
+    "division": "82",
+    "group": "813",
+    "class": "8130",
+    "matched_activity": "Office administrative, office support and other business support activities",
+    "confidence": 36.52,
+    "method": "OPENAI"
+  },
+  "time-series data platforms": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 37.37,
+    "method": "OPENAI"
+  },
+  "quantum randomness-as-a-service": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 26.28,
+    "method": "OPENAI"
+  },
+  "iot security hardening": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 29.9,
+    "method": "OPENAI"
+  },
+  "spatial commerce integrations": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 34.46,
+    "method": "OPENAI"
+  },
+  "computer vision safety analytics": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 34.76,
+    "method": "OPENAI"
+  },
+  "building energy intelligence": {
+    "division": "71",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Architectural and engineering activities; technical testing and analysis",
+    "confidence": 36.78,
+    "method": "OPENAI"
+  },
+  "micromobility ops platform": {
+    "division": "77",
+    "group": "750",
+    "class": "7500",
+    "matched_activity": "Rental and leasing activities",
+    "confidence": 30.84,
+    "method": "OPENAI"
+  },
+  "regenerative agriculture mrv": {
+    "division": "1",
+    "group": "16",
+    "class": "160",
+    "matched_activity": "Support activities to agriculture and post-harvest crop activities",
+    "confidence": 40.82,
+    "method": "OPENAI"
+  },
+  "ugc safety & integrity services": {
+    "division": "80",
+    "group": "802",
+    "class": "8020",
+    "matched_activity": "Security systems service activities",
+    "confidence": 55.92,
+    "method": "OPENAI"
+  },
+  "workforce credentialing & badging": {
+    "division": "94",
+    "group": "941",
+    "class": "9412",
+    "matched_activity": "Activities of professional membership organizations",
+    "confidence": 34.33,
+    "method": "OPENAI"
+  },
+  "maritime/aviation ais analytics": {
+    "division": "63",
+    "group": "639",
+    "class": "6390",
+    "matched_activity": "Other information service activities",
+    "confidence": 37.83,
+    "method": "OPENAI"
+  },
+  "smart safety & permits": {
+    "division": "80",
+    "group": "802",
+    "class": "8020",
+    "matched_activity": "Security systems service activities",
+    "confidence": 41.47,
+    "method": "OPENAI"
+  },
+  "feature store as a service": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 28.14,
+    "method": "OPENAI"
+  },
+  "simulation-based assessments": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 38.89,
+    "method": "OPENAI"
+  },
+  "cold chain intelligence": {
+    "division": "63",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Information service activities",
+    "confidence": 32.5,
+    "method": "OPENAI"
+  },
+  "open innovation challenge ops": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 33.93,
+    "method": "OPENAI"
+  },
+  "retail media network tech": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 41.04,
+    "method": "OPENAI"
+  },
+  "clinical trial ops tech (non-interventional)": {
+    "division": "86",
+    "group": "869",
+    "class": "8690",
+    "matched_activity": "Other human health activities",
+    "confidence": 33.84,
+    "method": "OPENAI"
+  },
+  "carbon mrv (measurement/reporting/verification)": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 36.97,
+    "method": "OPENAI"
+  },
+  "zero-trust & identity access services": {
+    "division": "63",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Information service activities",
+    "confidence": 29.17,
+    "method": "OPENAI"
+  },
+  "treasury tech & liquidity planning": {
+    "division": "66",
+    "group": "661",
+    "class": "6610",
+    "matched_activity": "Activities auxiliary to financial service activities, except insurance and pension funding",
+    "confidence": 31.59,
+    "method": "OPENAI"
+  },
+  "energy optimization & der orchestration": {
+    "division": "84",
+    "group": "841",
+    "class": "8413",
+    "matched_activity": "Regulation of and contribution to more efficient operation of businesses",
+    "confidence": 30.79,
+    "method": "OPENAI"
+  },
+  "social automation & brand agents": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 34.71,
+    "method": "OPENAI"
+  },
+  "omnichannel commerce platforms": {
+    "division": "63",
+    "group": "631",
+    "class": "6312",
+    "matched_activity": "Web portals",
+    "confidence": 41.19,
+    "method": "OPENAI"
+  },
+  "web3 software house": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 29.7,
+    "method": "OPENAI"
+  },
+  "web3 services": {
+    "division": "63",
+    "group": "631",
+    "class": "6310",
+    "matched_activity": "Data processing, hosting and related activities; web portals",
+    "confidence": 34.87,
+    "method": "OPENAI"
+  },
+  "military reality-based training and its spare parts manufacturing": {
+    "division": "30",
+    "group": "304",
+    "class": "3040",
+    "matched_activity": "Manufacture of military fighting vehicles",
+    "confidence": 57.3,
+    "method": "OPENAI"
+  },
+  "retail sale of sim card": {
+    "division": "47",
+    "group": "474",
+    "class": "4741",
+    "matched_activity": "Retail sale of computers, peripheral units, software and telecommunications equipment in specialized stores",
+    "confidence": 51.51,
+    "method": "OPENAI"
+  },
+  "construction metal structures installation": {
+    "division": "43",
+    "group": "432",
+    "class": "4329",
+    "matched_activity": "Other construction installation",
+    "confidence": 64.89,
+    "method": "OPENAI"
+  },
+  "unmanned aircraft manufacturing": {
+    "division": "30",
+    "group": "303",
+    "class": "3030",
+    "matched_activity": "Manufacture of air and spacecraft and related machinery",
+    "confidence": 55.82,
+    "method": "OPENAI"
+  },
+  "military aircrafts spare parts trade": {
+    "division": "46",
+    "group": "465",
+    "class": "4650",
+    "matched_activity": "Wholesale of machinery, equipment and supplies",
+    "confidence": 42.23,
+    "method": "OPENAI"
+  },
+  "repair and maintenance of ships": {
+    "division": "33",
+    "group": "331",
+    "class": "3315",
+    "matched_activity": "Repair of transport equipment, except motor vehicles",
+    "confidence": 61.73,
+    "method": "OPENAI"
+  },
+  "motor vehicles bodies, including cabs manufacturing": {
+    "division": "29",
+    "group": "292",
+    "class": "2920",
+    "matched_activity": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers",
+    "confidence": 63.63,
+    "method": "OPENAI"
+  },
+  "motor vehicles bodies parts and accessories manufacturing": {
+    "division": "29",
+    "group": "292",
+    "class": "2920",
+    "matched_activity": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers",
+    "confidence": 63.43,
+    "method": "OPENAI"
+  },
+  "buses manufacturing": {
+    "division": "29",
+    "group": "291",
+    "class": "2910",
+    "matched_activity": "Manufacture of motor vehicles",
+    "confidence": 63.08,
+    "method": "OPENAI"
+  },
+  "plastic pallets manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 65.05,
+    "method": "OPENAI"
+  },
+  "commercial vehicles manufacturing": {
+    "division": "29",
+    "group": "291",
+    "class": "2910",
+    "matched_activity": "Manufacture of motor vehicles",
+    "confidence": 70.87,
+    "method": "OPENAI"
+  },
+  "cybersecurity software development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 42.18,
+    "method": "OPENAI"
+  },
+  "motor vehicle electrical equipment manufacturing": {
+    "division": "27",
+    "group": "268",
+    "class": "2680",
+    "matched_activity": "Manufacture of electrical equipment",
+    "confidence": 70.45,
+    "method": "OPENAI"
+  },
+  "data encryption and protection services": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 34.54,
+    "method": "OPENAI"
+  },
+  "predictive analytics services": {
+    "division": "63",
+    "group": "631",
+    "class": "6311",
+    "matched_activity": "Data processing, hosting and related activities",
+    "confidence": 36.05,
+    "method": "OPENAI"
+  },
+  "real-time shipment tracking services": {
+    "division": "52",
+    "group": "522",
+    "class": "5229",
+    "matched_activity": "Other transportation support activities",
+    "confidence": 38.87,
+    "method": "OPENAI"
+  },
+  "managed security services (mss)": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 34.02,
+    "method": "OPENAI"
+  },
+  "e-commerce packaging design": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 32.46,
+    "method": "OPENAI"
+  },
+  "identity and access management (iam) services": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 32.15,
+    "method": "OPENAI"
+  },
+  "automated order processing systems development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 37.0,
+    "method": "OPENAI"
+  },
+  "incident response and cyber threat intelligence services": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 37.7,
+    "method": "OPENAI"
+  },
+  "penetration testing and ethical hacking services": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 30.63,
+    "method": "OPENAI"
+  },
+  "supply chain optimization services": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 36.55,
+    "method": "OPENAI"
+  },
+  "endpoint security solutions": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 27.99,
+    "method": "OPENAI"
+  },
+  "cloud security services": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 30.87,
+    "method": "OPENAI"
+  },
+  "secure network architecture design": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 34.56,
+    "method": "OPENAI"
+  },
+  "mobile devices security solutions provider": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 27.34,
+    "method": "OPENAI"
+  },
+  "technology-driven logistics solutions": {
+    "division": "52",
+    "group": "522",
+    "class": "5220",
+    "matched_activity": "Support activities for transportation",
+    "confidence": 39.33,
+    "method": "OPENAI"
+  },
+  "intelligent virtual assistants development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 32.41,
+    "method": "OPENAI"
+  },
+  "computer vision solutions": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 30.75,
+    "method": "OPENAI"
+  },
+  "development of fraud detection and prevention systems": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 31.35,
+    "method": "OPENAI"
+  },
+  "development of natural language processing (nlp) applications": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 30.56,
+    "method": "OPENAI"
+  },
+  "e-commerce supply chain consulting": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 40.92,
+    "method": "OPENAI"
+  },
+  "speech recognition solutions": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 24.94,
+    "method": "OPENAI"
+  },
+  "ai in human resources (hr) integration services": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 34.28,
+    "method": "OPENAI"
+  },
+  "personalized marketing platforms development & operation": {
+    "division": "73",
+    "group": "722",
+    "class": "7220",
+    "matched_activity": "Advertising and market research",
+    "confidence": 42.65,
+    "method": "OPENAI"
+  },
+  "privacy compliance and consulting": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 43.34,
+    "method": "OPENAI"
+  },
+  "ai-powered cybersecurity solutions": {
+    "division": "62",
+    "group": "619",
+    "class": "6209",
+    "matched_activity": "Other information technology and computer service activities",
+    "confidence": 27.33,
+    "method": "OPENAI"
+  },
+  "automated customer support services": {
+    "division": "82",
+    "group": "822",
+    "class": "8220",
+    "matched_activity": "Activities of call centres",
+    "confidence": 51.87,
+    "method": "OPENAI"
+  },
+  "mobile learning apps development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 29.27,
+    "method": "OPENAI"
+  },
+  "gamified learning platforms": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 30.21,
+    "method": "OPENAI"
+  },
+  "collaborative learning platforms": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 37.94,
+    "method": "OPENAI"
+  },
+  "e-learning content creation": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 46.76,
+    "method": "OPENAI"
+  },
+  "online learning platforms": {
+    "division": "85",
+    "group": "854",
+    "class": "8540",
+    "matched_activity": "Other education",
+    "confidence": 44.71,
+    "method": "OPENAI"
+  },
+  "edtech consultancy services": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 47.93,
+    "method": "OPENAI"
+  },
+  "virtual classroom solutions": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 36.88,
+    "method": "OPENAI"
+  },
+  "natural gas and oil well fortification and barricade (outside uae)": {
+    "division": "9",
+    "group": "91",
+    "class": "910",
+    "matched_activity": "Support activities for petroleum and natural gas extraction",
+    "confidence": 45.41,
+    "method": "OPENAI"
+  },
+  "adaptive learning platforms": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 30.48,
+    "method": "OPENAI"
+  },
+  "professional development courses": {
+    "division": "85",
+    "group": "854",
+    "class": "8540",
+    "matched_activity": "Other education",
+    "confidence": 43.69,
+    "method": "OPENAI"
+  },
+  "language learning apps": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 25.89,
+    "method": "OPENAI"
+  },
+  "parent-teacher communication apps development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 31.8,
+    "method": "OPENAI"
+  },
+  "learning management systems (lms)": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 32.57,
+    "method": "OPENAI"
+  },
+  "telehealth platforms development": {
+    "division": "58",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Software publishing",
+    "confidence": 33.61,
+    "method": "OPENAI"
+  },
+  "robotic process automation (rpa) services": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 30.22,
+    "method": "OPENAI"
+  },
+  "aerial shows by drones": {
+    "division": "59",
+    "group": "591",
+    "class": "5910",
+    "matched_activity": "Motion picture, video and television programme activities",
+    "confidence": 30.65,
+    "method": "OPENAI"
+  },
+  "aerial photography by drones": {
+    "division": "74",
+    "group": "742",
+    "class": "7420",
+    "matched_activity": "Photographic activities",
+    "confidence": 39.51,
+    "method": "OPENAI"
+  },
+  "healthtech wearables and biometric devices development": {
+    "division": "26",
+    "group": "266",
+    "class": "2660",
+    "matched_activity": "Manufacture of irradiation, electromedical and electrotherapeutic equipment",
+    "confidence": 35.97,
+    "method": "OPENAI"
+  },
+  "digital health record management system development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 27.76,
+    "method": "OPENAI"
+  },
+  "telemedicine app development": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 25.85,
+    "method": "OPENAI"
+  },
+  "services for district cooling": {
+    "division": "35",
+    "group": "353",
+    "class": "3530",
+    "matched_activity": "Steam and air conditioning supply",
+    "confidence": 50.55,
+    "method": "OPENAI"
+  },
+  "electrical welding and soldering equipment manufacturing": {
+    "division": "27",
+    "group": "268",
+    "class": "2680",
+    "matched_activity": "Manufacture of electrical equipment",
+    "confidence": 68.93,
+    "method": "OPENAI"
+  },
+  "ai-powered diagnostic tools development": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 29.02,
+    "method": "OPENAI"
+  },
+  "twines and ropes of textile fibers or strip and like manufacturing": {
+    "division": "13",
+    "group": "139",
+    "class": "1394",
+    "matched_activity": "Manufacture of cordage, rope, twine and netting",
+    "confidence": 65.26,
+    "method": "OPENAI"
+  },
+  "electromechanical works contracting": {
+    "division": "43",
+    "group": "432",
+    "class": "4320",
+    "matched_activity": "Electrical, plumbing and other construction installation activities",
+    "confidence": 50.54,
+    "method": "OPENAI"
+  },
+  "yarns and threads of all kinds spinning and manufacturing": {
+    "division": "13",
+    "group": "131",
+    "class": "1311",
+    "matched_activity": "Preparation and spinning of textile fibres",
+    "confidence": 56.64,
+    "method": "OPENAI"
+  },
+  "paper cups , dishes and trays manufacturing": {
+    "division": "17",
+    "group": "162",
+    "class": "1709",
+    "matched_activity": "Manufacture of other articles of paper and paperboard",
+    "confidence": 48.61,
+    "method": "OPENAI"
+  },
+  "concrete works": {
+    "division": "43",
+    "group": "429",
+    "class": "4290",
+    "matched_activity": "Specialized construction activities",
+    "confidence": 51.83,
+    "method": "OPENAI"
+  },
+  "fuel oil and refinery gases production": {
+    "division": "19",
+    "group": "192",
+    "class": "1920",
+    "matched_activity": "Manufacture of refined petroleum products",
+    "confidence": 62.24,
+    "method": "OPENAI"
+  },
+  "prefabricated buildings installation contracting": {
+    "division": "43",
+    "group": "432",
+    "class": "4329",
+    "matched_activity": "Other construction installation",
+    "confidence": 67.18,
+    "method": "OPENAI"
+  },
+  "electricity distribution intermediate": {
+    "division": "35",
+    "group": "351",
+    "class": "3510",
+    "matched_activity": "Electric power generation, transmission and distribution",
+    "confidence": 61.56,
+    "method": "OPENAI"
+  },
+  "mineral insulating materials manufacturing": {
+    "division": "23",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of other non-metallic mineral products",
+    "confidence": 58.48,
+    "method": "OPENAI"
+  },
+  "potatoes processing and preserving": {
+    "division": "10",
+    "group": "103",
+    "class": "1030",
+    "matched_activity": "Processing and preserving of fruit and vegetables",
+    "confidence": 65.36,
+    "method": "OPENAI"
+  },
+  "turbines and parts thereof manufacturing": {
+    "division": "28",
+    "group": "281",
+    "class": "2811",
+    "matched_activity": "Manufacture of engines and turbines, except aircraft, vehicle and cycle engines",
+    "confidence": 66.53,
+    "method": "OPENAI"
+  },
+  "industrial potatoes peeling": {
+    "division": "10",
+    "group": "103",
+    "class": "1030",
+    "matched_activity": "Processing and preserving of fruit and vegetables",
+    "confidence": 44.48,
+    "method": "OPENAI"
+  },
+  "cold and hot beverages": {
+    "division": "56",
+    "group": "563",
+    "class": "5630",
+    "matched_activity": "Beverage serving activities",
+    "confidence": 53.0,
+    "method": "OPENAI"
+  },
+  "control system, command and control trade": {
+    "division": "26",
+    "group": "265",
+    "class": "2651",
+    "matched_activity": "Manufacture of measuring, testing, navigating and control equipment",
+    "confidence": 39.17,
+    "method": "OPENAI"
+  },
+  "developing defence and surveillance systems": {
+    "division": "84",
+    "group": "842",
+    "class": "8422",
+    "matched_activity": "Defence activities",
+    "confidence": 62.77,
+    "method": "OPENAI"
+  },
+  "plastic closures articles manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 61.39,
+    "method": "OPENAI"
+  },
+  "aircraft cabin simulators repair, maintenance and modification": {
+    "division": "33",
+    "group": "331",
+    "class": "3315",
+    "matched_activity": "Repair of transport equipment, except motor vehicles",
+    "confidence": 45.99,
+    "method": "OPENAI"
+  },
+  "military tools and supplies manufacture": {
+    "division": "25",
+    "group": "252",
+    "class": "2520",
+    "matched_activity": "Manufacture of weapons and ammunition",
+    "confidence": 68.53,
+    "method": "OPENAI"
+  },
+  "prepared pigments and colours manufacturing": {
+    "division": "20",
+    "group": "202",
+    "class": "2022",
+    "matched_activity": "Manufacture of paints, varnishes and similar coatings, printing ink and mastics",
+    "confidence": 51.85,
+    "method": "OPENAI"
+  },
+  "trading of photographic equipment and military countermeasures": {
+    "division": "46",
+    "group": "465",
+    "class": "4650",
+    "matched_activity": "Wholesale of machinery, equipment and supplies",
+    "confidence": 44.16,
+    "method": "OPENAI"
+  },
+  "military combat vehicle trade": {
+    "division": "46",
+    "group": "454",
+    "class": "4540",
+    "matched_activity": "Wholesale trade, except of motor vehicles and motorcycles",
+    "confidence": 36.37,
+    "method": "OPENAI"
+  },
+  "trade of sensors and military communication system": {
+    "division": "46",
+    "group": "465",
+    "class": "4652",
+    "matched_activity": "Wholesale of electronic and telecommunications equipment and parts",
+    "confidence": 36.07,
+    "method": "OPENAI"
+  },
+  "military autonomous systems trade": {
+    "division": "84",
+    "group": "842",
+    "class": "8422",
+    "matched_activity": "Defence activities",
+    "confidence": 34.58,
+    "method": "OPENAI"
+  },
+  "trading spare parts for photographic equipment and military countermeasures": {
+    "division": "46",
+    "group": "465",
+    "class": "4652",
+    "matched_activity": "Wholesale of electronic and telecommunications equipment and parts",
+    "confidence": 44.78,
+    "method": "OPENAI"
+  },
+  "military robotics & control systems trade": {
+    "division": "30",
+    "group": "304",
+    "class": "3040",
+    "matched_activity": "Manufacture of military fighting vehicles",
+    "confidence": 45.79,
+    "method": "OPENAI"
+  },
+  "trade of missile launch control devices, warning and test equipment and related systems": {
+    "division": "46",
+    "group": "465",
+    "class": "4652",
+    "matched_activity": "Wholesale of electronic and telecommunications equipment and parts",
+    "confidence": 39.87,
+    "method": "OPENAI"
+  },
+  "military aircrafts manufacturing": {
+    "division": "30",
+    "group": "303",
+    "class": "3030",
+    "matched_activity": "Manufacture of air and spacecraft and related machinery",
+    "confidence": 65.67,
+    "method": "OPENAI"
+  },
+  "knitted and crocheted fabrics processing and manufacturing": {
+    "division": "13",
+    "group": "139",
+    "class": "1391",
+    "matched_activity": "Manufacture of knitted and crocheted fabrics",
+    "confidence": 85.07,
+    "method": "OPENAI"
+  },
+  "fiberglass tanks and reservoirs manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 44.73,
+    "method": "OPENAI"
+  },
+  "advanced agriculture for the grains crop and oilseeds": {
+    "division": "1",
+    "group": "11",
+    "class": "111",
+    "matched_activity": "Growing of cereals (except rice), leguminous crops and oil seeds",
+    "confidence": 62.07,
+    "method": "OPENAI"
+  },
+  "herb infusions manufacturing": {
+    "division": "11",
+    "group": "108",
+    "class": "1080",
+    "matched_activity": "Manufacture of beverages",
+    "confidence": 57.37,
+    "method": "OPENAI"
+  },
+  "helicopters repair & maintenance": {
+    "division": "33",
+    "group": "331",
+    "class": "3315",
+    "matched_activity": "Repair of transport equipment, except motor vehicles",
+    "confidence": 48.62,
+    "method": "OPENAI"
+  },
+  "organizing vehicle auctions through electronic platforms, smart applications and other means": {
+    "division": "66",
+    "group": "661",
+    "class": "6611",
+    "matched_activity": "Administration of financial markets",
+    "confidence": 34.0,
+    "method": "OPENAI"
+  },
+  "managing investments of investment funds": {
+    "division": "66",
+    "group": "663",
+    "class": "6630",
+    "matched_activity": "Fund management activities",
+    "confidence": 66.42,
+    "method": "OPENAI"
+  },
+  "trading in global markets": {
+    "division": "66",
+    "group": "661",
+    "class": "6612",
+    "matched_activity": "Security and commodity contracts brokerage",
+    "confidence": 42.41,
+    "method": "OPENAI"
+  },
+  "commercial agencies": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 44.42,
+    "method": "OPENAI"
+  },
+  "passengers & cargo aircrafts repair": {
+    "division": "33",
+    "group": "331",
+    "class": "3315",
+    "matched_activity": "Repair of transport equipment, except motor vehicles",
+    "confidence": 55.02,
+    "method": "OPENAI"
+  },
+  "cybersecurity and technology audit services of software code": {
+    "division": "71",
+    "group": "712",
+    "class": "7120",
+    "matched_activity": "Technical testing and analysis",
+    "confidence": 43.76,
+    "method": "OPENAI"
+  },
+  "visual merchandising services": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 41.02,
+    "method": "OPENAI"
+  },
+  "short-term rental management": {
+    "division": "55",
+    "group": "551",
+    "class": "5510",
+    "matched_activity": "Short term accommodation activities",
+    "confidence": 64.56,
+    "method": "OPENAI"
+  },
+  "trading of carbon credits": {
+    "division": "66",
+    "group": "661",
+    "class": "6612",
+    "matched_activity": "Security and commodity contracts brokerage",
+    "confidence": 36.8,
+    "method": "OPENAI"
+  },
+  "not found": {
+    "division": "55",
+    "group": "559",
+    "class": "5590",
+    "matched_activity": "Other accommodation",
+    "confidence": 25.55,
+    "method": "OPENAI"
+  },
+  "trading in peat, copper ore, copper concentrate": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 48.32,
+    "method": "OPENAI"
+  },
+  "geological engineering consultancies in the field of geological and technical support of exploration activities and mining operations": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 60.44,
+    "method": "OPENAI"
+  },
+  "this class includes the provision of food services based on contractual arrangements with the customer, at the location specified by the customer, for a specific event.": {
+    "division": "56",
+    "group": "562",
+    "class": "5621",
+    "matched_activity": "Event catering",
+    "confidence": 58.06,
+    "method": "OPENAI"
+  },
+  "electrical wiring switches manufacturing": {
+    "division": "27",
+    "group": "273",
+    "class": "2733",
+    "matched_activity": "Manufacture of wiring devices",
+    "confidence": 73.47,
+    "method": "OPENAI"
+  },
+  "dance training": {
+    "division": "85",
+    "group": "854",
+    "class": "8541",
+    "matched_activity": "Sports and recreation education",
+    "confidence": 35.8,
+    "method": "OPENAI"
+  },
+  "real estate lease and management services": {
+    "division": "68",
+    "group": "682",
+    "class": "6820",
+    "matched_activity": "Real estate activities on a fee or contract basis",
+    "confidence": 52.27,
+    "method": "OPENAI"
+  },
+  "web, mobile, software development and architecture": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 40.09,
+    "method": "OPENAI"
+  },
+  "investment and development of real estate projects and their establishment and management": {
+    "division": "68",
+    "group": "681",
+    "class": "6810",
+    "matched_activity": "Real estate activities with own or leased property",
+    "confidence": 60.38,
+    "method": "OPENAI"
+  },
+  "by-contact training": {
+    "division": "85",
+    "group": "854",
+    "class": "8540",
+    "matched_activity": "Other education",
+    "confidence": 30.18,
+    "method": "OPENAI"
+  },
+  "retail sale of spare parts electrical and electronic devices": {
+    "division": "47",
+    "group": "475",
+    "class": "4759",
+    "matched_activity": "Retail sale of electrical household appliances, furniture, lighting equipment and other household articles in specialized stores",
+    "confidence": 69.65,
+    "method": "OPENAI"
+  },
+  "bus bars and electrical conductors manufacturing": {
+    "division": "27",
+    "group": "273",
+    "class": "2732",
+    "matched_activity": "Manufacture of other electronic and electric wires and cables",
+    "confidence": 54.71,
+    "method": "OPENAI"
+  },
+  "sports clubs and facilities management and operation": {
+    "division": "93",
+    "group": "931",
+    "class": "9312",
+    "matched_activity": "Activities of sports clubs",
+    "confidence": 58.18,
+    "method": "OPENAI"
+  },
+  "administrative business training": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 39.35,
+    "method": "OPENAI"
+  },
+  "data science and analytics freelancer": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 37.65,
+    "method": "OPENAI"
+  },
+  "aerial shoot photographer": {
+    "division": "74",
+    "group": "742",
+    "class": "7420",
+    "matched_activity": "Photographic activities",
+    "confidence": 43.93,
+    "method": "OPENAI"
+  },
+  "animator": {
+    "division": "59",
+    "group": "591",
+    "class": "5911",
+    "matched_activity": "Motion picture, video and television programme production activities",
+    "confidence": 26.52,
+    "method": "OPENAI"
+  },
+  "commentators: radio, events, sports, television": {
+    "division": "60",
+    "group": "602",
+    "class": "6020",
+    "matched_activity": "Television programming and broadcasting activities",
+    "confidence": 49.99,
+    "method": "OPENAI"
+  },
+  "cameraman": {
+    "division": "59",
+    "group": "591",
+    "class": "5911",
+    "matched_activity": "Motion picture, video and television programme production activities",
+    "confidence": 33.13,
+    "method": "OPENAI"
+  },
+  "artist": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 34.18,
+    "method": "OPENAI"
+  },
+  "choreographer": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 28.6,
+    "method": "OPENAI"
+  },
+  "concept designer": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 51.28,
+    "method": "OPENAI"
+  },
+  "audio / sound engineer": {
+    "division": "59",
+    "group": "591",
+    "class": "5912",
+    "matched_activity": "Motion picture, video and television programme post-production activities",
+    "confidence": 38.61,
+    "method": "OPENAI"
+  },
+  "composer": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 23.6,
+    "method": "OPENAI"
+  },
+  "content provider": {
+    "division": "63",
+    "group": "631",
+    "class": "6312",
+    "matched_activity": "Web portals",
+    "confidence": 33.44,
+    "method": "OPENAI"
+  },
+  "copywriter": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 33.26,
+    "method": "OPENAI"
+  },
+  "critics: music, film, theatre": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 40.37,
+    "method": "OPENAI"
+  },
+  "events planner": {
+    "division": "82",
+    "group": "823",
+    "class": "8230",
+    "matched_activity": "Organization of conventions and trade shows",
+    "confidence": 44.43,
+    "method": "OPENAI"
+  },
+  "editor: publishing": {
+    "division": "58",
+    "group": "581",
+    "class": "5811",
+    "matched_activity": "Book publishing",
+    "confidence": 71.59,
+    "method": "OPENAI"
+  },
+  "director: film, television, music, theatre": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 43.93,
+    "method": "OPENAI"
+  },
+  "fashion stylist": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 27.46,
+    "method": "OPENAI"
+  },
+  "jewelry designer": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 34.22,
+    "method": "OPENAI"
+  },
+  "marketing specialist": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 39.28,
+    "method": "OPENAI"
+  },
+  "market analyst": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 55.45,
+    "method": "OPENAI"
+  },
+  "lighting specialist": {
+    "division": "43",
+    "group": "432",
+    "class": "4321",
+    "matched_activity": "Electrical installation",
+    "confidence": 42.94,
+    "method": "OPENAI"
+  },
+  "makeup artist": {
+    "division": "96",
+    "group": "952",
+    "class": "9602",
+    "matched_activity": "Hairdressing and other beauty treatment",
+    "confidence": 41.95,
+    "method": "OPENAI"
+  },
+  "media planner": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 50.89,
+    "method": "OPENAI"
+  },
+  "journalist": {
+    "division": "63",
+    "group": "639",
+    "class": "6391",
+    "matched_activity": "News agency activities",
+    "confidence": 46.32,
+    "method": "OPENAI"
+  },
+  "music director": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 23.32,
+    "method": "OPENAI"
+  },
+  "musician": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 23.78,
+    "method": "OPENAI"
+  },
+  "web developer": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 36.73,
+    "method": "OPENAI"
+  },
+  "researcher": {
+    "division": "72",
+    "group": "721",
+    "class": "7210",
+    "matched_activity": "Research and experimental development on natural sciences and engineering",
+    "confidence": 43.47,
+    "method": "OPENAI"
+  },
+  "economics analyst": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 36.83,
+    "method": "OPENAI"
+  },
+  "investment analyst": {
+    "division": "66",
+    "group": "663",
+    "class": "6630",
+    "matched_activity": "Fund management activities",
+    "confidence": 46.56,
+    "method": "OPENAI"
+  },
+  "writer": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 26.37,
+    "method": "OPENAI"
+  },
+  "announcer": {
+    "division": "60",
+    "group": "601",
+    "class": "6010",
+    "matched_activity": "Radio broadcasting",
+    "confidence": 35.5,
+    "method": "OPENAI"
+  },
+  "art critic": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 36.59,
+    "method": "OPENAI"
+  },
+  "financial analyst": {
+    "division": "66",
+    "group": "661",
+    "class": "6610",
+    "matched_activity": "Activities auxiliary to financial service activities, except insurance and pension funding",
+    "confidence": 34.34,
+    "method": "OPENAI"
+  },
+  "audiology technician": {
+    "division": "33",
+    "group": "331",
+    "class": "3313",
+    "matched_activity": "Repair of electronic and optical equipment",
+    "confidence": 34.34,
+    "method": "OPENAI"
+  },
+  "analyst-strategy & policy planning": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 43.07,
+    "method": "OPENAI"
+  },
+  "career counsellor": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 37.52,
+    "method": "OPENAI"
+  },
+  "career development specialist": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 40.12,
+    "method": "OPENAI"
+  },
+  "chief editor": {
+    "division": "58",
+    "group": "581",
+    "class": "5813",
+    "matched_activity": "Publishing of newspapers, journals and periodicals",
+    "confidence": 36.68,
+    "method": "OPENAI"
+  },
+  "computer instructor": {
+    "division": "85",
+    "group": "854",
+    "class": "8549",
+    "matched_activity": "Other education n.e.c.",
+    "confidence": 35.82,
+    "method": "OPENAI"
+  },
+  "computer sciences trainer": {
+    "division": "85",
+    "group": "854",
+    "class": "8549",
+    "matched_activity": "Other education n.e.c.",
+    "confidence": 33.44,
+    "method": "OPENAI"
+  },
+  "computer systems analyst": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 47.15,
+    "method": "OPENAI"
+  },
+  "database analyst": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 35.73,
+    "method": "OPENAI"
+  },
+  "correspondent": {
+    "division": "63",
+    "group": "639",
+    "class": "6391",
+    "matched_activity": "News agency activities",
+    "confidence": 45.14,
+    "method": "OPENAI"
+  },
+  "director of theatre": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 31.84,
+    "method": "OPENAI"
+  },
+  "data analyst": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 35.09,
+    "method": "OPENAI"
+  },
+  "e-coach for personal development": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 37.07,
+    "method": "OPENAI"
+  },
+  "e-advisor for organizational development": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 40.25,
+    "method": "OPENAI"
+  },
+  "career ladder advisor": {
+    "division": "78",
+    "group": "781",
+    "class": "7810",
+    "matched_activity": "Activities of employment placement agencies",
+    "confidence": 36.66,
+    "method": "OPENAI"
+  },
+  "e-counsellor for career counsellor": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 35.95,
+    "method": "OPENAI"
+  },
+  "e-specialist for career development": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 43.3,
+    "method": "OPENAI"
+  },
+  "e-supervisor for programs development": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 36.23,
+    "method": "OPENAI"
+  },
+  "e-trainer for ict": {
+    "division": "85",
+    "group": "852",
+    "class": "8522",
+    "matched_activity": "Technical and vocational secondary education",
+    "confidence": 37.99,
+    "method": "OPENAI"
+  },
+  "events manager": {
+    "division": "82",
+    "group": "823",
+    "class": "8230",
+    "matched_activity": "Organization of conventions and trade shows",
+    "confidence": 38.01,
+    "method": "OPENAI"
+  },
+  "film developer": {
+    "division": "74",
+    "group": "742",
+    "class": "7420",
+    "matched_activity": "Photographic activities",
+    "confidence": 28.83,
+    "method": "OPENAI"
+  },
+  "ict trainer": {
+    "division": "85",
+    "group": "852",
+    "class": "8522",
+    "matched_activity": "Technical and vocational secondary education",
+    "confidence": 31.15,
+    "method": "OPENAI"
+  },
+  "information programmes organizer": {
+    "division": "82",
+    "group": "823",
+    "class": "8230",
+    "matched_activity": "Organization of conventions and trade shows",
+    "confidence": 38.02,
+    "method": "OPENAI"
+  },
+  "information system analyst": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 40.93,
+    "method": "OPENAI"
+  },
+  "it expert": {
+    "division": "62",
+    "group": "619",
+    "class": "6202",
+    "matched_activity": "Computer consultancy and computer facilities management activities",
+    "confidence": 37.65,
+    "method": "OPENAI"
+  },
+  "literature critic": {
+    "division": "72",
+    "group": "722",
+    "class": "7220",
+    "matched_activity": "Research and experimental development on social sciences and humanities",
+    "confidence": 28.35,
+    "method": "OPENAI"
+  },
+  "instrumentalist": {
+    "division": "74",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Other professional, scientific and technical activities",
+    "confidence": 26.05,
+    "method": "OPENAI"
+  },
+  "literary writer": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 29.77,
+    "method": "OPENAI"
+  },
+  "languages trainer": {
+    "division": "85",
+    "group": "854",
+    "class": "8540",
+    "matched_activity": "Other education",
+    "confidence": 32.64,
+    "method": "OPENAI"
+  },
+  "marketing studies researcher": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 57.29,
+    "method": "OPENAI"
+  },
+  "marketing coordinator": {
+    "division": "73",
+    "group": "731",
+    "class": "7310",
+    "matched_activity": "Advertising",
+    "confidence": 43.48,
+    "method": "OPENAI"
+  },
+  "motion picture photographer": {
+    "division": "59",
+    "group": "591",
+    "class": "5911",
+    "matched_activity": "Motion picture, video and television programme production activities",
+    "confidence": 52.87,
+    "method": "OPENAI"
+  },
+  "news producer": {
+    "division": "63",
+    "group": "639",
+    "class": "6391",
+    "matched_activity": "News agency activities",
+    "confidence": 51.81,
+    "method": "OPENAI"
+  },
+  "music critic": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 25.8,
+    "method": "OPENAI"
+  },
+  "news listener": {
+    "division": "60",
+    "group": "601",
+    "class": "6010",
+    "matched_activity": "Radio broadcasting",
+    "confidence": 48.58,
+    "method": "OPENAI"
+  },
+  "news editor": {
+    "division": "63",
+    "group": "639",
+    "class": "6391",
+    "matched_activity": "News agency activities",
+    "confidence": 48.78,
+    "method": "OPENAI"
+  },
+  "personal development coach": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 41.58,
+    "method": "OPENAI"
+  },
+  "orchestrator": {
+    "division": "82",
+    "group": "823",
+    "class": "8230",
+    "matched_activity": "Organization of conventions and trade shows",
+    "confidence": 33.51,
+    "method": "OPENAI"
+  },
+  "personal trainer": {
+    "division": "85",
+    "group": "854",
+    "class": "8541",
+    "matched_activity": "Sports and recreation education",
+    "confidence": 37.08,
+    "method": "OPENAI"
+  },
+  "organizational development advisor": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 42.98,
+    "method": "OPENAI"
+  },
+  "management sciences trainer": {
+    "division": "85",
+    "group": "855",
+    "class": "8550",
+    "matched_activity": "Educational support activities",
+    "confidence": 33.35,
+    "method": "OPENAI"
+  },
+  "planning expert": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 41.26,
+    "method": "OPENAI"
+  },
+  "plastic arts critic": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 35.09,
+    "method": "OPENAI"
+  },
+  "press writer": {
+    "division": "58",
+    "group": "581",
+    "class": "5813",
+    "matched_activity": "Publishing of newspapers, journals and periodicals",
+    "confidence": 33.77,
+    "method": "OPENAI"
+  },
+  "press editor": {
+    "division": "58",
+    "group": "581",
+    "class": "5813",
+    "matched_activity": "Publishing of newspapers, journals and periodicals",
+    "confidence": 36.72,
+    "method": "OPENAI"
+  },
+  "press producer": {
+    "division": "58",
+    "group": "581",
+    "class": "5813",
+    "matched_activity": "Publishing of newspapers, journals and periodicals",
+    "confidence": 37.16,
+    "method": "OPENAI"
+  },
+  "press photographer": {
+    "division": "74",
+    "group": "742",
+    "class": "7420",
+    "matched_activity": "Photographic activities",
+    "confidence": 49.77,
+    "method": "OPENAI"
+  },
+  "programs development supervisor": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 42.71,
+    "method": "OPENAI"
+  },
+  "publication designer": {
+    "division": "74",
+    "group": "741",
+    "class": "7410",
+    "matched_activity": "Specialized design activities",
+    "confidence": 44.92,
+    "method": "OPENAI"
+  },
+  "public relation coordinator": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 36.16,
+    "method": "OPENAI"
+  },
+  "project analyst": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 40.84,
+    "method": "OPENAI"
+  },
+  "radio and television engineer": {
+    "division": "71",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Architectural and engineering activities; technical testing and analysis",
+    "confidence": 36.03,
+    "method": "OPENAI"
+  },
+  "recording sound technician": {
+    "division": "59",
+    "group": "582",
+    "class": "5820",
+    "matched_activity": "Motion picture, video and television programme production, sound recording and music publishing activities",
+    "confidence": 37.44,
+    "method": "OPENAI"
+  },
+  "sales analyst": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 40.53,
+    "method": "OPENAI"
+  },
+  "scenario and dialogue writer": {
+    "division": "90",
+    "group": "889",
+    "class": "8890",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 24.07,
+    "method": "OPENAI"
+  },
+  "sound technician": {
+    "division": "59",
+    "group": "591",
+    "class": "5912",
+    "matched_activity": "Motion picture, video and television programme post-production activities",
+    "confidence": 37.8,
+    "method": "OPENAI"
+  },
+  "sports commentator": {
+    "division": "60",
+    "group": "602",
+    "class": "6020",
+    "matched_activity": "Television programming and broadcasting activities",
+    "confidence": 34.86,
+    "method": "OPENAI"
+  },
+  "television photographer": {
+    "division": "59",
+    "group": "591",
+    "class": "5911",
+    "matched_activity": "Motion picture, video and television programme production activities",
+    "confidence": 40.63,
+    "method": "OPENAI"
+  },
+  "web analyst": {
+    "division": "73",
+    "group": "732",
+    "class": "7320",
+    "matched_activity": "Market research and public opinion polling",
+    "confidence": 35.67,
+    "method": "OPENAI"
+  },
+  "web editor": {
+    "division": "63",
+    "group": "631",
+    "class": "6312",
+    "matched_activity": "Web portals",
+    "confidence": 52.76,
+    "method": "OPENAI"
+  },
+  "web programmer": {
+    "division": "62",
+    "group": "619",
+    "class": "6201",
+    "matched_activity": "Computer programming activities",
+    "confidence": 48.33,
+    "method": "OPENAI"
+  },
+  "video editor": {
+    "division": "59",
+    "group": "591",
+    "class": "5912",
+    "matched_activity": "Motion picture, video and television programme post-production activities",
+    "confidence": 49.63,
+    "method": "OPENAI"
+  },
+  "web technician": {
+    "division": "62",
+    "group": "619",
+    "class": "6190",
+    "matched_activity": "Computer programming, consultancy and related activities",
+    "confidence": 36.0,
+    "method": "OPENAI"
+  },
+  "television photographer assistant": {
+    "division": "59",
+    "group": "591",
+    "class": "5911",
+    "matched_activity": "Motion picture, video and television programme production activities",
+    "confidence": 41.9,
+    "method": "OPENAI"
+  },
+  "holding company": {
+    "division": "64",
+    "group": "642",
+    "class": "6420",
+    "matched_activity": "Activities of holding companies",
+    "confidence": 74.99,
+    "method": "OPENAI"
+  },
+  "business consultancy": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 70.16,
+    "method": "OPENAI"
+  },
+  "service delivery analyst": {
+    "division": "70",
+    "group": "702",
+    "class": "7020",
+    "matched_activity": "Management consultancy activities",
+    "confidence": 39.42,
+    "method": "OPENAI"
+  },
+  "stage and puppet artist": {
+    "division": "90",
+    "group": "900",
+    "class": "9000",
+    "matched_activity": "Creative, arts and entertainment activities",
+    "confidence": 31.69,
+    "method": "OPENAI"
+  }
+}
