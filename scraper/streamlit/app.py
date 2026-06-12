@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import streamlit as st
 
 # =====================================================
@@ -39,6 +40,9 @@ WEBSITES = [
     "SRTIP"
 ]
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MANAGE_PY = os.path.join(BASE_DIR, "manage.py")
+
 # =====================================================
 # UI
 # =====================================================
@@ -46,17 +50,14 @@ WEBSITES = [
 col1, col2 = st.columns([3, 1])
 
 with col1:
-
     selected_website = st.selectbox(
         "Select Website",
         WEBSITES
     )
 
 with col2:
-
     st.write("")
     st.write("")
-
     run_button = st.button(
         "🚀 Run Scraper",
         use_container_width=True
@@ -73,25 +74,15 @@ if run_button:
     with st.spinner(f"Running {selected_website}..."):
 
         result = subprocess.run(
-
-            [
-                "python",
-                "manage.py",
-                "run_scrapers",
-                "--website",
-                selected_website
-            ],
-
+            [sys.executable, MANAGE_PY, "run_scrapers", "--website", selected_website],
             capture_output=True,
-            text=True
+            text=True,
+            cwd=BASE_DIR
         )
 
     if result.returncode == 0:
-
         st.success("Scraper completed successfully.")
-
     else:
-
         st.error("Scraper finished with errors.")
 
     # =================================================
@@ -99,20 +90,11 @@ if run_button:
     # =================================================
 
     st.subheader("Execution Logs")
-
-    st.code(
-        result.stdout,
-        language="text"
-    )
+    st.code(result.stdout, language="text")
 
     if result.stderr:
-
         st.subheader("Errors")
-
-        st.code(
-            result.stderr,
-            language="text"
-        )
+        st.code(result.stderr, language="text")
 
     # =================================================
     # DOWNLOAD CSV
@@ -120,44 +102,25 @@ if run_button:
 
     if selected_website != "ALL":
 
-        csv_path = os.path.join(
-
-            "scraper",
-            "output",
-            f"{selected_website}.csv"
-
-        )
+        csv_path = os.path.join(BASE_DIR, "scraper", "output", f"{selected_website}.csv")
 
         if os.path.exists(csv_path):
-
             st.divider()
-
             st.subheader("Download CSV")
 
             with open(csv_path, "rb") as file:
-
                 st.download_button(
-
-                    label=f"📥 Download {selected_website}.csv",
-
+                    label=f" Download {selected_website}.csv",
                     data=file,
-
                     file_name=f"{selected_website}.csv",
-
                     mime="text/csv",
-
                     use_container_width=True
-
                 )
-
         else:
-
             st.warning("CSV file was not generated.")
 
     else:
-
         st.divider()
-
         st.info(
             "ALL mode completed. Individual CSV files are available inside scraper/output/."
         )
