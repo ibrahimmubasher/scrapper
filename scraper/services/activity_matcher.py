@@ -264,20 +264,28 @@ class ActivityMatcher:
     # =====================================================
     def _find_code_by_isic(self, master_df, division, group, cls):
 
-        if not division or not group or not cls:
+        if not group:
             return ""
 
-        matches = master_df[
-            (master_df["division"].astype(str).str.strip() == str(division)) &
-            (master_df["group"].astype(str).str.strip()    == str(group))    &
-            (master_df["class"].astype(str).str.strip()    == str(cls))
-        ]
+        def clean(val):
+            try:
+                return str(int(float(str(val).strip())))
+            except Exception:
+                return str(val).strip()
+
+        grp_clean = clean(group)
+
+        mask = master_df["group"].apply(clean) == grp_clean
+
+        matches = master_df[mask]
 
         for _, row in matches.iterrows():
             code = self.clean_number(row.get("activity code", ""))
             if code:
+                print(f"[CODE BY GROUP] group={grp_clean} -> code={code}")
                 return code
 
+        print(f"[CODE NO MATCH] group={grp_clean}")
         return ""
 
     # =====================================================
@@ -651,7 +659,11 @@ class ActivityMatcher:
                     return name, code
 
                 # Fallback to RAG
-                code = self._assign_code(name)
+                code = (
+                    meta["code"]
+                    or self._find_code_by_isic(master_df, meta["division"], meta["group"], meta["class"])
+                    or self._assign_code(name)
+                )
                 return name, code
 
             with ThreadPoolExecutor(max_workers=10) as executor:
