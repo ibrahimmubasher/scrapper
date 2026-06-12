@@ -668,7 +668,10 @@ class ActivityMatcher:
 
             if group and cls and code:
 
-                key = (group, cls)
+                key = (
+                str(group).strip(),
+                str(cls).strip()
+            )
 
                 if key not in isic_code_cache:
                     isic_code_cache[key] = code
@@ -694,7 +697,10 @@ class ActivityMatcher:
                     isic.get("class", "")
                 )
 
-                key = (group, cls)
+                key = (
+                str(group).strip(),
+                str(cls).strip()
+            )
 
                 # ============================================
                 # REUSE EXISTING CODE
@@ -728,22 +734,23 @@ class ActivityMatcher:
 
                 return name, code
 
-            with ThreadPoolExecutor(max_workers=10) as executor:
+            # =================================================
+            # SEQUENTIAL CODE ASSIGNMENT
+            # Prevent duplicate codes for same class/group
+            # =================================================
+            for name in to_classify:
 
-                futures = {
-                    executor.submit(assign_code_smart, name): name
-                    for name in to_classify
-                }
+                try:
 
-                for future in as_completed(futures):
+                    name, code = assign_code_smart(name)
 
-                    try:
-                        name, code     = future.result()
-                        code_map[name] = code
-                    except Exception as e:
-                        name = futures[future]
-                        print(f"[CODE ERROR] {name}: {e}")
-                        code_map[name] = ""
+                    code_map[name] = code
+
+                except Exception as e:
+
+                    print(f"[CODE ERROR] {name}: {e}")
+
+                    code_map[name] = ""
 
         # =================================================
         # BUILD ALL NEW ROWS
