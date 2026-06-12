@@ -248,14 +248,14 @@ class ActivityMatcher:
     # =====================================================
     # ASSIGN CODE via RAG
     # =====================================================
-    def _assign_code(self, activity_name):
+    # def _assign_code(self, activity_name):
 
-        try:
-            code, _, _ = self.rag._assign_code(activity_name)
-            return self.clean_number(code)
-        except Exception as e:
-            print(f"[CODE ERROR] {activity_name}: {e}")
-            return ""
+    #     try:
+    #         code, _, _ = self.rag._assign_code(activity_name)
+    #         return self.clean_number(code)
+    #     except Exception as e:
+    #         print(f"[CODE ERROR] {activity_name}: {e}")
+    #         return ""
 
     # =====================================================
     # FIND CODE BY CLASS + GROUP + DIVISION
