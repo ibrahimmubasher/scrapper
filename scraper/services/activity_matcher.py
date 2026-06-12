@@ -93,8 +93,6 @@ class ActivityMatcher:
         except Exception:
             return text
 
-    
-    
     # =====================================================
     # IS EMPTY
     # =====================================================
@@ -127,6 +125,10 @@ class ActivityMatcher:
             jurisdiction,
             jurisdiction.title()
         )
+
+    # =====================================================
+    # GET JURISDICTION DATAFRAME
+    # =====================================================
     def get_jurisdiction_dataframe(
         self,
         master_df,
@@ -143,6 +145,7 @@ class ActivityMatcher:
             ==
             jurisdiction.lower()
         ].copy()
+
     # =====================================================
     # BUILD NAME LIST
     # =====================================================
@@ -255,6 +258,29 @@ class ActivityMatcher:
             return ""
 
     # =====================================================
+    # FIND CODE BY CLASS + GROUP + DIVISION
+    # If another activity in master has same ISIC fields
+    # → reuse its activity code
+    # =====================================================
+    def _find_code_by_isic(self, master_df, division, group, cls):
+
+        if not division or not group or not cls:
+            return ""
+
+        matches = master_df[
+            (master_df["division"].astype(str).str.strip() == str(division)) &
+            (master_df["group"].astype(str).str.strip()    == str(group))    &
+            (master_df["class"].astype(str).str.strip()    == str(cls))
+        ]
+
+        for _, row in matches.iterrows():
+            code = self.clean_number(row.get("activity code", ""))
+            if code:
+                return code
+
+        return ""
+
+    # =====================================================
     # UPDATE ACTIVITIES — main entry point
     #
     # FLOW PER ACTIVITY:
@@ -264,6 +290,7 @@ class ActivityMatcher:
     #     → copy division/group/class/isic description
     #  4. Truly new
     #     → ISICMatcher → GPT → generate isic description
+    #     → code: match by ISIC fields → fallback RAG
     #
     # ALL descriptions stored in "isic description" column
     # GUARANTEE: no row with empty division/group/class
@@ -478,7 +505,6 @@ class ActivityMatcher:
                 )
 
                 # Reuse only if division/group/class complete
-                # Description can be empty — will be generated
                 if division and group and class_name:
 
                     global_reuse[name] = {
@@ -543,14 +569,9 @@ class ActivityMatcher:
 
         # =================================================
         # COLLECT ALL ACTIVITIES NEEDING isic description
-        #
-        # This includes:
-        # - All new classified activities
-        # - Global reuse activities with empty isic desc
         # =================================================
         needs_description = []
 
-        # New activities — always need description
         for name in to_classify:
 
             isic = classification_results.get(name, {})
@@ -562,7 +583,6 @@ class ActivityMatcher:
                 "class_code":    isic.get("class", "")
             })
 
-        # Global reuse — only if isic description is empty
         global_needs_desc = []
 
         for name, meta in global_reuse.items():
@@ -580,8 +600,6 @@ class ActivityMatcher:
 
         # =================================================
         # BATCH DESCRIPTION GENERATION
-        # All in one batch — 20 per GPT call
-        # Stored in "isic description" column
         # =================================================
         description_map = {}
 
@@ -602,25 +620,52 @@ class ActivityMatcher:
 
         # =================================================
         # PARALLEL CODE ASSIGNMENT
+        # First try: match by division+group+class in master
+        # Fallback:  RAG assignment
         # =================================================
         code_map = {}
 
         if to_classify:
 
+            def assign_code_smart(name):
+
+                isic     = classification_results.get(name, {})
+                division = self.clean_isic_number(
+                    isic.get("division", "")
+                )
+                group    = self.clean_isic_number(
+                    isic.get("group", "")
+                )
+                cls      = self.clean_isic_number(
+                    isic.get("class", "")
+                )
+
+                # Try to copy code from existing activity
+                # with same ISIC fields
+                code = self._find_code_by_isic(
+                    master_df, division, group, cls
+                )
+
+                if code:
+                    print(f"[CODE ISIC MATCH] {name} -> {code}")
+                    return name, code
+
+                # Fallback to RAG
+                code = self._assign_code(name)
+                return name, code
+
             with ThreadPoolExecutor(max_workers=10) as executor:
 
                 futures = {
-                    executor.submit(
-                        self._assign_code, name
-                    ): name
+                    executor.submit(assign_code_smart, name): name
                     for name in to_classify
                 }
 
                 for future in as_completed(futures):
 
                     try:
-                        name           = futures[future]
-                        code_map[name] = future.result()
+                        name, code     = future.result()
+                        code_map[name] = code
                     except Exception as e:
                         name = futures[future]
                         print(f"[CODE ERROR] {name}: {e}")
@@ -639,7 +684,6 @@ class ActivityMatcher:
             group    = meta["group"]
             cls      = meta["class"]
 
-            # Use existing isic description or newly generated
             isic_desc = meta["isic_description"]
 
             if self.is_empty(isic_desc):
@@ -762,7 +806,7 @@ class ActivityMatcher:
                     index=False
                 )
 
-            print(f"\n Saved {len(new_rows)} new rows.")
+            print(f"\n✅ Saved {len(new_rows)} new rows.")
 
         # =================================================
         # SUMMARY
