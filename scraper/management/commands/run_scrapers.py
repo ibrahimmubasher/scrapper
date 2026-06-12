@@ -3,6 +3,7 @@ from scraper.services.csv_exporter import CSVExporter
 from scraper.services.activity_matcher import ActivityMatcher
 from scraper.services.websites import WEBSITES
 from scraper.services.dataframe_utils import filter_by_jurisdiction
+import traceback
 
 
 class Command(BaseCommand):
@@ -74,11 +75,19 @@ class Command(BaseCommand):
                     website_df,
                     name
                 )
+
+
             except Exception as e:
 
                 self.stdout.write(
                     self.style.ERROR(
                         f"{name} Failed : {e}"
+                    )
+                )
+
+                self.stdout.write(
+                    self.style.ERROR(
+                        traceback.format_exc()
                     )
                 )
 

@@ -119,8 +119,8 @@ class ActivityMatcher:
             "shams":           "SHAMS",
             "shams free zone": "SHAMS",
             "ifza":            "IFZA",
-            "ancf":            "ANCFZ",
-            "anvc":            "ANCFZ"
+            "ancf":            "ANVC",
+            "anvc":            "ANVC"
         }
 
         return jurisdiction_map.get(
