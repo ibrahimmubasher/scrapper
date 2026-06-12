@@ -644,6 +644,34 @@ class ActivityMatcher:
                     batch_size=20
                 )
             )
+            
+        
+        
+        # =================================================
+        # PRELOAD EXISTING ISIC CODES
+        # =================================================
+        isic_code_cache = {}
+
+        for _, row in master_df.iterrows():
+
+            group = self.clean_isic_number(
+                row.get("group", "")
+            )
+
+            cls = self.clean_isic_number(
+                row.get("class", "")
+            )
+
+            code = self.clean_number(
+                row.get("activity code", "")
+            )
+
+            if group and cls and code:
+
+                key = (group, cls)
+
+                if key not in isic_code_cache:
+                    isic_code_cache[key] = code
 
         # =================================================
         # PARALLEL CODE ASSIGNMENT
@@ -656,41 +684,48 @@ class ActivityMatcher:
 
             def assign_code_smart(name):
 
-                isic     = classification_results.get(name, {})
-                division = self.clean_isic_number(
-                    isic.get("division", "")
-                )
-                group    = self.clean_isic_number(
+                isic = classification_results.get(name, {})
+
+                group = self.clean_isic_number(
                     isic.get("group", "")
                 )
-                cls      = self.clean_isic_number(
+
+                cls = self.clean_isic_number(
                     isic.get("class", "")
                 )
 
-                # Try to copy code from existing activity
-                # with same ISIC fields
-                code = self._find_code_by_isic(
-                    master_df, division, group, cls
-                )
+                key = (group, cls)
 
-                if code:
-                    print(f"[CODE ISIC MATCH] {name} -> {code}")
+                # ============================================
+                # REUSE EXISTING CODE
+                # ============================================
+                if key in isic_code_cache:
+
+                    code = isic_code_cache[key]
+
+                    print(
+                        f"[REUSED CODE] "
+                        f"{name} -> {code}"
+                    )
+
                     return name, code
 
-                
-                # Try reuse from existing rows
-                code = self._find_code_by_isic(
-                    master_df,
-                    division,
-                    group,
-                    cls
+                # ============================================
+                # GENERATE NEW CODE
+                # ============================================
+                code = self._assign_code(name)
+
+                code = self.clean_number(code)
+
+                # SAVE IN CACHE
+                if code:
+                    isic_code_cache[key] = code
+
+                print(
+                    f"[NEW CODE] "
+                    f"{name} -> {code}"
                 )
 
-                # If not found → generate new code
-                if not code:
-                    code = self._assign_code(name)
-
-                return name, code
                 return name, code
 
             with ThreadPoolExecutor(max_workers=10) as executor:
