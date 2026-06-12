@@ -248,23 +248,23 @@ class ActivityMatcher:
     # =====================================================
     # ASSIGN CODE via RAG
     # =====================================================
-    # def _assign_code(self, activity_name):
+    def _assign_code(self, activity_name):
 
-    #     try:
-    #         code, _, _ = self.rag._assign_code(activity_name)
-    #         return self.clean_number(code)
-    #     except Exception as e:
-    #         print(f"[CODE ERROR] {activity_name}: {e}")
-    #         return ""
+        try:
+            code, _, _ = self.rag._assign_code(activity_name)
+            return self.clean_number(code)
+        except Exception as e:
+            print(f"[CODE ERROR] {activity_name}: {e}")
+            return ""
+
 
     # =====================================================
-    # FIND CODE BY CLASS + GROUP + DIVISION
-    # If another activity in master has same ISIC fields
-    # → reuse its activity code
+    # FIND CODE BY CLASS + GROUP
+    # Reuse existing code if same class & group exist
     # =====================================================
     def _find_code_by_isic(self, master_df, division, group, cls):
 
-        if not group:
+        if not group or not cls:
             return ""
 
         def clean(val):
@@ -273,19 +273,38 @@ class ActivityMatcher:
             except Exception:
                 return str(val).strip()
 
-        grp_clean = clean(group)
+        group_clean = clean(group)
+        class_clean = clean(cls)
 
-        mask = master_df["group"].apply(clean) == grp_clean
+        # Match BOTH group and class
+        matches = master_df[
+            (master_df["group"].apply(clean) == group_clean) &
+            (master_df["class"].apply(clean) == class_clean)
+        ]
 
-        matches = master_df[mask]
-
+        # Reuse first valid code
         for _, row in matches.iterrows():
-            code = self.clean_number(row.get("activity code", ""))
+
+            code = self.clean_number(
+                row.get("activity code", "")
+            )
+
             if code:
-                print(f"[CODE BY GROUP] group={grp_clean} -> code={code}")
+                print(
+                    f"[CODE REUSED] "
+                    f"group={group_clean} "
+                    f"class={class_clean} "
+                    f"-> code={code}"
+                )
+
                 return code
 
-        print(f"[CODE NO MATCH] group={grp_clean}")
+        print(
+            f"[NO CODE MATCH] "
+            f"group={group_clean} "
+            f"class={class_clean}"
+        )
+
         return ""
 
     # =====================================================
@@ -658,12 +677,20 @@ class ActivityMatcher:
                     print(f"[CODE ISIC MATCH] {name} -> {code}")
                     return name, code
 
-                # Fallback to RAG
-                code = (
-                    meta["code"]
-                    or self._find_code_by_isic(master_df, meta["division"], meta["group"], meta["class"])
-                    or self._assign_code(name)
+                
+                # Try reuse from existing rows
+                code = self._find_code_by_isic(
+                    master_df,
+                    division,
+                    group,
+                    cls
                 )
+
+                # If not found → generate new code
+                if not code:
+                    code = self._assign_code(name)
+
+                return name, code
                 return name, code
 
             with ThreadPoolExecutor(max_workers=10) as executor:
