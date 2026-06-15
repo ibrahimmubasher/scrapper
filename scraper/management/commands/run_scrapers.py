@@ -27,6 +27,10 @@ class Command(BaseCommand):
             [sys.executable, "-m", "playwright", "install", "chromium"],
             check=True
         )
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install-deps", "chromium"],
+            check=True
+        )
 
         matcher = ActivityMatcher()
 
