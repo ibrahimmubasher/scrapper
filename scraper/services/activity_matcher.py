@@ -257,55 +257,87 @@ class ActivityMatcher:
             print(f"[CODE ERROR] {activity_name}: {e}")
             return ""
 
-
     # =====================================================
-    # FIND CODE BY CLASS + GROUP
-    # Reuse existing code if same class & group exist
+    # FIND BEST SEMANTIC CODE
+    # Given multiple candidate activities with same
+    # group+class, use RAG to find the most similar one
+    # and reuse its code
     # =====================================================
-    def _find_code_by_isic(self, master_df, division, group, cls):
+    def _find_best_semantic_code(
+        self,
+        activity_name,
+        candidates
+    ):
+        """
+        candidates = [
+            {"activity_name": "...", "code": "..."},
+            ...
+        ]
+        Returns the code of the most semantically
+        similar candidate to activity_name.
+        """
 
-        if not group or not cls:
+        if not candidates:
             return ""
 
-        def clean(val):
-            try:
-                return str(int(float(str(val).strip())))
-            except Exception:
-                return str(val).strip()
+        # Only one candidate — reuse directly
+        if len(candidates) == 1:
+            code = candidates[0]["code"]
+            print(
+                f"[SEMANTIC 1-MATCH] "
+                f"'{activity_name}' -> "
+                f"'{candidates[0]['activity_name']}' "
+                f"-> code={code}"
+            )
+            return code
 
-        group_clean = clean(group)
-        class_clean = clean(cls)
-
-        # Match BOTH group and class
-        matches = master_df[
-            (master_df["group"].apply(clean) == group_clean) &
-            (master_df["class"].apply(clean) == class_clean)
+        # Multiple candidates — use RAG similarity
+        candidate_names = [
+            c["activity_name"] for c in candidates
         ]
 
-        # Reuse first valid code
-        for _, row in matches.iterrows():
-
-            code = self.clean_number(
-                row.get("activity code", "")
+        try:
+            # Use RAG embeddings to find best match
+            result = self.rag.find_most_similar(
+                activity_name,
+                candidate_names
             )
 
-            if code:
-                print(
-                    f"[CODE REUSED] "
-                    f"group={group_clean} "
-                    f"class={class_clean} "
-                    f"-> code={code}"
+            if result:
+                best_name = result
+            else:
+                # Fallback to rapidfuzz if RAG unavailable
+                best_name = max(
+                    candidate_names,
+                    key=lambda n: fuzz.ratio(
+                        self.normalize(activity_name),
+                        self.normalize(n)
+                    )
                 )
 
+        except Exception:
+            # Fallback to rapidfuzz
+            best_name = max(
+                candidate_names,
+                key=lambda n: fuzz.ratio(
+                    self.normalize(activity_name),
+                    self.normalize(n)
+                )
+            )
+
+        # Find the code for the best matched name
+        for c in candidates:
+            if c["activity_name"] == best_name:
+                code = c["code"]
+                print(
+                    f"[SEMANTIC BEST] "
+                    f"'{activity_name}' -> "
+                    f"'{best_name}' "
+                    f"-> code={code}"
+                )
                 return code
 
-        print(
-            f"[NO CODE MATCH] "
-            f"group={group_clean} "
-            f"class={class_clean}"
-        )
-
-        return ""
+        return candidates[0]["code"]
 
     # =====================================================
     # UPDATE ACTIVITIES — main entry point
@@ -317,11 +349,8 @@ class ActivityMatcher:
     #     → copy division/group/class/isic description
     #  4. Truly new
     #     → ISICMatcher → GPT → generate isic description
-    #     → code: match by ISIC fields → fallback RAG
-    #
-    # ALL descriptions stored in "isic description" column
-    # GUARANTEE: no row with empty division/group/class
-    #            or empty isic description
+    #     → code: match by group+class → semantic match
+    #             → fallback RAG
     # =====================================================
     def update_activities(self, scraped_df, jurisdiction):
 
@@ -338,7 +367,6 @@ class ActivityMatcher:
             for col in master_df.columns
         ]
 
-        # Ensure isic description column exists
         if "isic description" not in master_df.columns:
             master_df["isic description"] = ""
 
@@ -487,7 +515,6 @@ class ActivityMatcher:
         # =================================================
         # CHECK 3: GLOBAL MATCH
         # fuzz.ratio >= 90% → copy metadata
-        # copies: division, group, class, isic description
         # =================================================
         print(
             f"[CHECK] Global match "
@@ -531,7 +558,6 @@ class ActivityMatcher:
                     record.get("activity code", "")
                 )
 
-                # Reuse only if division/group/class complete
                 if division and group and class_name:
 
                     global_reuse[name] = {
@@ -610,13 +636,9 @@ class ActivityMatcher:
                 "class_code":    isic.get("class", "")
             })
 
-        global_needs_desc = []
-
         for name, meta in global_reuse.items():
 
             if self.is_empty(meta["isic_description"]):
-
-                global_needs_desc.append(name)
 
                 needs_description.append({
                     "activity_name": name,
@@ -644,11 +666,10 @@ class ActivityMatcher:
                     batch_size=20
                 )
             )
-            
-        
-        
+
         # =================================================
-        # PRELOAD EXISTING ISIC CODES
+        # PRELOAD ISIC CODE CACHE
+        # (group, class) -> list of {activity_name, code}
         # =================================================
         isic_code_cache = {}
 
@@ -657,29 +678,43 @@ class ActivityMatcher:
             group = self.clean_isic_number(
                 row.get("group", "")
             )
-
             cls = self.clean_isic_number(
                 row.get("class", "")
             )
-
             code = self.clean_number(
                 row.get("activity code", "")
             )
+            activity_name = str(
+                row.get("activity name", "")
+            ).strip()
 
-            if group and cls and code:
+            if group and cls and code and activity_name:
 
                 key = (
-                str(group).strip(),
-                str(cls).strip()
-            )
+                    str(group).strip(),
+                    str(cls).strip()
+                )
 
                 if key not in isic_code_cache:
-                    isic_code_cache[key] = code
+                    isic_code_cache[key] = []
+
+                isic_code_cache[key].append({
+                    "activity_name": activity_name,
+                    "code":          code
+                })
+
+        print(
+            f"[CACHE] Loaded "
+            f"{len(isic_code_cache)} unique "
+            f"(group, class) keys\n"
+        )
 
         # =================================================
-        # PARALLEL CODE ASSIGNMENT
-        # First try: match by division+group+class in master
-        # Fallback:  RAG assignment
+        # SEQUENTIAL CODE ASSIGNMENT
+        # 1. Look up (group, class) in cache
+        # 2. If 1 match  → reuse directly
+        # 3. If N matches → semantic match → best code
+        # 4. Fallback     → RAG
         # =================================================
         code_map = {}
 
@@ -692,64 +727,57 @@ class ActivityMatcher:
                 group = self.clean_isic_number(
                     isic.get("group", "")
                 )
-
                 cls = self.clean_isic_number(
                     isic.get("class", "")
                 )
 
                 key = (
-                str(group).strip(),
-                str(cls).strip()
-            )
+                    str(group).strip(),
+                    str(cls).strip()
+                )
 
-                # ============================================
-                # REUSE EXISTING CODE
-                # ============================================
+                # =========================================
+                # STEP 1: Check cache
+                # =========================================
                 if key in isic_code_cache:
 
-                    code = isic_code_cache[key]
+                    candidates = isic_code_cache[key]
 
-                    print(
-                        f"[REUSED CODE] "
-                        f"{name} -> {code}"
+                    code = self._find_best_semantic_code(
+                        name,
+                        candidates
                     )
 
-                    return name, code
+                    if code:
+                        return name, code
 
-                # ============================================
-                # GENERATE NEW CODE
-                # ============================================
+                # =========================================
+                # STEP 2: Fallback to RAG
+                # =========================================
+                print(f"[RAG FALLBACK] {name}")
+
                 code = self._assign_code(name)
-
                 code = self.clean_number(code)
 
-                # SAVE IN CACHE
-                if code:
-                    isic_code_cache[key] = code
-
-                print(
-                    f"[NEW CODE] "
-                    f"{name} -> {code}"
-                )
+                # Save new code in cache for next activity
+                if code and group and cls:
+                    if key not in isic_code_cache:
+                        isic_code_cache[key] = []
+                    isic_code_cache[key].append({
+                        "activity_name": name,
+                        "code":          code
+                    })
 
                 return name, code
 
-            # =================================================
-            # SEQUENTIAL CODE ASSIGNMENT
-            # Prevent duplicate codes for same class/group
-            # =================================================
             for name in to_classify:
 
                 try:
-
-                    name, code = assign_code_smart(name)
-
+                    name, code     = assign_code_smart(name)
                     code_map[name] = code
 
                 except Exception as e:
-
                     print(f"[CODE ERROR] {name}: {e}")
-
                     code_map[name] = ""
 
         # =================================================
@@ -760,12 +788,21 @@ class ActivityMatcher:
         # --- GLOBAL COPY rows ---
         for name, meta in global_reuse.items():
 
-            code     = meta["code"] or self._assign_code(name)
-            division = meta["division"]
-            group    = meta["group"]
-            cls      = meta["class"]
-
+            division  = meta["division"]
+            group     = meta["group"]
+            cls       = meta["class"]
             isic_desc = meta["isic_description"]
+            code      = meta["code"]
+
+            # If no code from global match, use cache/RAG
+            if not code:
+                key = (str(group).strip(), str(cls).strip())
+                if key in isic_code_cache:
+                    code = self._find_best_semantic_code(
+                        name, isic_code_cache[key]
+                    )
+                if not code:
+                    code = self._assign_code(name)
 
             if self.is_empty(isic_desc):
                 isic_desc = description_map.get(name, "")
@@ -780,10 +817,10 @@ class ActivityMatcher:
                 division = self.clean_isic_number(
                     isic.get("division", "")
                 )
-                group    = self.clean_isic_number(
+                group = self.clean_isic_number(
                     isic.get("group", "")
                 )
-                cls      = self.clean_isic_number(
+                cls = self.clean_isic_number(
                     isic.get("class", "")
                 )
 
@@ -830,10 +867,10 @@ class ActivityMatcher:
                 division = self.clean_isic_number(
                     isic2.get("division", "")
                 )
-                group    = self.clean_isic_number(
+                group = self.clean_isic_number(
                     isic2.get("group", "")
                 )
-                cls      = self.clean_isic_number(
+                cls = self.clean_isic_number(
                     isic2.get("class", "")
                 )
 
