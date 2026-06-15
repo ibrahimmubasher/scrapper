@@ -1,6 +1,5 @@
-import requests
 import pandas as pd
-from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 
 class SRTIPScraper:
@@ -11,46 +10,59 @@ class SRTIPScraper:
 
         print("\n[SRTIP] Scraping activities...")
 
-        response = requests.get(
-            self.URL,
-            timeout=30,
-            headers={"User-Agent": "Mozilla/5.0"}
-        )
-
-        response.raise_for_status()
-
-        soup = BeautifulSoup(response.text, "html.parser")
-
         activities = []
 
-        # ==========================================
-        # Target the activities table directly
-        # ==========================================
-        tbody = soup.find("tbody", id="activitiesBody")
+        with sync_playwright() as p:
 
-        if not tbody:
-            print("[SRTIP] Could not find activitiesBody table.")
-            return pd.DataFrame()
+            browser = p.chromium.launch(headless=True)
+            page    = browser.new_page()
 
-        for tr in tbody.find_all("tr", class_="activity-row"):
+            page.goto(
+                self.URL,
+                timeout=60000,
+                wait_until="networkidle"
+            )
 
-            cols = tr.find_all("td")
+            # Wait for table to be populated
+            page.wait_for_selector(
+                "#activitiesBody tr.activity-row",
+                timeout=30000
+            )
 
-            if len(cols) < 4:
-                continue
+            # Scroll to load all rows if lazy loaded
+            page.evaluate("""
+                () => {
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
+            """)
 
-            category      = cols[0].get_text(strip=True)
-            group         = cols[1].get_text(strip=True)
-            code          = cols[2].get_text(strip=True)
-            activity_name = cols[3].get_text(strip=True)
+            page.wait_for_timeout(2000)
 
-            if not activity_name:
-                continue
+            # Get all rows
+            rows = page.query_selector_all(
+                "#activitiesBody tr.activity-row"
+            )
 
-            activities.append({
-                "activity name": activity_name,
-                "description":   ""
-            })
+            print(f"[SRTIP] Found {len(rows)} rows in table")
+
+            for row in rows:
+
+                cols = row.query_selector_all("td")
+
+                if len(cols) < 4:
+                    continue
+
+                activity_name = cols[3].inner_text().strip()
+
+                if not activity_name:
+                    continue
+
+                activities.append({
+                    "activity name": activity_name,
+                    "description":   ""
+                })
+
+            browser.close()
 
         df = pd.DataFrame(activities)
 
@@ -58,9 +70,16 @@ class SRTIPScraper:
             print("[SRTIP] No activities found.")
             return df
 
-        df.drop_duplicates(subset=["activity name"], inplace=True)
-        df.reset_index(drop=True, inplace=True)
+        df.drop_duplicates(
+            subset=["activity name"],
+            inplace=True
+        )
 
-        print(f"[SRTIP] Found {len(df)} activities")
+        df.reset_index(
+            drop=True,
+            inplace=True
+        )
+
+        print(f"[SRTIP] Scraped {len(df)} unique activities")
 
         return df

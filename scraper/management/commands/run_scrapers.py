@@ -4,6 +4,8 @@ from scraper.services.activity_matcher import ActivityMatcher
 from scraper.services.websites import WEBSITES
 from scraper.services.dataframe_utils import filter_by_jurisdiction
 import traceback
+import sys
+import subprocess
 
 
 class Command(BaseCommand):
@@ -20,41 +22,28 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        # Install playwright browser at runtime
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            check=True
+        )
+
         matcher = ActivityMatcher()
 
         website = options["website"].upper()
 
-        # --------------------------
-        # RUN ALL
-        # --------------------------
-
         if website == "ALL":
-
             websites = WEBSITES.items()
-
         else:
-
             if website not in WEBSITES:
-
-                self.stdout.write(
-                    self.style.ERROR("Invalid website")
-                )
+                self.stdout.write(self.style.ERROR("Invalid website"))
                 return
-
-            websites = [
-                (website, WEBSITES[website])
-            ]
-
-        # --------------------------
-        # LOOP
-        # --------------------------
+            websites = [(website, WEBSITES[website])]
 
         for name, config in websites:
 
             self.stdout.write(
-                self.style.SUCCESS(
-                    f"\nRunning {name}..."
-                )
+                self.style.SUCCESS(f"\nRunning {name}...")
             )
 
             try:
@@ -71,28 +60,18 @@ class Command(BaseCommand):
                     config["jurisdiction"]
                 )
 
-                CSVExporter.save(
-                    website_df,
-                    name
-                )
-
+                CSVExporter.save(website_df, name)
 
             except Exception as e:
 
                 self.stdout.write(
-                    self.style.ERROR(
-                        f"{name} Failed : {e}"
-                    )
+                    self.style.ERROR(f"{name} Failed : {e}")
                 )
 
                 self.stdout.write(
-                    self.style.ERROR(
-                        traceback.format_exc()
-                    )
+                    self.style.ERROR(traceback.format_exc())
                 )
 
         self.stdout.write(
-            self.style.SUCCESS(
-                "\nCompleted Successfully"
-            )
+            self.style.SUCCESS("\nCompleted Successfully")
         )
