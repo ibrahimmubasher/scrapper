@@ -1,5 +1,11 @@
 import pandas as pd
-from playwright.sync_api import sync_playwright
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 
 class SRTIPScraper:
@@ -10,49 +16,45 @@ class SRTIPScraper:
 
         print("\n[SRTIP] Scraping activities...")
 
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+
+        driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=options
+        )
+
         activities = []
 
-        with sync_playwright() as p:
+        try:
 
-            browser = p.chromium.launch(headless=True)
-            page    = browser.new_page()
+            driver.get(self.URL)
 
-            page.goto(
-                self.URL,
-                timeout=60000,
-                wait_until="networkidle"
+            # Wait for table to load
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, "#activitiesBody tr.activity-row")
+                )
             )
 
-            # Wait for table to be populated
-            page.wait_for_selector(
-                "#activitiesBody tr.activity-row",
-                timeout=30000
-            )
-
-            # Scroll to load all rows if lazy loaded
-            page.evaluate("""
-                () => {
-                    window.scrollTo(0, document.body.scrollHeight);
-                }
-            """)
-
-            page.wait_for_timeout(2000)
-
-            # Get all rows
-            rows = page.query_selector_all(
+            rows = driver.find_elements(
+                By.CSS_SELECTOR,
                 "#activitiesBody tr.activity-row"
             )
 
-            print(f"[SRTIP] Found {len(rows)} rows in table")
+            print(f"[SRTIP] Found {len(rows)} rows")
 
             for row in rows:
 
-                cols = row.query_selector_all("td")
+                cols = row.find_elements(By.TAG_NAME, "td")
 
                 if len(cols) < 4:
                     continue
 
-                activity_name = cols[3].inner_text().strip()
+                activity_name = cols[3].text.strip()
 
                 if not activity_name:
                     continue
@@ -62,7 +64,8 @@ class SRTIPScraper:
                     "description":   ""
                 })
 
-            browser.close()
+        finally:
+            driver.quit()
 
         df = pd.DataFrame(activities)
 
@@ -70,15 +73,8 @@ class SRTIPScraper:
             print("[SRTIP] No activities found.")
             return df
 
-        df.drop_duplicates(
-            subset=["activity name"],
-            inplace=True
-        )
-
-        df.reset_index(
-            drop=True,
-            inplace=True
-        )
+        df.drop_duplicates(subset=["activity name"], inplace=True)
+        df.reset_index(drop=True, inplace=True)
 
         print(f"[SRTIP] Scraped {len(df)} unique activities")
 

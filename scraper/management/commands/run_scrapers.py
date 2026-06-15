@@ -22,16 +22,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        # Install playwright browser at runtime
-        subprocess.run(
-            [sys.executable, "-m", "playwright", "install", "chromium"],
-            check=True
-        )
-        subprocess.run(
-            [sys.executable, "-m", "playwright", "install-deps", "chromium"],
-            check=True
-        )
-
         matcher = ActivityMatcher()
 
         website = options["website"].upper()
