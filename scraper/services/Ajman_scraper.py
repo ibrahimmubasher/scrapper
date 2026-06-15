@@ -2,6 +2,10 @@ import os
 import pandas as pd
 from playwright.sync_api import sync_playwright
 
+from scraper.services.logger import safe_print
+
+print = safe_print
+
 
 def scrape_AFZ_activities():
 

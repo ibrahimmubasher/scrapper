@@ -3662,5 +3662,357 @@
     "matched_activity": "Creative, arts and entertainment activities",
     "confidence": 31.69,
     "method": "OPENAI"
+  },
+  "reproduction audio recordings on various recording media reproduction audio recordings on various recording media": {
+    "division": "18",
+    "group": "182",
+    "class": "1820",
+    "matched_activity": "Reproduction of recorded media",
+    "confidence": 79.11,
+    "method": "OPENAI"
+  },
+  "green vehicles charging systems installation and maintenance includes installing all specialised systems related to the green parking which includes green vehicle charging systems": {
+    "division": "43",
+    "group": "432",
+    "class": "4320",
+    "matched_activity": "Electrical, plumbing and other construction installation activities",
+    "confidence": 37.68,
+    "method": "OPENAI"
+  },
+  "transportation of ships waste oils includes establishments that collect petroleum wastes resulting from tankers, wells, marine platforms, and fuel tanks": {
+    "division": "38",
+    "group": "381",
+    "class": "3812",
+    "matched_activity": "Collection of hazardous waste",
+    "confidence": 45.65,
+    "method": "OPENAI"
+  },
+  "security & surveillance systems installation & maintenance includes facilities that install and maintain equipment for security and protection from burglary, surveillance cameras and security equipment": {
+    "division": "80",
+    "group": "802",
+    "class": "8020",
+    "matched_activity": "Security systems service activities",
+    "confidence": 59.9,
+    "method": "OPENAI"
+  },
+  "electricity transmission and control equipment installation works includes installing equipment for transport and distribution of electricity, power frequency control, and electrical/electronic control systems": {
+    "division": "43",
+    "group": "432",
+    "class": "4321",
+    "matched_activity": "Electrical installation",
+    "confidence": 60.16,
+    "method": "OPENAI"
+  },
+  "fire fighting & safety equipment installation specialized installation and operation of security and safety equipment, fire extinguishing, alarm systems testing and training": {
+    "division": "80",
+    "group": "802",
+    "class": "8020",
+    "matched_activity": "Security systems service activities",
+    "confidence": 52.44,
+    "method": "OPENAI"
+  },
+  "air-condition, ventilations, air filtration systems installation & maintenance specialized contractor for installing ventilation and cooling systems including central air conditioners and units": {
+    "division": "43",
+    "group": "432",
+    "class": "4322",
+    "matched_activity": "Plumbing, heat and air-conditioning installation",
+    "confidence": 62.85,
+    "method": "OPENAI"
+  },
+  "electromechanical equipment installation & maintenance installation of electromechanical works for mechanical workshops, factories, energy equipment, lifting and towing equipment": {
+    "division": "33",
+    "group": "332",
+    "class": "3320",
+    "matched_activity": "Installation of industrial machinery and equipment",
+    "confidence": 64.77,
+    "method": "OPENAI"
+  },
+  "water desalination and treatment plants operation and maintenance managing and directing physical and technical functions of desalination and sewage treatment plants": {
+    "division": "36",
+    "group": "353",
+    "class": "3530",
+    "matched_activity": "Water collection, treatment and supply",
+    "confidence": 57.66,
+    "method": "OPENAI"
+  },
+  "fibre glass products maintenance specialized in work on various fiberglass products including water storage tanks, boats, ships components": {
+    "division": "33",
+    "group": "331",
+    "class": "3315",
+    "matched_activity": "Repair of transport equipment, except motor vehicles",
+    "confidence": 39.44,
+    "method": "OPENAI"
+  },
+  "new trailers trading businesses trading in new trailers devoted to transport goods, construction materials, and tanks in different sizes and types": {
+    "division": "46",
+    "group": "454",
+    "class": "4540",
+    "matched_activity": "Wholesale trade, except of motor vehicles and motorcycles",
+    "confidence": 38.94,
+    "method": "OPENAI"
+  },
+  "passengers used cars trading commercial agencies or exhibitions to sell used passenger cars for personal use or commercial leasing": {
+    "division": "45",
+    "group": "451",
+    "class": "4510",
+    "matched_activity": "Sale of motor vehicles",
+    "confidence": 53.13,
+    "method": "OPENAI"
+  },
+  "cars new spare parts trading specialized in sale of new spare parts for cars, detergents, dyes, and car glass. excludes buses, trucks, batteries and tires": {
+    "division": "45",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 60.12,
+    "method": "OPENAI"
+  },
+  "cars used spare parts trading specialized in sale of used spare parts for all types of cars, including complete used car engines": {
+    "division": "45",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 57.7,
+    "method": "OPENAI"
+  },
+  "cars tyres and outfit trading trade in car tires and smaller vehicle tires including all constituent parts. does not include repair or replacement of tires": {
+    "division": "45",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 50.19,
+    "method": "OPENAI"
+  },
+  "cars batteries trading trade in liquid batteries used in electric power generation engines for light vehicles, boats, motorcycles and all 12-volt engines": {
+    "division": "45",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 43.39,
+    "method": "OPENAI"
+  },
+  "cars accessories trading shops selling car accessories including stickers, thermal radiation materials, small media stickers. does not include car tvs": {
+    "division": "45",
+    "group": "453",
+    "class": "4530",
+    "matched_activity": "Sale of motor vehicle parts and accessories",
+    "confidence": 54.95,
+    "method": "OPENAI"
+  },
+  "motorcycles trading commercial agencies or trade fairs selling two-wheeled motor vehicles for entertainment, sports, or other purposes": {
+    "division": "45",
+    "group": "454",
+    "class": "4540",
+    "matched_activity": "Sale, maintenance and repair of motorcycles and related parts and accessories",
+    "confidence": 55.73,
+    "method": "OPENAI"
+  },
+  "commercial agent facilities playing negotiator or mediator between contract parties for business operations in return for commission. excludes real estate mediation": {
+    "division": "46",
+    "group": "461",
+    "class": "4610",
+    "matched_activity": "Wholesale on a fee or contract basis",
+    "confidence": 40.19,
+    "method": "OPENAI"
+  },
+  "wholesale of canned and preserved foodstuff trading wholesale of canned and preserved food products including fruits, vegetables, meats in sealed metal, frozen, plastic, paper, wood or glass packaging": {
+    "division": "46",
+    "group": "463",
+    "class": "4630",
+    "matched_activity": "Wholesale of food, beverages and tobacco",
+    "confidence": 63.14,
+    "method": "OPENAI"
+  },
+  "dietary supplements - wholesale trade wholesale of health food and cosmetics to complement diet including vitamins, minerals, fiber, fatty acids and amino acids": {
+    "division": "46",
+    "group": "463",
+    "class": "4630",
+    "matched_activity": "Wholesale of food, beverages and tobacco",
+    "confidence": 55.75,
+    "method": "OPENAI"
+  },
+  "wholesale of refrigerated and frozen meat trading businesses specialized in meat refrigerated or chilled for sale in local markets without interference in canning or saving meat": {
+    "division": "46",
+    "group": "463",
+    "class": "4630",
+    "matched_activity": "Wholesale of food, beverages and tobacco",
+    "confidence": 53.79,
+    "method": "OPENAI"
+  },
+  "wholesale of carbonated beverages trading bulk trading of carbonated soft drinks and sparkling beverages to retailers and food service outlets": {
+    "division": "46",
+    "group": "463",
+    "class": "4630",
+    "matched_activity": "Wholesale of food, beverages and tobacco",
+    "confidence": 61.82,
+    "method": "OPENAI"
+  },
+  "cigarettes and tobacco and its products trading wholesale trading of cigarettes, tobacco, and related products focusing on distribution and supply chain management": {
+    "division": "46",
+    "group": "463",
+    "class": "4630",
+    "matched_activity": "Wholesale of food, beverages and tobacco",
+    "confidence": 65.32,
+    "method": "OPENAI"
+  },
+  "wholesale of cosmetics and trading wholesale of all kinds of cosmetics and beauty products including nail polish, creams, makeup, hair products, wigs, eyelashes": {
+    "division": "46",
+    "group": "464",
+    "class": "4649",
+    "matched_activity": "Wholesale of other household goods",
+    "confidence": 54.37,
+    "method": "OPENAI"
+  },
+  "wholesale of tools and medical supplies, therapeutic and surgical trading wholesale of medical devices, prosthetics, surgical supplies, orthopedic aids, surgical sutures, bandages, surgical masks and gloves": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 53.51,
+    "method": "OPENAI"
+  },
+  "wholesale of computers and outfit trading wholesale trading of computer devices including screens, memory units, printers, plotters, cd-rom drives and accessories": {
+    "division": "46",
+    "group": "465",
+    "class": "4651",
+    "matched_activity": "Wholesale of computers, computer peripheral equipment and software",
+    "confidence": 78.88,
+    "method": "OPENAI"
+  },
+  "wholesale trading of smart systems sell smart systems to resellers. smart systems include sensing, actuating, and controlling functions for smart decisions and analyses": {
+    "division": "46",
+    "group": "465",
+    "class": "4652",
+    "matched_activity": "Wholesale of electronic and telecommunications equipment and parts",
+    "confidence": 49.59,
+    "method": "OPENAI"
+  },
+  "wholesale of oil and natural gas well equipment and devices and spare parts trading wholesale of equipment for oil and natural gas systems from survey/exploration to storage, including drilling, pump, gas liquefaction equipment": {
+    "division": "46",
+    "group": "465",
+    "class": "4659",
+    "matched_activity": "Wholesale of other machinery and equipment",
+    "confidence": 66.64,
+    "method": "OPENAI"
+  },
+  "wholesale of crude oil trading wholesale trade of crude oil from local markets or through importation which had not been through refining stages": {
+    "division": "46",
+    "group": "466",
+    "class": "4661",
+    "matched_activity": "Wholesale of solid, liquid and gaseous fuels and related products",
+    "confidence": 57.83,
+    "method": "OPENAI"
+  },
+  "wholesale of unworked gold and precious metals trading wholesale trade in precious metals such as gold, silver, platinum in original state, ingots, blocks, strings, or chips before manufacturing": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 66.13,
+    "method": "OPENAI"
+  },
+  "timber trade - wholesale wholesale trade of all types of wood in original state or cut into boards, slices, or blocks for construction or industrial purposes": {
+    "division": "46",
+    "group": "466",
+    "class": "4663",
+    "matched_activity": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies",
+    "confidence": 54.5,
+    "method": "OPENAI"
+  },
+  "wholesale of agricultural and veterinary pesticides trading wholesale trade of agricultural and veterinary pesticides in local markets, either through imports or locally produced items": {
+    "division": "46",
+    "group": "462",
+    "class": "4620",
+    "matched_activity": "Wholesale of agricultural raw materials and live animals",
+    "confidence": 65.87,
+    "method": "OPENAI"
+  },
+  "wholesale of sterilizers and disinfectants wholesale trading of disinfectants and sterilizers made of chemicals in gaseous or liquid form to eliminate microorganisms": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 48.26,
+    "method": "OPENAI"
+  },
+  "wholesale of jewelry, diamond, and precious stones wholesale trade in jewelry, diamonds, and precious stones": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 55.05,
+    "method": "OPENAI"
+  },
+  "wholesale of medications trading wholesale trade of all types of medical therapeutic medications or those used in scientific research": {
+    "division": "46",
+    "group": "466",
+    "class": "4660",
+    "matched_activity": "Other specialized wholesale",
+    "confidence": 53.53,
+    "method": "OPENAI"
+  },
+  "wholesale of laboratory and factory tools and outfit trading wholesale trade of tools and supplies used in laboratories for research, examinations, and lab tests for scientific, medical, or other purposes": {
+    "division": "46",
+    "group": "465",
+    "class": "4650",
+    "matched_activity": "Wholesale of machinery, equipment and supplies",
+    "confidence": 62.7,
+    "method": "OPENAI"
+  },
+  "1812.07- production of proofs": {
+    "division": "18",
+    "group": "181",
+    "class": "1812",
+    "matched_activity": "Service activities related to printing",
+    "confidence": 35.68,
+    "method": "OPENAI"
+  },
+  "4649.02- wholesale of household appliances": {
+    "division": "46",
+    "group": "464",
+    "class": "4649",
+    "matched_activity": "Wholesale of other household goods",
+    "confidence": 65.04,
+    "method": "OPENAI"
+  },
+  "abrasive and minerals trading": {
+    "division": "46",
+    "group": "466",
+    "class": "4662",
+    "matched_activity": "Wholesale of metals and metal ores",
+    "confidence": 46.92,
+    "method": "OPENAI"
+  },
+  "7210.02 -- chemical industries consultancy": {
+    "division": "71",
+    "group": "711",
+    "class": "7110",
+    "matched_activity": "Architectural and engineering activities and related technical consultancy",
+    "confidence": 49.32,
+    "method": "OPENAI"
+  },
+  "9603- trading of carbon credits": {
+    "division": "66",
+    "group": "661",
+    "class": "6612",
+    "matched_activity": "Security and commodity contracts brokerage",
+    "confidence": 36.65,
+    "method": "OPENAI"
+  },
+  "motor vehicles bodies\u00a0\u00a0parts and accessories manufacturing": {
+    "division": "29",
+    "group": "292",
+    "class": "2920",
+    "matched_activity": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers",
+    "confidence": 62.83,
+    "method": "OPENAI"
+  },
+  "plastic closures articles\u00a0 manufacturing": {
+    "division": "22",
+    "group": "222",
+    "class": "2220",
+    "matched_activity": "Manufacture of plastics products",
+    "confidence": 59.62,
+    "method": "OPENAI"
   }
 }

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraper Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f7fb;
+            color: #223;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        h1 { margin-top: 0; }
+        .card { background: #f8fafc; padding: 16px; border-radius: 10px; margin-bottom: 16px; }
+        form { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        select, button {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cfd8e3;
+            font-size: 14px;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover { background: #1d4ed8; }
+        button:disabled { background: #94a3b8; cursor: wait; }
+        .status-success { color: #0f766e; font-weight: bold; }
+        .status-error { color: #b91c1c; font-weight: bold; }
+        .status-running { color: #92400e; font-weight: bold; }
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .output-list a { display: inline-block; margin-right: 10px; margin-top: 8px; }
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 4%;
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            transition: width 0.3s ease;
+        }
+        .muted { color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scraper Dashboard</h1>
+        <p>Select a website and run the scraper. The generated CSV file will appear below.</p>
+
+        <div class="card">
+            <form id="run-form" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="run" value="1">
+                <label for="website">Website</label>
+                <select id="website" name="website">
+                    {% for website in websites %}
+                        <option value="{{ website }}" {% if website == selected_website %}selected{% endif %}>{{ website }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Run scraper</button>
+            </form>
+        </div>
+
+        <div id="progress-panel" class="card" style="display: none;">
+            <h3>Live progress</h3>
+            <p id="progress-status" class="status-running">Starting run…</p>
+            <div class="progress-track">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="progress-message" class="muted">The scraper is starting in the background.</p>
+            <p id="progress-website" class="muted">Current step: pending</p>
+            <pre id="progress-log">No output yet.</pre>
+        </div>
+
+        <div class="card">
+            <h3>Latest run</h3>
+            {% if run_result %}
+                {% if run_result.success %}
+                    <p class="status-success">Scraper completed successfully.</p>
+                {% else %}
+                    <p class="status-error">Scraper finished with errors.</p>
+                {% endif %}
+
+                <p><strong>Return code:</strong> {{ run_result.returncode }}</p>
+
+                {% if run_result.stdout %}
+                    <h4>Output</h4>
+                    <pre>{{ run_result.stdout }}</pre>
+                {% endif %}
+
+                {% if run_result.stderr %}
+                    <h4>Errors</h4>
+                    <pre>{{ run_result.stderr }}</pre>
+                {% endif %}
+            {% else %}
+                <p>No run has been executed yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h3>Available CSV files</h3>
+            {% if output_files %}
+                <div class="output-list">
+                    {% for filename in output_files %}
+                        <a href="{% url 'download_csv' website=filename|cut:'.csv' %}">{{ filename }}</a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No CSV files found yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('run-form');
+        const progressPanel = document.getElementById('progress-panel');
+        const progressStatus = document.getElementById('progress-status');
+        const progressBar = document.getElementById('progress-bar');
+        const progressMessage = document.getElementById('progress-message');
+        const progressWebsite = document.getElementById('progress-website');
+        const progressLog = document.getElementById('progress-log');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            progressPanel.style.display = 'block';
+            progressStatus.textContent = 'Starting run…';
+            progressStatus.className = 'status-running';
+            progressBar.style.width = '4%';
+            progressMessage.textContent = 'The scraper is starting in the background.';
+            progressWebsite.textContent = 'Current step: pending';
+            progressLog.textContent = 'Preparing your run…';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Running…';
+
+            const formData = new FormData(form);
+            const response = await fetch('{% url "start_run" %}', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData,
+            });
+
+            const payload = await response.json();
+
+            if (!payload.success) {
+                progressStatus.textContent = 'Run failed';
+                progressStatus.className = 'status-error';
+                progressMessage.textContent = payload.error || 'Unable to start the scraper.';
+                progressLog.textContent = payload.error || 'Unable to start the scraper.';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Run scraper';
+                return;
+            }
+
+            const pollStatus = async () => {
+                const statusResponse = await fetch(payload.status_url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                });
+                const state = await statusResponse.json();
+
+                progressBar.style.width = `${Math.max(4, state.percent || 0)}%`;
+                progressMessage.textContent = state.message || 'Working on your request…';
+                progressWebsite.textContent = state.current_website ? `Current step: ${state.current_website}` : 'Current step: pending';
+                progressLog.textContent = state.message || 'Working on your request…';
+
+                if (state.status === 'completed') {
+                    progressStatus.textContent = 'Completed';
+                    progressStatus.className = 'status-success';
+                    progressMessage.textContent = 'The run completed successfully.';
+                    progressLog.textContent = 'The run completed successfully.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Run scraper';
+                    window.setTimeout(() => window.location.reload(), 1200);
+                    return;
+                }
+
+                if (state.status === 'failed') {
+                    progressStatus.textContent = 'Failed';
+                    progressStatus.className = 'status-error';
+                    progressMessage.textContent = state.message || 'The run ended with an error.';
+                    progressLog.textContent = state.message || 'The run ended with an error.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Run scraper';
+                    return;
+                }
+
+                progressStatus.textContent = 'Running';
+                progressStatus.className = 'status-running';
+                window.setTimeout(pollStatus, 1000);
+            };
+
+            pollStatus();
+        });
+    </script>
+</body>
+</html>

@@ -7,14 +7,16 @@ from rapidfuzz import fuzz
 
 class ISICMatcher:
 
-    def __init__(self):
+    def __init__(self, file_path=None):
 
-        BASE_DIR = os.getcwd()
+        if file_path is None:
+            BASE_DIR = os.getcwd()
+            file_path = os.path.join(
+                BASE_DIR, "scraper", "data",
+                "Consolidated List of Activities.xlsx"
+            )
 
-        self.FILE_PATH = os.path.join(
-            BASE_DIR, "scraper", "data",
-            "Consolidated List of Activities.xlsx"
-        )
+        self.FILE_PATH = file_path
 
         print("\n[ISIC] Loading ISIC Sheet...")
 

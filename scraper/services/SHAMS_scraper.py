@@ -4,6 +4,10 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
+from scraper.services.logger import safe_print
+
+print = safe_print
+
 
 def scrape_SHAMS_activities():
 

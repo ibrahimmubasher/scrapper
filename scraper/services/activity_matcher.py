@@ -1,8 +1,11 @@
 import os
 import re
+import shutil
+import tempfile
 
 import numpy as np
 import pandas as pd
+from openpyxl import Workbook
 
 from rapidfuzz import fuzz, process
 
@@ -12,6 +15,8 @@ from scraper.services.activity_rag import ActivityRAG
 from scraper.services.metadata_ai import MetadataAI
 from scraper.services.isic_matcher import ISICMatcher
 from scraper.services.logger import safe_print
+
+print = safe_print
 
 
 class ActivityMatcher:
@@ -23,14 +28,60 @@ class ActivityMatcher:
 
         BASE_DIR = os.getcwd()
 
-        self.FILE_PATH = os.path.join(
+        self.CONSOLIDATED_FILE_PATH = os.path.join(
             BASE_DIR, "scraper", "data",
             "Consolidated List of Activities.xlsx"
         )
+        self.FILE_PATH = self._prepare_working_workbook()
 
-        self.isic_matcher = ISICMatcher()
+        self.isic_matcher = ISICMatcher(self.FILE_PATH)
         self.rag          = ActivityRAG(self.FILE_PATH)
         self.metadata_ai  = MetadataAI()
+
+    def _prepare_working_workbook(self):
+        if os.path.exists(self.CONSOLIDATED_FILE_PATH):
+            try:
+                pd.read_excel(self.CONSOLIDATED_FILE_PATH, sheet_name="ISIC")
+                temp_dir = tempfile.gettempdir()
+                temp_path = os.path.join(
+                    temp_dir,
+                    f"consolidated_working_{os.getpid()}.xlsx"
+                )
+                shutil.copy2(self.CONSOLIDATED_FILE_PATH, temp_path)
+                return temp_path
+            except Exception:
+                pass
+
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(
+            temp_dir,
+            f"consolidated_working_empty_{os.getpid()}.xlsx"
+        )
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Final"
+        wb.create_sheet("ISIC")
+        wb.save(temp_path)
+
+        return temp_path
+
+    def _write_run_output(self, dataframe, jurisdiction, output_dir=None):
+        if output_dir is None:
+            base_dir = os.getcwd()
+            output_dir = os.path.join(base_dir, "scraper", "output")
+
+        os.makedirs(output_dir, exist_ok=True)
+
+        safe_jurisdiction = re.sub(r"[^A-Za-z0-9._-]+", "_", str(jurisdiction).strip()) or "results"
+        timestamp = pd.Timestamp.now().strftime("%Y%m%d_%H%M%S")
+        output_path = os.path.join(
+            output_dir,
+            f"{safe_jurisdiction}_activities_{timestamp}.xlsx"
+        )
+
+        dataframe.to_excel(output_path, sheet_name="Final", index=False)
+        return output_path
 
     # =====================================================
     # NORMALIZE
@@ -902,7 +953,7 @@ class ActivityMatcher:
             )
 
         # =================================================
-        # WRITE FINAL SHEET ONCE
+        # WRITE OUTPUT WORKBOOK (separate from consolidated)
         # =================================================
         if new_rows:
 
@@ -911,20 +962,20 @@ class ActivityMatcher:
                 ignore_index=True
             )
 
-            with pd.ExcelWriter(
-                self.FILE_PATH,
-                engine="openpyxl",
-                mode="a",
-                if_sheet_exists="replace"
-            ) as writer:
+            website_df = master_df[
+                master_df["jurisdiction"]
+                .astype(str)
+                .str.lower()
+                ==
+                jurisdiction.lower()
+            ].copy()
 
-                master_df.to_excel(
-                    writer,
-                    sheet_name="Final",
-                    index=False
-                )
+            output_path = self._write_run_output(
+                website_df,
+                jurisdiction
+            )
 
-            print(f"\n✅ Saved {len(new_rows)} new rows.")
+            print(f"\n✅ Wrote {len(new_rows)} new rows to {output_path}.")
 
         # =================================================
         # SUMMARY
@@ -943,5 +994,12 @@ class ActivityMatcher:
             ==
             jurisdiction.lower()
         ].copy()
+
+        if not new_rows:
+            output_path = self._write_run_output(
+                website_df,
+                jurisdiction
+            )
+            print(f"\n📄 Wrote run output to {output_path}.")
 
         return website_df

@@ -2262,28 +2262,28 @@ Yoga Center,102996.0,85,854,8541,Sports and recreation education,,Meydan,
 Yoga Instruction,102995.0,85,854,8541,Sports and recreation education,,Meydan,
 Youth Hostels,102993.0,55,551,5510,Short term accommodation activities,,Meydan,
 Zoo Park,102992.0,91,910,9103,Botanical and zoological gardens and nature reserves activities,,Meydan,
-Aircraft Engine & Parts Repair & Overhaul,100162.0,33,331,3315,"Repair of transport equipment, except motor vehicles",,Meydan,Draft
-Horses Trading,101805.0,46,462,4620,Wholesale of agricultural raw materials and live animals,,Meydan,Draft
-Offshore Crude Oil Trading,103874.0,46,466,4661,"Wholesale of solid, liquid and gaseous fuels and related products",,Meydan,Draft
-Non-Manufactured Precious Metal Trading,102773.0,47,475,4752,"Retail sale of hardware, paints and glass in specialized stores",,Meydan,Draft
-Aquatic & live Animals Trading,100238.0,46,462,4620,Wholesale of agricultural raw materials and live animals,,Meydan,Draft
-Logistic Services,102147.0,52,522,5229,Other transportation support activities,,Meydan,Draft
-Auto Service Broker,100323.0,52,522,5229,Other transportation support activities,,Meydan,Draft
-Delivery Services Coordination & Provision,101016.0,53,532,5320,Courier activities,,Meydan,Draft
-Gaming Development Services,101596.0,62,620,6201,Computer programming activities,,Meydan,Draft
-Digital Wallet for Electronic Payments,101074.0,64,649,6491,Financial leasing,,Meydan,Draft
-VA Proprietary Trading,103875.0,66,661,6619,Other activities auxiliary to financial service activities,,Meydan,Draft
-"Leasing Of Intellectual Property And Similar Products, Except Copyrighted Works",102085.0,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
-"Leasing Of Intellectual Property Products (Except Copyrighted Works, Such As Books Or Software)",102085.0,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
-"Receiving Royalties Or Licensing Fees For The Use Of: • Patented Entities • Trademarks Or Service Marks • Brand Names • Mineral Exploration And Evaluation • Franchise Agreements""",102974.0,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
-Intellectual Property Services,101953.0,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
-Intellectual Property Rights Management,101952.0,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
-Real Estate Public Auction Organizing,102965.0,82,823,8230,Organization of conventions and trade shows,,Meydan,Draft
-Passengers & Cargo Aircrafts Repair,103356.0,33,331,3315,Provides specialized repair and maintenance services for passenger and cargo aircraft to ensure operational safety and efficiency.,,Meydan,Draft
-Helicopters Repair & Maintenance,100802.0,33,331,3315,Delivers comprehensive repair and maintenance solutions for helicopters to maintain airworthiness and performance standards.,,Meydan,Draft
-Commercial Agencies,103871.0,46,466,4660,Acts as an intermediary representing businesses in the sale and purchase of goods and services on a commercial basis.,,Meydan,Draft
-Other Land Transport (Not for selection),103872.0,49,492,4920,"Offers transportation services involving land vehicles excluding passenger and freight transport, such as rental or leasing of vehicles.",,Meydan,Draft
-"Organizing Vehicle Auctions through Electronic Platforms, Smart Applications and Other Means",103873.0,66,661,6611,"Facilitates the organization and execution of vehicle auctions through electronic platforms, smart applications, and other digital means.",,Meydan,Draft
-Holding Companies,100041.0,64,642,6420,Operates as a holding company by managing and controlling investments in subsidiary enterprises.,,Meydan,Draft
-Managing Investments of Investment Funds,101982.0,66,663,6630,Provides professional management and administration of investment portfolios on behalf of investment funds.,,Meydan,Draft
-Trading in Global Markets,100485.0,66,661,6612,Engages in the buying and selling of financial instruments and commodities across international markets.,,Meydan,Draft
+Aircraft Engine & Parts Repair & Overhaul,100162,33,331,3315,"Repair of transport equipment, except motor vehicles",,Meydan,Draft
+Horses Trading,101805,46,462,4620,Wholesale of agricultural raw materials and live animals,,Meydan,Draft
+Offshore Crude Oil Trading,100938,46,466,4661,"Wholesale of solid, liquid and gaseous fuels and related products",,Meydan,Draft
+Non-Manufactured Precious Metal Trading,102773,47,475,4752,"Retail sale of hardware, paints and glass in specialized stores",,Meydan,Draft
+Aquatic & live Animals Trading,100238,46,462,4620,Wholesale of agricultural raw materials and live animals,,Meydan,Draft
+Logistic Services,102147,52,522,5229,Other transportation support activities,,Meydan,Draft
+Auto Service Broker,100323,52,522,5229,Other transportation support activities,,Meydan,Draft
+Delivery Services Coordination & Provision,101016,53,532,5320,Courier activities,,Meydan,Draft
+Gaming Development Services,101596,62,620,6201,Computer programming activities,,Meydan,Draft
+Digital Wallet for Electronic Payments,101074,64,649,6491,Financial leasing,,Meydan,Draft
+VA Proprietary Trading,102086,66,661,6619,Other activities auxiliary to financial service activities,,Meydan,Draft
+"Leasing Of Intellectual Property And Similar Products, Except Copyrighted Works",102085,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
+"Leasing Of Intellectual Property Products (Except Copyrighted Works, Such As Books Or Software)",102085,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
+"Receiving Royalties Or Licensing Fees For The Use Of: • Patented Entities • Trademarks Or Service Marks • Brand Names • Mineral Exploration And Evaluation • Franchise Agreements""",102974,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
+Intellectual Property Services,101953,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
+Intellectual Property Rights Management,101952,77,774,7740,"Leasing of intellectual property and similar products, except copyrighted works",,Meydan,Draft
+Real Estate Public Auction Organizing,102965,82,823,8230,Organization of conventions and trade shows,,Meydan,Draft
+Passengers & Cargo Aircrafts Repair,103356,33,331,3315,Provides specialized repair and maintenance services for passenger and cargo aircraft to ensure operational safety and efficiency.,,Meydan,Draft
+Helicopters Repair & Maintenance,100802,33,331,3315,Delivers comprehensive repair and maintenance solutions for helicopters to maintain airworthiness and performance.,,Meydan,Draft
+Commercial Agencies,103971,46,466,4660,Acts as intermediaries representing businesses in the negotiation and sale of goods and services on a commercial basis.,,Meydan,Draft
+Other Land Transport (Not for selection),103972,49,492,4920,"Offers various land transportation services excluding passenger transport, focusing on freight and logistics operations.",,Meydan,Draft
+"Organizing Vehicle Auctions through Electronic Platforms, Smart Applications and Other Means",103973,66,661,6611,"Facilitates the organization and management of vehicle auctions through electronic platforms, smart applications, and other digital channels.",,Meydan,Draft
+Holding Companies,100041,64,642,6420,Operates as a holding company by owning and managing controlling interests in subsidiary enterprises.,,Meydan,Draft
+Managing Investments of Investment Funds,101982,66,663,6630,Administers and manages investment portfolios on behalf of investment funds to optimize returns and manage risks.,,Meydan,Draft
+Trading in Global Markets,100485,66,661,6612,Engages in the buying and selling of financial instruments and commodities across international markets.,,Meydan,Draft
