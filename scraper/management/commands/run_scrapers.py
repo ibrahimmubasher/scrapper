@@ -21,6 +21,11 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            check=True
+        )
 
         matcher = ActivityMatcher()
 
