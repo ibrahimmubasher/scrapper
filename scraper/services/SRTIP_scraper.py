@@ -1,15 +1,11 @@
 import requests
 import pandas as pd
-
 from bs4 import BeautifulSoup
 
 
 class SRTIPScraper:
 
-    URL = (
-        "https://www.srtipacc.ae/"
-        "business-activities-to-register-in-srtip-free-zone/"
-    )
+    URL = "https://www.srtipacc.ae/business-activities/"
 
     def scrape(self):
 
@@ -18,71 +14,53 @@ class SRTIPScraper:
         response = requests.get(
             self.URL,
             timeout=30,
-            headers={
-                "User-Agent":
-                    "Mozilla/5.0"
-            }
+            headers={"User-Agent": "Mozilla/5.0"}
         )
 
         response.raise_for_status()
 
-        soup = BeautifulSoup(
-            response.text,
-            "html.parser"
-        )
+        soup = BeautifulSoup(response.text, "html.parser")
 
         activities = []
 
         # ==========================================
-        # Find all list items
+        # Target the activities table directly
         # ==========================================
-        for li in soup.find_all("li"):
+        tbody = soup.find("tbody", id="activitiesBody")
 
-            text = li.get_text(
-                " ",
-                strip=True
-            )
+        if not tbody:
+            print("[SRTIP] Could not find activitiesBody table.")
+            return pd.DataFrame()
 
-            if not text:
+        for tr in tbody.find_all("tr", class_="activity-row"):
+
+            cols = tr.find_all("td")
+
+            if len(cols) < 4:
                 continue
 
-            if len(text) < 3:
+            category      = cols[0].get_text(strip=True)
+            group         = cols[1].get_text(strip=True)
+            code          = cols[2].get_text(strip=True)
+            activity_name = cols[3].get_text(strip=True)
+
+            if not activity_name:
                 continue
 
             activities.append({
-
-                "activity name":
-                    text,
-
-                "description":
-                    ""
+                "activity name": activity_name,
+                "description":   ""
             })
 
-        df = pd.DataFrame(
-            activities
-        )
+        df = pd.DataFrame(activities)
 
         if df.empty:
-
-            print(
-                "[SRTIP] No activities found."
-            )
-
+            print("[SRTIP] No activities found.")
             return df
 
-        df.drop_duplicates(
-            subset=["activity name"],
-            inplace=True
-        )
+        df.drop_duplicates(subset=["activity name"], inplace=True)
+        df.reset_index(drop=True, inplace=True)
 
-        df.reset_index(
-            drop=True,
-            inplace=True
-        )
-
-        print(
-            f"[SRTIP] Found "
-            f"{len(df)} activities"
-        )
+        print(f"[SRTIP] Found {len(df)} activities")
 
         return df
