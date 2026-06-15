@@ -12,8 +12,14 @@ def scrape_AFZ_activities():
     with sync_playwright() as p:
 
         browser = p.chromium.launch(
-            headless=True
-        )
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--single-process",
+            ]
+)
 
         page = browser.new_page()
 
