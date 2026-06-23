@@ -75,17 +75,20 @@ class Command(BaseCommand):
 
         for index, (name, config) in enumerate(websites, start=1):
             current_percent = min(95, int((index / total) * 100))
-            update_progress_status(progress_file, "running", f"Running {name}", current_percent, name)
+            update_progress_status(progress_file, "running", f"Starting {name} scraper", current_percent, name)
             safe_console_output(
                 self.style.SUCCESS(f"\nRunning {name}..."),
                 self.stdout,
             )
             try:
+                update_progress_status(progress_file, "running", f"Scraping {name}", current_percent, name)
                 scraped_df = config["scraper"]()
+                update_progress_status(progress_file, "running", f"Scraped {len(scraped_df)} rows from {name}", current_percent, name)
                 master_df = matcher.update_activities(
                     scraped_df,
                     config["jurisdiction"],
                 )
+                update_progress_status(progress_file, "running", f"Processed {name} data", current_percent, name)
                 website_df = matcher.get_jurisdiction_dataframe(
                     master_df,
                     config["jurisdiction"],

@@ -71,14 +71,9 @@ class MetadataAI:
         print(f"[MetadataAI] Reading from: {self.FILE_PATH}")
         print(f"[MetadataAI] File exists: {os.path.exists(self.FILE_PATH)}")
 
-        # ============================================
-        # OPENAI CLIENT
-        # ============================================
-        self.client = OpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY")
-        )
-
-        print("[MetadataAI] OpenAI client created")
+        openai_key = os.environ.get("OPENAI_API_KEY")
+        self.has_openai = bool(openai_key)
+        print(f"[MetadataAI] OPENAI_API_KEY present: {self.has_openai}")
 
         # ============================================
         # LOAD GPT CACHE
@@ -124,7 +119,15 @@ class MetadataAI:
             ).tolist()
 
         else:
+            if not self.has_openai:
+                raise RuntimeError(
+                    "OPENAI_API_KEY is required to create embeddings, "
+                    "and saved embeddings were not found. "
+                    "Please set the API key or provide pre-generated embeddings."
+                )
+
             print("[MetadataAI] Creating embeddings via OpenAI...")
+            self.client = OpenAI(api_key=openai_key)
 
             self.activity_names = [
                 a["activity"]
