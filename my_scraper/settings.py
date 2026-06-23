@@ -34,9 +34,14 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv(
+    ".railway.app",
     'ALLOWED_HOSTS',
     'localhost,127.0.0.1,testserver'
 ).split(',')
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
+]
 
 
 # Application definition
