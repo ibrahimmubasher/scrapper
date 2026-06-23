@@ -3,9 +3,7 @@ import subprocess
 import sys
 import traceback
 from pathlib import Path
-
 from django.core.management.base import BaseCommand
-
 from scraper.services.activity_matcher import ActivityMatcher
 from scraper.services.csv_exporter import CSVExporter
 from scraper.services.websites import WEBSITES
@@ -14,9 +12,7 @@ from scraper.services.websites import WEBSITES
 def safe_console_output(text, stream=None):
     if stream is None:
         stream = sys.stdout
-
     text = str(text)
-
     try:
         stream.write(text)
     except UnicodeEncodeError:
@@ -26,22 +22,18 @@ def safe_console_output(text, stream=None):
 def update_progress_status(progress_file, status, message, percent, current_website=None):
     if progress_file is None:
         return
-
     progress_path = Path(progress_file)
     progress_path.parent.mkdir(parents=True, exist_ok=True)
-
     payload = {
         "status": status,
         "message": message,
         "percent": int(percent),
         "current_website": current_website,
     }
-
     progress_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 class Command(BaseCommand):
-
     help = "Run all scrapers"
 
     def add_arguments(self, parser):
@@ -50,18 +42,24 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         progress_file = options.get("progress_file")
-
         update_progress_status(progress_file, "starting", "Preparing scraper run", 5)
 
-        subprocess.run(
-            [sys.executable, "-m", "playwright", "install", "chromium"],
-            check=True,
-        )
+        # ════════════════════════════════════════════════════
+        # REMOVED: playwright install chromium on every run
+        #
+        # This used to download ~290MB EVERY single request,
+        # which on Railway could take minutes or hang the
+        # subprocess.run(check=True) call indefinitely with
+        # no timeout and no visible error.
+        #
+        # Chromium is now installed ONCE at Docker build time
+        # via the Dockerfile / Railway build command instead.
+        # See deployment notes below.
+        # ════════════════════════════════════════════════════
 
         update_progress_status(progress_file, "running", "Preparing browser dependencies", 10)
 
         matcher = ActivityMatcher()
-
         website = options["website"].upper()
 
         if website == "ALL":
@@ -78,42 +76,34 @@ class Command(BaseCommand):
         for index, (name, config) in enumerate(websites, start=1):
             current_percent = min(95, int((index / total) * 100))
             update_progress_status(progress_file, "running", f"Running {name}", current_percent, name)
-
             safe_console_output(
                 self.style.SUCCESS(f"\nRunning {name}..."),
                 self.stdout,
             )
-
             try:
                 scraped_df = config["scraper"]()
-
                 master_df = matcher.update_activities(
                     scraped_df,
                     config["jurisdiction"],
                 )
-
                 website_df = matcher.get_jurisdiction_dataframe(
                     master_df,
                     config["jurisdiction"],
                 )
-
                 CSVExporter.save(website_df, name)
                 update_progress_status(progress_file, "running", f"Saved {name} results", current_percent, name)
             except Exception as exc:
                 update_progress_status(progress_file, "failed", f"{name} failed: {exc}", current_percent, name)
-
                 safe_console_output(
                     self.style.ERROR(f"{name} Failed : {exc}"),
                     self.stdout,
                 )
-
                 safe_console_output(
                     self.style.ERROR(traceback.format_exc()),
                     self.stdout,
                 )
 
         update_progress_status(progress_file, "completed", "Scraper run completed successfully", 100)
-
         safe_console_output(
             self.style.SUCCESS("\nCompleted Successfully"),
             self.stdout,
