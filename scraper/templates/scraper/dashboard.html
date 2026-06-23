@@ -91,6 +91,8 @@
             </div>
             <p id="progress-message" class="muted">The scraper is starting in the background.</p>
             <p id="progress-website" class="muted">Current step: pending</p>
+            <p id="progress-run-id" class="muted" style="margin-bottom:0;">Run ID: pending</p>
+            <p id="progress-log-link" class="muted"></p>
             <pre id="progress-log">No output yet.</pre>
         </div>
 
@@ -177,6 +179,9 @@
                 submitButton.textContent = 'Run scraper';
                 return;
             }
+
+            document.getElementById('progress-run-id').textContent = `Run ID: ${payload.run_id}`;
+            document.getElementById('progress-log-link').innerHTML = `Log: <a target="_blank" href="${payload.log_url}">${payload.log_url}</a>`;
 
             const pollStatus = async () => {
                 const statusResponse = await fetch(payload.status_url, {

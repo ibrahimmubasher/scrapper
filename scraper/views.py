@@ -134,6 +134,7 @@ def start_run(request):
             "success": True,
             "run_id": run_id,
             "status_url": reverse("progress_status", args=[run_id]),
+            "log_url": reverse("view_log", args=[run_id]),
             "output_files": _list_output_files(),
         }
     )
