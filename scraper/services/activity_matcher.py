@@ -34,9 +34,17 @@ class ActivityMatcher:
         )
         self.FILE_PATH = self._prepare_working_workbook()
 
+        safe_print("[MATCHER] Initializing ISIC matcher...")
         self.isic_matcher = ISICMatcher(self.FILE_PATH)
-        self.rag          = ActivityRAG(self.FILE_PATH)
+        safe_print("[MATCHER] ISIC matcher ready")
+
+        safe_print("[MATCHER] Initializing RAG engine...")
+        self.rag = ActivityRAG(self.FILE_PATH)
+        safe_print("[MATCHER] RAG engine ready")
+
+        safe_print("[MATCHER] Initializing MetadataAI...")
         self.metadata_ai = MetadataAI(self.FILE_PATH)
+        safe_print("[MATCHER] MetadataAI ready")
 
     def _prepare_working_workbook(self):
         if os.path.exists(self.CONSOLIDATED_FILE_PATH):

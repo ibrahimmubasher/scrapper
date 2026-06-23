@@ -58,6 +58,7 @@ class Command(BaseCommand):
         # ════════════════════════════════════════════════════
 
         update_progress_status(progress_file, "running", "Preparing browser dependencies", 10)
+        update_progress_status(progress_file, "running", "Loading matcher engines", 15)
 
         try:
             matcher = ActivityMatcher()
