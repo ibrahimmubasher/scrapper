@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
@@ -172,13 +173,11 @@ class RAKEZScraper:
 
                 rows = table.find_all("tr")
 
+                data_rows = [row for row in rows if len(row.find_all("td")) >= 5]
                 page_rows = 0
-                for row in rows:
+                for row in data_rows:
 
                     cols = row.find_all("td")
-
-                    if len(cols) < 5:
-                        continue
 
                     try:
 
@@ -268,12 +267,15 @@ class RAKEZScraper:
                     print("[RAKEZ] No rows found on this page, stopping pagination.")
                     break
 
-                # stop if table content is repeating
-                first_row_text = rows[0].get_text(" ", strip=True) if rows else ""
-                if first_row_text in seen_row_text:
+                # stop if table data repeats
+                first_data_row_text = (
+                    data_rows[0].get_text(" ", strip=True)
+                    if data_rows else ""
+                )
+                if first_data_row_text in seen_row_text:
                     print("[RAKEZ] Table repeated content, stopping pagination.")
                     break
-                seen_row_text.add(first_row_text)
+                seen_row_text.add(first_data_row_text)
 
                 # ======================================
                 # NEXT PAGE
@@ -284,6 +286,7 @@ class RAKEZScraper:
                         By.ID,
                         "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
                     )
+                    old_table_html = old_table.get_attribute("innerHTML") or ""
 
                     next_btn = None
                     for locator in [
@@ -292,15 +295,27 @@ class RAKEZScraper:
                         (By.CSS_SELECTOR, "a[aria-label='Next'], button[aria-label='Next'], a.next, button.next"),
                     ]:
                         try:
-                            next_btn = wait.until(
-                                EC.element_to_be_clickable(locator)
+                            candidate = wait.until(
+                                EC.presence_of_element_located(locator)
                             )
+                            aria_disabled = (
+                                candidate.get_attribute("aria-disabled") or ""
+                            ).lower()
+                            classes = (
+                                candidate.get_attribute("class") or ""
+                            ).lower()
+
+                            if aria_disabled == "true" or "disabled" in classes:
+                                continue
+
+                            next_btn = candidate
                             break
                         except Exception:
                             continue
 
                     if next_btn is None:
-                        raise Exception("Next button not found.")
+                        print("[RAKEZ] No next page button found, stopping pagination.")
+                        break
 
                     driver.execute_script(
                         "arguments[0].scrollIntoView({block:'center'});",
@@ -314,9 +329,18 @@ class RAKEZScraper:
                         next_btn
                     )
 
-                    WebDriverWait(driver, 20).until(
-                        EC.staleness_of(old_table)
-                    )
+                    try:
+                        wait.until(
+                            lambda d: d.find_element(
+                                By.ID,
+                                "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
+                            ).get_attribute("innerHTML") != old_table_html
+                        )
+                    except TimeoutException:
+                        print(
+                            "[RAKEZ] Next page click did not update table, stopping pagination."
+                        )
+                        break
 
                     page += 1
 
