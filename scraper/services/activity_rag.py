@@ -242,11 +242,18 @@ class ActivityRAG:
                 self._c_idx[code].append(i)
 
         print(f"[RAG] Building TF-IDF index for {len(self.df)} activity names...")
-        self._tfidf = _TFIDF()
-        self._tfidf.fit(self.df[self._NAME].tolist())
-        print(f"[RAG] TF-IDF vocab size: {len(self._tfidf.vocab)}")
-        if self._tfidf.matrix is not None:
-            print(f"[RAG] TF-IDF matrix shape: {self._tfidf.matrix.shape}")
+        self._vectorizer = TfidfVectorizer(
+            analyzer='word',
+            token_pattern=r"\b\w+\b",
+            lowercase=False,
+            norm='l2',
+            max_df=0.95,
+            min_df=1,
+        )
+        self._tfidf_matrix = self._vectorizer.fit_transform(
+            self.df[self._NAME].fillna("").astype(str).tolist()
+        )
+        print(f"[RAG] TF-IDF matrix shape: {self._tfidf_matrix.shape}")
 
         print(f"[RAG] Index ready: {len(self._cj_idx)} (code, jurisdiction) pairs")
 
@@ -254,7 +261,13 @@ class ActivityRAG:
 
     def find_similar(self, name: str, top_k: int = 5) -> list[tuple[float, int]]:
         """Return [(similarity, row_index), ...] for the closest activity names."""
-        return self._tfidf.query(name, top_k=top_k)
+        if not hasattr(self, '_tfidf_matrix') or self._tfidf_matrix is None or self._tfidf_matrix.shape[0] == 0:
+            return []
+
+        query_vec = self._vectorizer.transform([name])
+        sims = cosine_similarity(self._tfidf_matrix, query_vec).flatten()
+        top = np.argsort(sims)[::-1][:top_k]
+        return [(float(sims[i]), int(i)) for i in top if sims[i] > 0]
 
     def _assign_code(self, name: str) -> tuple[str, float, str]:
         """
