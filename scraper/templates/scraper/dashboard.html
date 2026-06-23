@@ -240,7 +240,7 @@
                 progressBar.style.width = `${Math.max(4, state.percent || 0)}%`;
                 progressMessage.textContent = state.message || 'Working on your request…';
                 progressWebsite.textContent = state.current_website ? `Current step: ${state.current_website}` : 'Current step: pending';
-                progressLog.textContent = state.message || 'Working on your request…';
+                progressLog.textContent = state.log_tail || state.message || 'Working on your request…';
 
                 if (state.status === 'completed') {
                     progressStatus.textContent = 'Completed';

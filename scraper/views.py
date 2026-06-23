@@ -158,24 +158,44 @@ def start_run(request):
             "output_files": _list_output_files(),
         }
     )
+def _tail_log(log_path, max_lines=40, max_bytes=8192):
+    try:
+        with log_path.open("rb") as f:
+            f.seek(0, os.SEEK_END)
+            file_size = f.tell()
+            offset = min(file_size, max_bytes)
+            f.seek(file_size - offset)
+            data = f.read().decode("utf-8", errors="replace")
+    except Exception:
+        return ""
+
+    lines = data.splitlines()
+    if len(lines) <= max_lines:
+        return "\n".join(lines)
+    return "\n".join(lines[-max_lines:])
+
+
 def progress_status(request, run_id):
     progress_file = OUTPUT_DIR / f"{run_id}_progress.json"
+    log_path = OUTPUT_DIR / f"{run_id}.log"
 
     if not progress_file.exists():
-        return JsonResponse({"status": "queued", "message": "Preparing run", "percent": 0})
-
-    try:
-        payload = json.loads(progress_file.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        payload = {"status": "running", "message": "Working on your request", "percent": 0}
-    except Exception as exc:
-        return JsonResponse(
-            {"status": "failed", "message": f"Unable to read progress file: {exc}", "percent": 0},
-            status=500,
-        )
+        payload = {"status": "queued", "message": "Preparing run", "percent": 0}
+    else:
+        try:
+            payload = json.loads(progress_file.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            payload = {"status": "running", "message": "Working on your request", "percent": 0}
+        except Exception as exc:
+            return JsonResponse(
+                {"status": "failed", "message": f"Unable to read progress file: {exc}", "percent": 0},
+                status=500,
+            )
 
     payload["output_files"] = _list_output_files()
     payload["run_id"] = run_id
+    payload["log_url"] = reverse("view_log", args=[run_id])
+    payload["log_tail"] = _tail_log(log_path)
     response = JsonResponse(payload)
     response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     return response
