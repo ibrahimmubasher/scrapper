@@ -4,10 +4,11 @@ import sys
 import traceback
 import uuid
 from pathlib import Path
+import os
 
 from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import revers
 
 from scraper.management.commands.run_scrapers import update_progress_status
 
@@ -92,18 +93,19 @@ def dashboard(request):
 def start_run(request):
     if request.method != "POST":
         return JsonResponse({"success": False, "error": "Only POST requests are allowed."}, status=405)
-
+ 
     selected_website = (request.POST.get("website") or "ALL").upper()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
+ 
     run_id = uuid.uuid4().hex[:10]
     progress_file = OUTPUT_DIR / f"{run_id}_progress.json"
     log_file = OUTPUT_DIR / f"{run_id}.log"
-
+ 
     update_progress_status(progress_file, "queued", "Queued", 0, selected_website)
-
+ 
     command = [
         sys.executable,
+        "-u",                          # ← unbuffered stdout, logs show immediately
         str(MANAGE_PY),
         "run_scrapers",
         "--website",
@@ -111,10 +113,22 @@ def start_run(request):
         "--progress-file",
         str(progress_file),
     ]
-
+ 
     log_handle = log_file.open("w", encoding="utf-8")
-    subprocess.Popen(command, cwd=str(BASE_DIR), stdout=log_handle, stderr=subprocess.STDOUT)
-
+ 
+    # ── KEY FIX ──────────────────────────────────────────
+    # Explicitly pass full environment to the child process
+    # so OPENAI_API_KEY and all Railway variables are visible
+    env = os.environ.copy()
+ 
+    subprocess.Popen(
+        command,
+        cwd=str(BASE_DIR),
+        stdout=log_handle,
+        stderr=subprocess.STDOUT,
+        env=env,                      # ← THIS was missing
+    )
+ 
     return JsonResponse(
         {
             "success": True,
@@ -123,8 +137,6 @@ def start_run(request):
             "output_files": _list_output_files(),
         }
     )
-
-
 def progress_status(request, run_id):
     progress_file = OUTPUT_DIR / f"{run_id}_progress.json"
 
