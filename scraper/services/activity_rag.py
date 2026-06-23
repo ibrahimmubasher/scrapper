@@ -241,8 +241,12 @@ class ActivityRAG:
                 self._cj_idx[(code, juris)] = i
                 self._c_idx[code].append(i)
 
+        print(f"[RAG] Building TF-IDF index for {len(self.df)} activity names...")
         self._tfidf = _TFIDF()
         self._tfidf.fit(self.df[self._NAME].tolist())
+        print(f"[RAG] TF-IDF vocab size: {len(self._tfidf.vocab)}")
+        if self._tfidf.matrix is not None:
+            print(f"[RAG] TF-IDF matrix shape: {self._tfidf.matrix.shape}")
 
         print(f"[RAG] Index ready: {len(self._cj_idx)} (code, jurisdiction) pairs")
 
