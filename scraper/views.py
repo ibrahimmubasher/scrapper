@@ -121,13 +121,25 @@ def start_run(request):
     # so OPENAI_API_KEY and all Railway variables are visible
     env = os.environ.copy()
  
-    subprocess.Popen(
-        command,
-        cwd=str(BASE_DIR),
-        stdout=log_handle,
-        stderr=subprocess.STDOUT,
-        env=env,                      # ← THIS was missing
-    )
+    try:
+        subprocess.Popen(
+            command,
+            cwd=str(BASE_DIR),
+            stdout=log_handle,
+            stderr=subprocess.STDOUT,
+            env=env,
+        )
+    except Exception as exc:
+        log_handle.close()
+        return JsonResponse(
+            {
+                "success": False,
+                "error": f"Failed to launch scraper process: {exc}",
+            },
+            status=500,
+        )
+    finally:
+        log_handle.close()
  
     return JsonResponse(
         {

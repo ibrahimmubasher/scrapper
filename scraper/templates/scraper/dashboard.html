@@ -159,17 +159,41 @@
             submitButton.textContent = 'Running…';
 
             const formData = new FormData(form);
+            const csrfInput = document.querySelector('[name="csrfmiddlewaretoken"]');
+            const csrfToken = csrfInput ? csrfInput.value : null;
             const response = await fetch('{% url "start_run" %}', {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
                 },
                 body: formData,
             });
-
-            const payload = await response.json();
-
+ 
+            let payload;
+            if (!response.ok) {
+                const errorText = await response.text();
+                progressStatus.textContent = 'Run failed';
+                progressStatus.className = 'status-error';
+                progressMessage.textContent = `Server error ${response.status}`;
+                progressLog.textContent = errorText || 'Server returned an error.';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Run scraper';
+                return;
+            }
+ 
+            try {
+                payload = await response.json();
+            } catch (err) {
+                const errorText = await response.text();
+                progressStatus.textContent = 'Run failed';
+                progressStatus.className = 'status-error';
+                progressMessage.textContent = 'Invalid server response';
+                progressLog.textContent = errorText || err.message;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Run scraper';
+                return;
+            }
             if (!payload.success) {
                 progressStatus.textContent = 'Run failed';
                 progressStatus.className = 'status-error';
