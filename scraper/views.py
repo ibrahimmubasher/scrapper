@@ -17,6 +17,25 @@ OUTPUT_DIR = BASE_DIR / "scraper" / "output"
 WEBSITES = ["ALL", "RAKEZ", "MEYDAN", "ANCF", "IFZA", "SHAMS", "SPC", "AFZ", "SRTIP"]
 
 
+def view_log(request, run_id):
+    """
+    Debug helper: lets you view the subprocess log file
+    in the browser instead of needing SSH/console access.
+ 
+    Visit: https://your-app.up.railway.app/log/<run_id>/
+    """
+    log_path = OUTPUT_DIR / f"{run_id}.log"
+ 
+    if not log_path.exists():
+        return HttpResponse(
+            f"No log file found for run_id: {run_id}",
+            content_type="text/plain"
+        )
+ 
+    content = log_path.read_text(encoding="utf-8", errors="replace")
+ 
+    return HttpResponse(content, content_type="text/plain")
+ 
 def _list_output_files():
     if not OUTPUT_DIR.exists():
         return []
