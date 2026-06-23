@@ -8,7 +8,7 @@ import os
 
 from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.urls import revers
+from django.urls import reverse
 
 from scraper.management.commands.run_scrapers import update_progress_status
 
