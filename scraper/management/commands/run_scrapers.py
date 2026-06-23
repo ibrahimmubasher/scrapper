@@ -59,7 +59,20 @@ class Command(BaseCommand):
 
         update_progress_status(progress_file, "running", "Preparing browser dependencies", 10)
 
-        matcher = ActivityMatcher()
+        try:
+            matcher = ActivityMatcher()
+            update_progress_status(progress_file, "running", "Browser dependencies ready", 20)
+        except Exception as exc:
+            update_progress_status(
+                progress_file,
+                "failed",
+                f"Initialization failed: {exc}",
+                0,
+            )
+            self.stdout.write(self.style.ERROR(f"Initialization failed: {exc}"))
+            self.stdout.write(self.style.ERROR(traceback.format_exc()))
+            return
+
         website = options["website"].upper()
 
         if website == "ALL":

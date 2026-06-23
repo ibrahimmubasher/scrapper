@@ -176,7 +176,9 @@ def progress_status(request, run_id):
 
     payload["output_files"] = _list_output_files()
     payload["run_id"] = run_id
-    return JsonResponse(payload)
+    response = JsonResponse(payload)
+    response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return response
 
 
 def download_csv(request, website):
