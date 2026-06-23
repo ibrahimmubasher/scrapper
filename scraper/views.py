@@ -30,10 +30,18 @@ def view_log(request, run_id):
     if not log_path.exists():
         return HttpResponse(
             f"No log file found for run_id: {run_id}",
-            content_type="text/plain"
+            content_type="text/plain",
+            status=404,
         )
  
-    content = log_path.read_text(encoding="utf-8", errors="replace")
+    try:
+        content = log_path.read_text(encoding="utf-8", errors="replace")
+    except Exception as exc:
+        return HttpResponse(
+            f"Unable to read log file: {exc}",
+            content_type="text/plain",
+            status=500,
+        )
  
     return HttpResponse(content, content_type="text/plain")
  
@@ -160,6 +168,11 @@ def progress_status(request, run_id):
         payload = json.loads(progress_file.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         payload = {"status": "running", "message": "Working on your request", "percent": 0}
+    except Exception as exc:
+        return JsonResponse(
+            {"status": "failed", "message": f"Unable to read progress file: {exc}", "percent": 0},
+            status=500,
+        )
 
     payload["output_files"] = _list_output_files()
     payload["run_id"] = run_id

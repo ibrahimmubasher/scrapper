@@ -211,7 +211,31 @@
                 const statusResponse = await fetch(payload.status_url, {
                     headers: { 'X-Requested-With': 'XMLHttpRequest' },
                 });
-                const state = await statusResponse.json();
+
+                if (!statusResponse.ok) {
+                    const errorText = await statusResponse.text();
+                    progressStatus.textContent = 'Failed';
+                    progressStatus.className = 'status-error';
+                    progressMessage.textContent = `Status request failed: ${statusResponse.status}`;
+                    progressLog.textContent = errorText || 'Server returned an error.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Run scraper';
+                    return;
+                }
+
+                let state;
+                try {
+                    state = await statusResponse.json();
+                } catch (err) {
+                    const errorText = await statusResponse.text();
+                    progressStatus.textContent = 'Failed';
+                    progressStatus.className = 'status-error';
+                    progressMessage.textContent = 'Invalid status response';
+                    progressLog.textContent = errorText || err.message;
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Run scraper';
+                    return;
+                }
 
                 progressBar.style.width = `${Math.max(4, state.percent || 0)}%`;
                 progressMessage.textContent = state.message || 'Working on your request…';
