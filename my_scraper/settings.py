@@ -33,10 +33,13 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
+# ── FIXED ──────────────────────────────────────────────────
+# os.getenv() only takes (key, default) — two arguments.
+# ".railway.app" must be INSIDE the default string, comma
+# separated with the rest, not passed as its own argument.
 ALLOWED_HOSTS = os.getenv(
-    ".railway.app",
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,testserver'
+    '.railway.app,localhost,127.0.0.1,testserver'
 ).split(',')
 
 CSRF_TRUSTED_ORIGINS = [
@@ -54,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'scraper',
-    
+
 ]
 
 MIDDLEWARE = [
