@@ -1,3 +1,26 @@
+# ============================================================
+# FIX for scraper/services/metadata_ai.py
+#
+# PROBLEM: MetadataAI.__init__() ignored the file path used
+# by ActivityMatcher (which copies the Excel to a temp file)
+# and instead always re-read directly from
+# scraper/data/Consolidated List of Activities.xlsx
+# via os.getcwd().
+#
+# This meant TWO different processes could be reading /
+# writing to / locking the SAME original file at once:
+#   - ActivityMatcher._prepare_working_workbook() copying it
+#   - MetadataAI._load_isic_activities() reading it directly
+#
+# On some filesystems (and especially under concurrent access
+# patterns Railway's containers can exhibit), this can cause
+# pandas/openpyxl to stall indefinitely with no error and no
+# output — exactly the symptom we saw.
+#
+# FIX: Accept an optional file_path argument so MetadataAI
+# uses the SAME safe temp-copied file as ISICMatcher and RAG.
+# ============================================================
+
 import os
 import re
 import json
@@ -12,16 +35,20 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class MetadataAI:
 
-    def __init__(self):
+    def __init__(self, file_path=None):
 
         self.cache_lock = threading.Lock()
 
         BASE_DIR = os.getcwd()
 
-        self.FILE_PATH = os.path.join(
-            BASE_DIR, "scraper", "data",
-            "Consolidated List of Activities.xlsx"
-        )
+        # ── FIX: use passed-in path if provided ──────────
+        if file_path:
+            self.FILE_PATH = file_path
+        else:
+            self.FILE_PATH = os.path.join(
+                BASE_DIR, "scraper", "data",
+                "Consolidated List of Activities.xlsx"
+            )
 
         self.EMBEDDINGS_PATH = os.path.join(
             BASE_DIR, "scraper", "data",
@@ -40,12 +67,18 @@ class MetadataAI:
 
         self.EMBEDDING_MODEL = "text-embedding-3-small"
 
+        print("[MetadataAI] Initializing...")
+        print(f"[MetadataAI] Reading from: {self.FILE_PATH}")
+        print(f"[MetadataAI] File exists: {os.path.exists(self.FILE_PATH)}")
+
         # ============================================
         # OPENAI CLIENT
         # ============================================
         self.client = OpenAI(
             api_key=os.environ.get("OPENAI_API_KEY")
         )
+
+        print("[MetadataAI] OpenAI client created")
 
         # ============================================
         # LOAD GPT CACHE
@@ -65,6 +98,8 @@ class MetadataAI:
         # ============================================
         # LOAD ISIC ACTIVITIES ONCE
         # ============================================
+        print("[MetadataAI] About to read ISIC sheet...")
+
         self.isic_activities = self._load_isic_activities()
 
         print(
@@ -270,21 +305,17 @@ class MetadataAI:
 
     # ==================================================
     # SEMANTIC ISIC MATCH
-    # Cache → Embed → Top 20 → GPT → Save cache
-    # ALWAYS returns valid result
     # ==================================================
     def semantic_isic_match(self, activity_name):
 
         cache_key = activity_name.strip().lower()
 
-        # Check cache first
         with self.cache_lock:
 
             if cache_key in self.gpt_cache:
                 print(f"[CACHE] {activity_name}")
                 return self.gpt_cache[cache_key]
 
-        # Embed → top 20
         candidates = self._get_top_candidates(
             activity_name, top_n=20
         )
@@ -357,21 +388,12 @@ Example:
 
     # ==================================================
     # BATCH DESCRIPTION GENERATION
-    # Generates "isic description" for each activity
-    # 20 activities per GPT call
-    # GUARANTEES non-empty result for every input
     # ==================================================
     def generate_descriptions_batch(
         self,
         activities,
         batch_size=20
     ):
-        """
-        activities : list of dicts
-            { activity_name, division, group, class_code }
-        Returns    : { activity_name: description }
-        """
-
         results = {}
 
         for i in range(0, len(activities), batch_size):
@@ -420,7 +442,6 @@ Activities:
                     .strip()
                 )
 
-                # Robust parser — handles "1.", "1)", "1-"
                 parsed = {}
 
                 for line in content.split("\n"):
@@ -444,7 +465,6 @@ Activities:
 
                     description = parsed.get(j + 1, "").strip()
 
-                    # Fallback: individual call if missed
                     if self._is_empty(description):
 
                         print(

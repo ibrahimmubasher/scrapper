@@ -36,7 +36,7 @@ class ActivityMatcher:
 
         self.isic_matcher = ISICMatcher(self.FILE_PATH)
         self.rag          = ActivityRAG(self.FILE_PATH)
-        self.metadata_ai  = MetadataAI()
+        self.metadata_ai = MetadataAI(self.FILE_PATH)
 
     def _prepare_working_workbook(self):
         if os.path.exists(self.CONSOLIDATED_FILE_PATH):
