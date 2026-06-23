@@ -23,10 +23,26 @@ class SRTIPScraper:
                 wait_until="networkidle"
             )
 
-            page.wait_for_selector(
+            selector_candidates = [
                 "#activitiesBody tr.activity-row",
-                timeout=30000
-            )
+                "#activitiesBody tr",
+                "table tr.activity-row",
+                "table tbody tr"
+            ]
+
+            rows = []
+            for selector in selector_candidates:
+                try:
+                    page.wait_for_selector(selector, timeout=10000)
+                    rows = page.query_selector_all(selector)
+                    if rows:
+                        print(f"[SRTIP] Using selector: {selector}")
+                        break
+                except Exception:
+                    continue
+
+            if not rows:
+                raise Exception("No activity rows found on SRTIP page")
 
             page.evaluate(
                 "() => window.scrollTo(0, document.body.scrollHeight)"
@@ -34,9 +50,7 @@ class SRTIPScraper:
 
             page.wait_for_timeout(2000)
 
-            rows = page.query_selector_all(
-                "#activitiesBody tr.activity-row"
-            )
+            print(f"[SRTIP] Found {len(rows)} rows in table")
 
             print(f"[SRTIP] Found {len(rows)} rows in table")
 

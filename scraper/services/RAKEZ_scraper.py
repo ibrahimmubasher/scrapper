@@ -136,7 +136,10 @@ class RAKEZScraper:
 
             page = 1
 
-            while True:
+            max_pages = 120
+            seen_row_text = set()
+
+            while page <= max_pages:
 
                 print(
                     f"[RAKEZ] Scraping page {page}"
@@ -169,6 +172,7 @@ class RAKEZScraper:
 
                 rows = table.find_all("tr")
 
+                page_rows = 0
                 for row in rows:
 
                     cols = row.find_all("td")
@@ -247,6 +251,7 @@ class RAKEZScraper:
                             "activity group":
                                 activity_group
                         })
+                        page_rows += 1
 
                     except Exception as e:
 
@@ -255,9 +260,20 @@ class RAKEZScraper:
                         )
 
                 print(
-                    f"[RAKEZ] Total scraped: "
+                    f"[RAKEZ] Page {page} rows: {page_rows} | Total scraped: "
                     f"{len(activities)}"
                 )
+
+                if page_rows == 0:
+                    print("[RAKEZ] No rows found on this page, stopping pagination.")
+                    break
+
+                # stop if table content is repeating
+                first_row_text = rows[0].get_text(" ", strip=True) if rows else ""
+                if first_row_text in seen_row_text:
+                    print("[RAKEZ] Table repeated content, stopping pagination.")
+                    break
+                seen_row_text.add(first_row_text)
 
                 # ======================================
                 # NEXT PAGE
@@ -269,14 +285,22 @@ class RAKEZScraper:
                         "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
                     )
 
-                    next_btn = wait.until(
-                        EC.presence_of_element_located(
-                            (
-                                By.XPATH,
-                                "//a[contains(text(),'>')]"
+                    next_btn = None
+                    for locator in [
+                        (By.XPATH, "//a[contains(text(),'>') or contains(text(),'Next') or contains(text(),'next') ]"),
+                        (By.XPATH, "//button[contains(text(),'Next') or contains(text(),'next') ]"),
+                        (By.CSS_SELECTOR, "a[aria-label='Next'], button[aria-label='Next'], a.next, button.next"),
+                    ]:
+                        try:
+                            next_btn = wait.until(
+                                EC.element_to_be_clickable(locator)
                             )
-                        )
-                    )
+                            break
+                        except Exception:
+                            continue
+
+                    if next_btn is None:
+                        raise Exception("Next button not found.")
 
                     driver.execute_script(
                         "arguments[0].scrollIntoView({block:'center'});",
