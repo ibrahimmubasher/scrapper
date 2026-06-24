@@ -16,10 +16,18 @@ def scrape_SHAMS_activities():
 
     with sync_playwright() as p:
 
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage"
+            ]
+        )
         page    = browser.new_page()
 
         print("\nOpening Shams Free Zone website...")
+        page.set_default_timeout(120000)
+        page.set_default_navigation_timeout(120000)
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
         page.wait_for_timeout(3000)
 
