@@ -11,6 +11,7 @@ from rapidfuzz import fuzz, process
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from scraper.paths_config import DATA_DIR, OUTPUT_DIR
 from scraper.services.activity_rag import ActivityRAG
 from scraper.services.metadata_ai import MetadataAI
 from scraper.services.isic_matcher import ISICMatcher
@@ -26,12 +27,12 @@ class ActivityMatcher:
     # =====================================================
     def __init__(self):
 
-        BASE_DIR = os.getcwd()
-
+        # ── FIX: use persistent volume path ──────────────
         self.CONSOLIDATED_FILE_PATH = os.path.join(
-            BASE_DIR, "scraper", "data",
+            DATA_DIR,
             "Consolidated List of Activities.xlsx"
         )
+
         self.FILE_PATH = self._prepare_working_workbook()
 
         safe_print("[MATCHER] Initializing ISIC matcher...")
@@ -75,9 +76,9 @@ class ActivityMatcher:
         return temp_path
 
     def _write_run_output(self, dataframe, jurisdiction, output_dir=None):
+        # ── FIX: default to persistent OUTPUT_DIR ────────
         if output_dir is None:
-            base_dir = os.getcwd()
-            output_dir = os.path.join(base_dir, "scraper", "output")
+            output_dir = OUTPUT_DIR
 
         os.makedirs(output_dir, exist_ok=True)
 
@@ -90,6 +91,36 @@ class ActivityMatcher:
 
         dataframe.to_excel(output_path, sheet_name="Final", index=False)
         return output_path
+
+    # =====================================================
+    # SAVE BACK TO CONSOLIDATED FILE (persistent volume)
+    #
+    # IMPORTANT: ActivityMatcher works on a TEMP COPY of the
+    # Excel file (self.FILE_PATH) so concurrent runs don't
+    # corrupt each other. But unless we write changes back
+    # to self.CONSOLIDATED_FILE_PATH (on the volume), every
+    # new classification/cache entry is lost when the temp
+    # file is cleaned up. Call this after update_activities()
+    # to persist new rows permanently.
+    # =====================================================
+    def save_consolidated(self, master_df):
+
+        try:
+            with pd.ExcelWriter(
+                self.CONSOLIDATED_FILE_PATH,
+                engine="openpyxl",
+                mode="a",
+                if_sheet_exists="replace"
+            ) as writer:
+                master_df.to_excel(writer, sheet_name="Final", index=False)
+
+            print(
+                f"[MATCHER] Saved {len(master_df)} rows back to "
+                f"persistent volume: {self.CONSOLIDATED_FILE_PATH}"
+            )
+
+        except Exception as e:
+            print(f"[MATCHER] ERROR saving to consolidated file: {e}")
 
     # =====================================================
     # NORMALIZE
@@ -318,28 +349,15 @@ class ActivityMatcher:
 
     # =====================================================
     # FIND BEST SEMANTIC CODE
-    # Given multiple candidate activities with same
-    # group+class, use RAG to find the most similar one
-    # and reuse its code
     # =====================================================
     def _find_best_semantic_code(
         self,
         activity_name,
         candidates
     ):
-        """
-        candidates = [
-            {"activity_name": "...", "code": "..."},
-            ...
-        ]
-        Returns the code of the most semantically
-        similar candidate to activity_name.
-        """
-
         if not candidates:
             return ""
 
-        # Only one candidate — reuse directly
         if len(candidates) == 1:
             code = candidates[0]["code"]
             print(
@@ -350,13 +368,11 @@ class ActivityMatcher:
             )
             return code
 
-        # Multiple candidates — use RAG similarity
         candidate_names = [
             c["activity_name"] for c in candidates
         ]
 
         try:
-            # Use RAG embeddings to find best match
             result = self.rag.find_most_similar(
                 activity_name,
                 candidate_names
@@ -365,7 +381,6 @@ class ActivityMatcher:
             if result:
                 best_name = result
             else:
-                # Fallback to rapidfuzz if RAG unavailable
                 best_name = max(
                     candidate_names,
                     key=lambda n: fuzz.ratio(
@@ -375,7 +390,6 @@ class ActivityMatcher:
                 )
 
         except Exception:
-            # Fallback to rapidfuzz
             best_name = max(
                 candidate_names,
                 key=lambda n: fuzz.ratio(
@@ -384,7 +398,6 @@ class ActivityMatcher:
                 )
             )
 
-        # Find the code for the best matched name
         for c in candidates:
             if c["activity_name"] == best_name:
                 code = c["code"]
@@ -400,22 +413,9 @@ class ActivityMatcher:
 
     # =====================================================
     # UPDATE ACTIVITIES — main entry point
-    #
-    # FLOW PER ACTIVITY:
-    #  1. Exact duplicate in same jurisdiction     → SKIP
-    #  2. Spelling variant >= 92% same jurisdiction → SKIP
-    #  3. Global match >= 90%
-    #     → copy division/group/class/isic description
-    #  4. Truly new
-    #     → ISICMatcher → GPT → generate isic description
-    #     → code: match by group+class → semantic match
-    #             → fallback RAG
     # =====================================================
     def update_activities(self, scraped_df, jurisdiction):
 
-        # =================================================
-        # LOAD FINAL SHEET
-        # =================================================
         master_df = pd.read_excel(
             self.FILE_PATH,
             sheet_name="Final"
@@ -439,9 +439,6 @@ class ActivityMatcher:
             print("\n❌ Scraped dataframe is empty.")
             return master_df
 
-        # =================================================
-        # CLEAN SCRAPED DF
-        # =================================================
         scraped_df = scraped_df.copy()
 
         scraped_df.columns = [
@@ -470,9 +467,6 @@ class ActivityMatcher:
 
         scraped_df.reset_index(drop=True, inplace=True)
 
-        # =================================================
-        # FORMAT JURISDICTION
-        # =================================================
         jurisdiction = self.format_jurisdiction(jurisdiction)
 
         print("\n" + "=" * 50)
@@ -480,9 +474,6 @@ class ActivityMatcher:
         print(f"Total scraped: {len(scraped_df)}")
         print("=" * 50 + "\n")
 
-        # =================================================
-        # PRECOMPUTE NAME LISTS (once)
-        # =================================================
         jurisdiction_df = master_df[
             master_df["jurisdiction"]
             .astype(str).str.strip().str.lower()
@@ -497,9 +488,6 @@ class ActivityMatcher:
             self._build_name_list(master_df)
         )
 
-        # =================================================
-        # CHECK 1: EXACT DUPLICATES
-        # =================================================
         exact_existing = set(
             jurisdiction_df["activity name"]
             .astype(str).str.strip().str.lower()
@@ -525,18 +513,11 @@ class ActivityMatcher:
             print("Nothing new to process.")
             return master_df
 
-        # =================================================
-        # NORMALIZE QUERIES ONCE
-        # =================================================
         normalized_queries = [
             self.normalize(name)
             for name in non_exact
         ]
 
-        # =================================================
-        # CHECK 2: SPELLING VARIANTS
-        # fuzz.ratio >= 92% in same jurisdiction → SKIP
-        # =================================================
         print(
             f"[CHECK] Spelling variants "
             f"({len(non_exact)} activities)..."
@@ -571,10 +552,6 @@ class ActivityMatcher:
             print("Nothing new after spelling check.")
             return master_df
 
-        # =================================================
-        # CHECK 3: GLOBAL MATCH
-        # fuzz.ratio >= 90% → copy metadata
-        # =================================================
         print(
             f"[CHECK] Global match "
             f"({len(not_spelling)} activities)..."
@@ -587,9 +564,6 @@ class ActivityMatcher:
             threshold=90
         )
 
-        # =================================================
-        # BUCKET: global_reuse vs to_classify
-        # =================================================
         global_reuse = {}
         to_classify  = []
 
@@ -643,9 +617,6 @@ class ActivityMatcher:
             f"New (GPT): {len(to_classify)}\n"
         )
 
-        # =================================================
-        # PARALLEL CLASSIFICATION (new activities only)
-        # =================================================
         classification_results = {}
 
         if to_classify:
@@ -679,9 +650,6 @@ class ActivityMatcher:
                             "class":    ""
                         }
 
-        # =================================================
-        # COLLECT ALL ACTIVITIES NEEDING isic description
-        # =================================================
         needs_description = []
 
         for name in to_classify:
@@ -706,9 +674,6 @@ class ActivityMatcher:
                     "class_code":    meta["class"]
                 })
 
-        # =================================================
-        # BATCH DESCRIPTION GENERATION
-        # =================================================
         description_map = {}
 
         if needs_description:
@@ -726,10 +691,6 @@ class ActivityMatcher:
                 )
             )
 
-        # =================================================
-        # PRELOAD ISIC CODE CACHE
-        # (group, class) -> list of {activity_name, code}
-        # =================================================
         isic_code_cache = {}
 
         for _, row in master_df.iterrows():
@@ -768,13 +729,6 @@ class ActivityMatcher:
             f"(group, class) keys\n"
         )
 
-        # =================================================
-        # SEQUENTIAL CODE ASSIGNMENT
-        # 1. Look up (group, class) in cache
-        # 2. If 1 match  → reuse directly
-        # 3. If N matches → semantic match → best code
-        # 4. Fallback     → RAG
-        # =================================================
         code_map = {}
 
         if to_classify:
@@ -795,9 +749,6 @@ class ActivityMatcher:
                     str(cls).strip()
                 )
 
-                # =========================================
-                # STEP 1: Check cache
-                # =========================================
                 if key in isic_code_cache:
 
                     candidates = isic_code_cache[key]
@@ -810,15 +761,11 @@ class ActivityMatcher:
                     if code:
                         return name, code
 
-                # =========================================
-                # STEP 2: Fallback to RAG
-                # =========================================
                 print(f"[RAG FALLBACK] {name}")
 
                 code = self._assign_code(name)
                 code = self.clean_number(code)
 
-                # Save new code in cache for next activity
                 if code and group and cls:
                     if key not in isic_code_cache:
                         isic_code_cache[key] = []
@@ -839,12 +786,8 @@ class ActivityMatcher:
                     print(f"[CODE ERROR] {name}: {e}")
                     code_map[name] = ""
 
-        # =================================================
-        # BUILD ALL NEW ROWS
-        # =================================================
         new_rows = []
 
-        # --- GLOBAL COPY rows ---
         for name, meta in global_reuse.items():
 
             division  = meta["division"]
@@ -853,7 +796,6 @@ class ActivityMatcher:
             isic_desc = meta["isic_description"]
             code      = meta["code"]
 
-            # If no code from global match, use cache/RAG
             if not code:
                 key = (str(group).strip(), str(cls).strip())
                 if key in isic_code_cache:
@@ -866,7 +808,6 @@ class ActivityMatcher:
             if self.is_empty(isic_desc):
                 isic_desc = description_map.get(name, "")
 
-            # Safety net: ISIC fields empty
             if not division or not group or not cls:
 
                 print(f"[FIX ISIC] {name}")
@@ -883,7 +824,6 @@ class ActivityMatcher:
                     isic.get("class", "")
                 )
 
-            # Safety net: description still empty
             if self.is_empty(isic_desc):
 
                 print(f"[FIX DESC] {name}")
@@ -906,7 +846,6 @@ class ActivityMatcher:
 
             print(f"[APPENDED GLOBAL] {name}")
 
-        # --- NEW classified rows ---
         for name in to_classify:
 
             isic      = classification_results.get(name, {})
@@ -916,7 +855,6 @@ class ActivityMatcher:
             isic_desc = description_map.get(name, "").strip()
             code      = self.clean_number(code_map.get(name, ""))
 
-            # Safety net: ISIC fields empty
             if not division or not group or not cls:
 
                 print(f"[FIX ISIC] {name}")
@@ -933,7 +871,6 @@ class ActivityMatcher:
                     isic2.get("class", "")
                 )
 
-            # Safety net: description still empty
             if self.is_empty(isic_desc):
 
                 print(f"[FIX DESC] {name}")
@@ -960,9 +897,6 @@ class ActivityMatcher:
                 f"[{isic.get('method', 'N/A')}]"
             )
 
-        # =================================================
-        # WRITE OUTPUT WORKBOOK (separate from consolidated)
-        # =================================================
         if new_rows:
 
             master_df = pd.concat(
@@ -985,9 +919,12 @@ class ActivityMatcher:
 
             print(f"\n✅ Wrote {len(new_rows)} new rows to {output_path}.")
 
-        # =================================================
-        # SUMMARY
-        # =================================================
+            # ── FIX: persist new rows back to the volume ──
+            # Without this, every new classification, GPT
+            # cache hit, and description is lost once the
+            # temp working file is discarded.
+            self.save_consolidated(master_df)
+
         print(f"\n{'='*50}")
         print("COMPLETE")
         print(f"Jurisdiction   : {jurisdiction}")

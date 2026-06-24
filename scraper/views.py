@@ -10,11 +10,12 @@ from django.http import FileResponse, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from scraper.management.commands.run_scrapers import update_progress_status
+from scraper.paths_config import OUTPUT_DIR as _OUTPUT_DIR_STR
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MANAGE_PY = BASE_DIR / "manage.py"
-OUTPUT_DIR = BASE_DIR / "scraper" / "output"
+OUTPUT_DIR = Path(_OUTPUT_DIR_STR)
 WEBSITES = ["ALL", "RAKEZ", "MEYDAN", "ANCF", "IFZA", "SHAMS", "SPC", "AFZ", "SRTIP"]
 
 
