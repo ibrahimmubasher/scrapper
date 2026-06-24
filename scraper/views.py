@@ -12,6 +12,8 @@ from django.urls import reverse
 
 from scraper.paths_config import OUTPUT_DIR as _OUTPUT_DIR_STR
 
+from scraper.management.commands.run_scrapers import update_progress_status   # ← ADD THIS LINE
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MANAGE_PY = BASE_DIR / "manage.py"
