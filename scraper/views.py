@@ -30,39 +30,20 @@ def view_log(request, run_id):
     if not log_path.exists():
         return HttpResponse(
             f"No log file found for run_id: {run_id}",
-            content_type="text/plain; charset=utf-8"
+            content_type="text/plain",
+            status=404,
         )
  
-    raw_content = log_path.read_text(encoding="utf-8", errors="replace")
+    try:
+        content = log_path.read_text(encoding="utf-8", errors="replace")
+    except Exception as exc:
+        return HttpResponse(
+            f"Unable to read log file: {exc}",
+            content_type="text/plain",
+            status=500,
+        )
  
-    # Strip ANSI escape codes (color codes from terminal output)
-    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-    cleaned = ansi_escape.sub('', raw_content)
- 
-    # Strip other control characters except newline/tab
-    cleaned = ''.join(
-        ch for ch in cleaned
-        if ch in ('\n', '\t', '\r') or (ord(ch) >= 32 and ord(ch) != 127)
-    )
- 
-    # Escape HTML special characters so progress bars / symbols
-    # don't get interpreted as HTML
-    cleaned = (
-        cleaned
-        .replace('&', '&amp;')
-        .replace('<', '&lt;')
-        .replace('>', '&gt;')
-    )
- 
-    html = f"""<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>Log: {run_id}</title></head>
-<body style="background:#0b0b0f; color:#ddd; font-family:monospace;">
-<pre style="white-space:pre-wrap; word-wrap:break-word; padding:20px;">{cleaned}</pre>
-</body>
-</html>"""
- 
-    return HttpResponse(html, content_type="text/html; charset=utf-8")
+    return HttpResponse(content, content_type="text/plain")
  
 def _list_output_files():
     if not OUTPUT_DIR.exists():
