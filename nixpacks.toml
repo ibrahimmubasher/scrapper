@@ -1,0 +1,20 @@
+[build]
+cmds = [
+  "pip install -r requirements.txt",
+  "playwright install chromium",
+  "python -m spacy download en_core_web_sm 2>/dev/null || true"
+]
+
+[phases.setup]
+nixPkgs = [
+  "python313",
+  "chromium",
+  "chromedriver",
+  "xvfb"
+]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements.txt",
+  "playwright install chromium"
+]

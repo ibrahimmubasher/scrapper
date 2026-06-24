@@ -26,26 +26,40 @@ def scrape_SHAMS_activities():
         page    = browser.new_page()
 
         print("\nOpening Shams Free Zone website...")
+        print(f"URL: {url}")
         page.set_default_timeout(120000)
         page.set_default_navigation_timeout(120000)
+        print("[DEBUG] About to navigate to page")
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
+        print("[DEBUG] Page navigation completed")
         page.wait_for_timeout(3000)
+        print("[DEBUG] Page loaded, checking frames")
 
         # ==========================================
         # GET ZOHO FRAME
         # ==========================================
 
+        print(f"[DEBUG] Total frames on page: {len(page.frames)}")
+        for idx, frame in enumerate(page.frames):
+            print(f"[DEBUG] Frame {idx}: {frame.url}")
+
         zoho_frame = None
-        for _ in range(30):
+        for attempt in range(30):
+            print(f"[DEBUG] Attempt {attempt+1}/30 to find Zoho frame")
             for f in page.frames:
+                print(f"[DEBUG]   Checking frame: {f.url}")
                 if "zohopublic" in f.url:
                     zoho_frame = f
+                    print(f"[DEBUG]   FOUND Zoho frame: {f.url}")
                     break
             if zoho_frame:
                 break
             page.wait_for_timeout(1000)
 
         if zoho_frame is None:
+            print("[ERROR] Zoho frame not found. Available frames:")
+            for f in page.frames:
+                print(f"[ERROR]   {f.url}")
             raise Exception("Zoho frame not found.")
 
         print("Zoho frame found.")
