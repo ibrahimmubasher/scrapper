@@ -1,11 +1,12 @@
 import time
+import re
 import pandas as pd
 
 from bs4 import BeautifulSoup
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
@@ -15,8 +16,17 @@ class RAKEZScraper:
 
     URL = (
         "https://rakez.com/en/start-a-business/license-activity-list"
-      
     )
+
+    # ============================================
+    # NORMALIZE ZONE TEXT FOR MATCHING
+    # ============================================
+    def _normalize_zone(self, text):
+
+        text = str(text)
+        text = text.replace("\xa0", " ")
+        text = re.sub(r"[\s\-_]+", "", text)
+        return text.strip().lower()
 
     def scrape(self):
 
@@ -36,6 +46,7 @@ class RAKEZScraper:
         wait = WebDriverWait(driver, 30)
 
         activities = []
+        all_zones_seen = set()
 
         try:
             print(self.URL)
@@ -80,9 +91,6 @@ class RAKEZScraper:
 
                     time.sleep(10)
 
-            # ==========================================
-            # WAIT FOR TABLE
-            # ==========================================
             wait.until(
                 EC.presence_of_element_located(
                     (
@@ -91,14 +99,7 @@ class RAKEZScraper:
                     )
                 )
             )
-            
-            
-            
 
-
-            # ==========================================
-            # SET RECORDS = 40
-            # ==========================================
             try:
 
                 dropdown = wait.until(
@@ -117,7 +118,6 @@ class RAKEZScraper:
 
                 Select(dropdown).select_by_visible_text("40")
 
-                # wait until the table refreshes
                 time.sleep(5)
 
                 wait.until(
@@ -137,15 +137,17 @@ class RAKEZScraper:
 
             page = 1
 
-            max_pages = 120
+            max_pages = 200  # raised from 120 — site may have many pages
             seen_row_text = set()
+            consecutive_empty_freezone_pages = 0
+            MAX_CONSECUTIVE_EMPTY = 999  # never give up early based on filter alone
 
             while page <= max_pages:
 
                 print(
                     f"[RAKEZ] Scraping page {page}"
                 )
-                
+
                 print(
                     f"[RAKEZ] Current URL: {driver.current_url}"
                 )
@@ -174,20 +176,24 @@ class RAKEZScraper:
                 rows = table.find_all("tr")
 
                 data_rows = [row for row in rows if len(row.find_all("td")) >= 5]
-                page_rows = 0
+
+                page_rows       = 0
+                page_total_rows = len(data_rows)
+                page_zones_seen = []
+
                 for row in data_rows:
 
                     cols = row.find_all("td")
 
                     try:
 
-                        zone = cols[0].get_text(
-                            " ",
-                            strip=True
-                        )
+                        zone_raw = cols[0].get_text(" ", strip=True)
+                        zone_normalized = self._normalize_zone(zone_raw)
 
-                        # Keep only Freezone activities
-                        if zone.strip().lower() != "freezone":
+                        page_zones_seen.append(zone_raw)
+                        all_zones_seen.add(zone_raw)
+
+                        if zone_normalized != "freezone":
                             continue
 
                         activity_code = cols[1].get_text(
@@ -242,7 +248,7 @@ class RAKEZScraper:
                                 description,
 
                             "zone":
-                                zone,
+                                zone_raw,
 
                             "licence type":
                                 licence_type,
@@ -259,12 +265,31 @@ class RAKEZScraper:
                         )
 
                 print(
-                    f"[RAKEZ] Page {page} rows: {page_rows} | Total scraped: "
-                    f"{len(activities)}"
+                    f"[RAKEZ] Page {page} | "
+                    f"total rows: {page_total_rows} | "
+                    f"matched 'freezone': {page_rows} | "
+                    f"running total: {len(activities)}"
                 )
 
-                if page_rows == 0:
-                    print("[RAKEZ] No rows found on this page, stopping pagination.")
+                if page_rows == 0 and page_total_rows > 0:
+
+                    consecutive_empty_freezone_pages += 1
+
+                    print(
+                        f"[RAKEZ DEBUG] Page {page} had "
+                        f"{page_total_rows} rows but NONE matched "
+                        f"'freezone'. Zones seen: "
+                        f"{set(page_zones_seen)} | "
+                        f"consecutive empty pages: "
+                        f"{consecutive_empty_freezone_pages}"
+                    )
+
+                else:
+                    consecutive_empty_freezone_pages = 0
+
+                # Only stop if the TABLE ITSELF was empty
+                if page_total_rows == 0:
+                    print("[RAKEZ] Table genuinely empty, stopping pagination.")
                     break
 
                 # stop if table data repeats
@@ -278,79 +303,110 @@ class RAKEZScraper:
                 seen_row_text.add(first_data_row_text)
 
                 # ======================================
-                # NEXT PAGE
+                # NEXT PAGE — with stale element retry
                 # ======================================
-                try:
+                next_page_success = False
+                NEXT_PAGE_RETRIES = 3
 
-                    old_table = driver.find_element(
-                        By.ID,
-                        "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
-                    )
-                    old_table_html = old_table.get_attribute("innerHTML") or ""
-
-                    next_btn = None
-                    for locator in [
-                        (By.XPATH, "//a[contains(text(),'>') or contains(text(),'Next') or contains(text(),'next') ]"),
-                        (By.XPATH, "//button[contains(text(),'Next') or contains(text(),'next') ]"),
-                        (By.CSS_SELECTOR, "a[aria-label='Next'], button[aria-label='Next'], a.next, button.next"),
-                    ]:
-                        try:
-                            candidate = wait.until(
-                                EC.presence_of_element_located(locator)
-                            )
-                            aria_disabled = (
-                                candidate.get_attribute("aria-disabled") or ""
-                            ).lower()
-                            classes = (
-                                candidate.get_attribute("class") or ""
-                            ).lower()
-
-                            if aria_disabled == "true" or "disabled" in classes:
-                                continue
-
-                            next_btn = candidate
-                            break
-                        except Exception:
-                            continue
-
-                    if next_btn is None:
-                        print("[RAKEZ] No next page button found, stopping pagination.")
-                        break
-
-                    driver.execute_script(
-                        "arguments[0].scrollIntoView({block:'center'});",
-                        next_btn
-                    )
-
-                    time.sleep(1)
-
-                    driver.execute_script(
-                        "arguments[0].click();",
-                        next_btn
-                    )
+                for next_attempt in range(NEXT_PAGE_RETRIES):
 
                     try:
+
+                        old_table = driver.find_element(
+                            By.ID,
+                            "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
+                        )
+                        old_table_html = old_table.get_attribute("innerHTML") or ""
+
+                        next_btn = None
+                        for locator in [
+                            (By.XPATH, "//a[contains(text(),'>') or contains(text(),'Next') or contains(text(),'next') ]"),
+                            (By.XPATH, "//button[contains(text(),'Next') or contains(text(),'next') ]"),
+                            (By.CSS_SELECTOR, "a[aria-label='Next'], button[aria-label='Next'], a.next, button.next"),
+                        ]:
+                            try:
+                                candidate = wait.until(
+                                    EC.presence_of_element_located(locator)
+                                )
+                                aria_disabled = (
+                                    candidate.get_attribute("aria-disabled") or ""
+                                ).lower()
+                                classes = (
+                                    candidate.get_attribute("class") or ""
+                                ).lower()
+
+                                if aria_disabled == "true" or "disabled" in classes:
+                                    continue
+
+                                next_btn = candidate
+                                break
+                            except Exception:
+                                continue
+
+                        if next_btn is None:
+                            print("[RAKEZ] No next page button found, stopping pagination.")
+                            next_page_success = None
+                            break
+
+                        driver.execute_script(
+                            "arguments[0].scrollIntoView({block:'center'});",
+                            next_btn
+                        )
+
+                        time.sleep(1)
+
+                        driver.execute_script(
+                            "arguments[0].click();",
+                            next_btn
+                        )
+
                         wait.until(
                             lambda d: d.find_element(
                                 By.ID,
                                 "dnn_ctr3776_BusinessActivity_gvBusinessActivity"
                             ).get_attribute("innerHTML") != old_table_html
                         )
-                    except TimeoutException:
-                        print(
-                            "[RAKEZ] Next page click did not update table, stopping pagination."
-                        )
+
+                        next_page_success = True
                         break
 
-                    page += 1
+                    except StaleElementReferenceException:
 
-                except Exception as e:
+                        print(
+                            f"[RAKEZ] Stale element on next-page click "
+                            f"(retry {next_attempt + 1}/{NEXT_PAGE_RETRIES}), "
+                            f"retrying..."
+                        )
+                        time.sleep(2)
+                        continue
 
-                    print(
-                        f"[RAKEZ] Last page reached: {e}"
-                    )
+                    except TimeoutException:
 
+                        print(
+                            f"[RAKEZ] Next page click did not update table "
+                            f"(retry {next_attempt + 1}/{NEXT_PAGE_RETRIES})"
+                        )
+                        time.sleep(2)
+                        continue
+
+                    except Exception as e:
+
+                        print(f"[RAKEZ] Unexpected error on next-page: {e}")
+                        time.sleep(2)
+                        continue
+
+                if next_page_success is None:
                     break
+
+                if not next_page_success:
+                    print(
+                        f"[RAKEZ] Failed to advance to next page after "
+                        f"{NEXT_PAGE_RETRIES} retries, stopping pagination."
+                    )
+                    break
+
+                page += 1
+
         finally:
 
             driver.quit()
@@ -379,7 +435,13 @@ class RAKEZScraper:
             f"[RAKEZ] Finished. "
             f"{len(df)} activities."
         )
-        
-        print(df["zone"].value_counts())
+
+        if len(df) > 0:
+            print(df["zone"].value_counts())
+
+        print(
+            f"[RAKEZ DEBUG] All distinct zone values seen "
+            f"across all pages: {all_zones_seen}"
+        )
 
         return df

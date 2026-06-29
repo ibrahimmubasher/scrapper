@@ -10,6 +10,7 @@ from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity
 
 from scraper.paths_config import DATA_DIR
+from scraper.services.logger import safe_print  # ensures UTF-8 stdout, prevents charmap crashes
 
 
 class MetadataAI:
@@ -278,7 +279,7 @@ class MetadataAI:
 
     # ==================================================
     # SEMANTIC ISIC MATCH
-    # Cache → Embed → Top 20 → GPT → Save cache
+    # Cache -> Embed -> Top 20 -> GPT -> Save cache
     # ALWAYS returns valid result
     # ==================================================
     def semantic_isic_match(self, activity_name):
@@ -292,7 +293,7 @@ class MetadataAI:
                 print(f"[CACHE] {activity_name}")
                 return self.gpt_cache[cache_key]
 
-        # Embed → top 20
+        # Embed -> top 20
         candidates = self._get_top_candidates(
             activity_name, top_n=20
         )

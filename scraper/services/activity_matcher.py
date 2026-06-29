@@ -144,7 +144,7 @@ class ActivityMatcher:
 
     # =====================================================
     # CLEAN ISIC NUMBER
-    # "Division 42" → "42"  |  "10.0" → "10"
+    # "Division 42" -> "42"  |  "10.0" -> "10"
     # =====================================================
     def clean_isic_number(self, value):
 
@@ -308,7 +308,7 @@ class ActivityMatcher:
         return results
 
     # =====================================================
-    # CLASSIFY ONE ACTIVITY (ISIC → GPT)
+    # CLASSIFY ONE ACTIVITY (ISIC -> GPT)
     # ALWAYS returns a valid isic dict
     # =====================================================
     def _classify_activity(self, activity_name):
