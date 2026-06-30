@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import re
 
 
 def scrape_SPC_activities():
@@ -44,32 +45,40 @@ def scrape_SPC_activities():
 
         for item in records:
 
-            full_activity = (
-                item.get(
-                    "Description_EN",
-                    ""
+            full_activity = item.get(
+                "Description_EN",
+                ""
+            ).strip()
+
+            # Code provided directly by API
+            code = item.get("SubCode", "").strip()
+
+            activity_name = full_activity
+
+            if code:
+
+                # Escape dots and other regex characters
+                escaped_code = re.escape(code)
+
+                # Remove code from beginning if present
+                activity_name = re.sub(
+                    rf'^\s*{escaped_code}\s*[-–—]?\s*',
+                    '',
+                    full_activity,
+                    flags=re.IGNORECASE
                 ).strip()
-            )
 
-            if " - " in full_activity:
+            # Fallback if code wasn't removed
+            if activity_name == full_activity:
 
-                code, activity_name = (
-                    full_activity.split(
-                        " - ",
-                        1
-                    )
-                )
-
-            else:
-
-                code = item.get(
-                    "SubCode",
-                    ""
-                )
-
-                activity_name = (
+                match = re.match(
+                    r'^\s*([\d.]+)\s*[-–—]?\s*(.+)$',
                     full_activity
                 )
+
+                if match:
+                    code = match.group(1).strip()
+                    activity_name = match.group(2).strip()
 
             data.append({
 
