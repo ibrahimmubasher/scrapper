@@ -45,16 +45,8 @@ class Command(BaseCommand):
         update_progress_status(progress_file, "starting", "Preparing scraper run", 5)
 
         # ════════════════════════════════════════════════════
-        # REMOVED: playwright install chromium on every run
-        #
-        # This used to download ~290MB EVERY single request,
-        # which on Railway could take minutes or hang the
-        # subprocess.run(check=True) call indefinitely with
-        # no timeout and no visible error.
-        #
-        # Chromium is now installed ONCE at Docker build time
-        # via the Dockerfile / Railway build command instead.
-        # See deployment notes below.
+        # Chromium is initialized once when the scraper starts,
+        # so the run stays predictable on a local machine.
         # ════════════════════════════════════════════════════
 
         update_progress_status(progress_file, "running", "Preparing browser dependencies", 10)

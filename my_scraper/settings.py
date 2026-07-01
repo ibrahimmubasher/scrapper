@@ -12,38 +12,32 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
     'SECRET_KEY',
     'django-insecure-2)z&$=stig8@cwbe$+^&_&_)dxr3+o4gs(kpgo41th4_*91hib'
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'True').lower() in {'1', 'true', 'yes', 'on'}
 
-# ── FIXED ──────────────────────────────────────────────────
-# os.getenv() only takes (key, default) — two arguments.
-# ".railway.app" must be INSIDE the default string, comma
-# separated with the rest, not passed as its own argument.
-ALLOWED_HOSTS = os.getenv(
-    'ALLOWED_HOSTS',
-    '.railway.app,localhost,127.0.0.1,testserver'
-).split(',')
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
+    if host.strip()
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.railway.app",
+    origin.strip()
+    for origin in os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000').split(',')
+    if origin.strip()
 ]
 
 
@@ -62,7 +56,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,6 +131,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

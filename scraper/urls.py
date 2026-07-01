@@ -1,4 +1,3 @@
-from django import views
 from django.urls import path
 from .views import dashboard, download_csv, progress_status, scrape_api, start_run, view_log
 

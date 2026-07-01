@@ -6,12 +6,8 @@ from scraper.paths_config import OUTPUT_DIR
 
 class CSVExporter:
 
-    # ── FIX: use the same persistent volume path as views.py ──
-    # Before, this hardcoded os.getcwd()/scraper/output, which
-    # is a DIFFERENT location than what views.py reads from
-    # (paths_config.OUTPUT_DIR -> /data/output on Railway).
-    # CSVs were being saved to one place and looked for in
-    # another, so the dashboard never saw them.
+    # Use the shared output directory from paths_config so
+    # CSVs are written and read from the same location.
     OUTPUT_FOLDER = OUTPUT_DIR
 
     @classmethod

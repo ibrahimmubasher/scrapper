@@ -12,7 +12,7 @@ from django.urls import reverse
 
 from scraper.paths_config import OUTPUT_DIR as _OUTPUT_DIR_STR
 
-from scraper.management.commands.run_scrapers import update_progress_status   # ← ADD THIS LINE
+from scraper.management.commands.run_scrapers import update_progress_status
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +22,7 @@ WEBSITES = ["ALL", "RAKEZ", "MEYDAN", "ANCF", "IFZA", "SHAMS", "SPC", "AFZ", "SR
 
 
 def view_log(request, run_id):
-    """
-    Debug helper: lets you view the subprocess log file
-    in the browser instead of needing SSH/console access.
- 
-    Visit: https://your-app.up.railway.app/log/<run_id>/
-    """
+    """Display the log for a completed or in-progress scraper run."""
     log_path = OUTPUT_DIR / f"{run_id}.log"
  
     if not log_path.exists():
@@ -53,7 +48,29 @@ def _list_output_files():
         return []
     return sorted([path.name for path in OUTPUT_DIR.glob("*.csv")])
 
+def clear_previous_outputs():
+    """
+    Remove all previous generated files before starting a new run.
+    """
 
+    if not OUTPUT_DIR.exists():
+        return
+
+    patterns = [
+        "*.csv",
+        "*.log",
+        "*_progress.json",
+    ]
+
+    for pattern in patterns:
+
+        for file in OUTPUT_DIR.glob(pattern):
+
+            try:
+                file.unlink()
+
+            except Exception as e:
+                print(f"Could not delete {file}: {e}")
 def dashboard(request):
     selected_website = (request.POST.get("website") or "ALL").upper()
     run_result = None
@@ -107,6 +124,9 @@ def start_run(request):
  
     selected_website = (request.POST.get("website") or "ALL").upper()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Remove previous outputs
+    clear_previous_outputs()
  
     run_id = uuid.uuid4().hex[:10]
     progress_file = OUTPUT_DIR / f"{run_id}_progress.json"
@@ -127,9 +147,6 @@ def start_run(request):
  
     log_handle = log_file.open("w", encoding="utf-8")
  
-    # ── KEY FIX ──────────────────────────────────────────
-    # Explicitly pass full environment to the child process
-    # so OPENAI_API_KEY and all Railway variables are visible
     env = os.environ.copy()
  
     try:
@@ -213,75 +230,37 @@ def download_csv(request, website):
     return FileResponse(open(csv_path, "rb"), as_attachment=True, filename=f"{website}.csv")
 
 
+def _build_scraper_zip(dataframes):
+    import io
+    import zipfile
+
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+        for name, dataframe in dataframes.items():
+            excel_buffer = io.BytesIO()
+            dataframe.to_excel(excel_buffer, index=False, engine="openpyxl")
+            zip_file.writestr(f"{name}.xlsx", excel_buffer.getvalue())
+
+    zip_buffer.seek(0)
+    return zip_buffer.getvalue()
+
+
 def scrape_api(request):
     try:
-        print("\nRunning Meydan scraper...")
+        print("\nRunning selected scrapers...")
         from .services.maydan_service import scrape_meydan
         from .services.SPC_scraper import scrape_SPC_activities
         from .services.Ajman_scraper import scrape_AFZ_activities
 
-        df_meydan = scrape_meydan()
-        df_SPC = scrape_SPC_activities()
-        df_AFZ = scrape_AFZ_activities()
+        dataframes = {
+            "meydan": scrape_meydan(),
+            "SPC": scrape_SPC_activities(),
+            "AFZ": scrape_AFZ_activities(),
+        }
 
-        import io
-        import zipfile
-
-        zip_buffer = io.BytesIO()
-
-        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-            meydan_buffer = io.BytesIO()
-            df_meydan.to_excel(meydan_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("meydan.xlsx", meydan_buffer.getvalue())
-
-            SPC_buffer = io.BytesIO()
-            df_SPC.to_excel(SPC_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("SPC.xlsx", SPC_buffer.getvalue())
-
-            AFZ_buffer = io.BytesIO()
-            df_AFZ.to_excel(AFZ_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("AFZ.xlsx", AFZ_buffer.getvalue())
-
-        zip_buffer.seek(0)
-
-        response = HttpResponse(zip_buffer.getvalue(), content_type="application/zip")
-        response["Content-Disposition"] = 'attachment; filename="all_scrapers.zip"'
-        return response
-
-    except Exception as exc:
-        print(traceback.format_exc())
-        return HttpResponse(f"ERROR: {str(exc)}", status=500)
-    try:
-        print("\nRunning Meydan scraper...")
-        from .services.maydan_service import scrape_meydan
-        from .services.SPC_scraper import scrape_SPC_activities
-        from .services.Ajman_scraper import scrape_AFZ_activities
-
-        df_meydan = scrape_meydan()
-        df_SPC = scrape_SPC_activities()
-        df_AFZ = scrape_AFZ_activities()
-
-        import io
-        import zipfile
-
-        zip_buffer = io.BytesIO()
-
-        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-            meydan_buffer = io.BytesIO()
-            df_meydan.to_excel(meydan_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("meydan.xlsx", meydan_buffer.getvalue())
-
-            SPC_buffer = io.BytesIO()
-            df_SPC.to_excel(SPC_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("SPC.xlsx", SPC_buffer.getvalue())
-
-            AFZ_buffer = io.BytesIO()
-            df_AFZ.to_excel(AFZ_buffer, index=False, engine="openpyxl")
-            zip_file.writestr("AFZ.xlsx", AFZ_buffer.getvalue())
-
-        zip_buffer.seek(0)
-
-        response = HttpResponse(zip_buffer.getvalue(), content_type="application/zip")
+        archive = _build_scraper_zip(dataframes)
+        response = HttpResponse(archive, content_type="application/zip")
         response["Content-Disposition"] = 'attachment; filename="all_scrapers.zip"'
         return response
 

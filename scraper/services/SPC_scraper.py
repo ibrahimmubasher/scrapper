@@ -26,6 +26,27 @@ def scrape_SPC_activities():
         f"Found {total_pages} pages"
     )
 
+    # ============================================
+    # REGEX: matches a leading code prefix regardless
+    # of whether SubCode field matches the text.
+    #
+    # Two patterns combined:
+    #   1. digits + ".xx" suffix + optional dash
+    #      e.g. "4773.b8 - ", "1811.10-", "7210.02 -- "
+    #   2. 3+ digits + REQUIRED dash
+    #      e.g. "9603- ", "100356 - "
+    #
+    # Deliberately does NOT match a bare leading digit
+    # with no dot and no dash (avoids mangling things
+    # like "3D Printing Services" -> "D Printing Services").
+    # ============================================
+    CODE_PREFIX_PATTERN = re.compile(
+        r'^\s*\d+(?:\.[a-zA-Z0-9]+)\s*[-–—]{0,2}\s*'
+        r'|'
+        r'^\s*\d{3,}\s*[-–—]+\s*',
+        flags=re.IGNORECASE
+    )
+
     for page in range(1, total_pages + 1):
 
         print(
@@ -55,30 +76,48 @@ def scrape_SPC_activities():
 
             activity_name = full_activity
 
+            # =========================================
+            # STEP 1: Try exact SubCode match first
+            # (works when SubCode matches text exactly)
+            # =========================================
             if code:
 
-                # Escape dots and other regex characters
                 escaped_code = re.escape(code)
 
-                # Remove code from beginning if present
-                activity_name = re.sub(
-                    rf'^\s*{escaped_code}\s*[-–—]?\s*',
+                stripped = re.sub(
+                    rf'^\s*{escaped_code}\s*[-–—]{{0,2}}\s*',
                     '',
                     full_activity,
                     flags=re.IGNORECASE
                 ).strip()
 
-            # Fallback if code wasn't removed
+                if stripped != full_activity:
+                    activity_name = stripped
+
+            # =========================================
+            # STEP 2: SubCode didn't match the visible
+            # text — fall back to generic pattern that
+            # strips ANY leading code-like prefix found
+            # in the text itself, regardless of SubCode.
+            # =========================================
             if activity_name == full_activity:
 
-                match = re.match(
-                    r'^\s*([\d.]+)\s*[-–—]?\s*(.+)$',
-                    full_activity
-                )
+                match = CODE_PREFIX_PATTERN.match(full_activity)
 
                 if match:
-                    code = match.group(1).strip()
-                    activity_name = match.group(2).strip()
+
+                    prefix = match.group(0)
+
+                    activity_name = full_activity[len(prefix):].strip()
+
+                    # Extract the code portion for the Code column
+                    code_match = re.match(
+                        r'^\s*([\d]+(?:\.[a-zA-Z0-9]+)?)',
+                        prefix
+                    )
+
+                    if code_match and not code:
+                        code = code_match.group(1)
 
             data.append({
 
@@ -146,5 +185,22 @@ def scrape_SPC_activities():
     print(
         f"\n Total Activities: {len(df)}"
     )
+
+    # DEBUG: flag any rows still starting with what looks
+    # like a leftover code, so you can sanity-check results
+    still_has_code = df[
+        df["Activity Name"].str.match(
+            r'^\s*\d+\.[a-zA-Z0-9]+\s*[-–—]', na=False
+        )
+    ]
+
+    if len(still_has_code) > 0:
+        print(
+            f"\n[SPC DEBUG] {len(still_has_code)} rows still "
+            f"appear to have a code prefix:"
+        )
+        print(still_has_code["Activity Name"].head(10).tolist())
+    else:
+        print("\n[SPC DEBUG] No leftover code prefixes detected.")
 
     return df

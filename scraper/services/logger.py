@@ -18,8 +18,8 @@ import io
 def _ensure_utf8_stdout():
     """
     Reconfigures sys.stdout to use UTF-8 encoding.
-    Safe to call multiple times. Works on both Windows
-    and Linux/Railway without breaking anything.
+    Safe to call multiple times. Works on Windows and
+    other local development environments without breaking anything.
     """
 
     try:
