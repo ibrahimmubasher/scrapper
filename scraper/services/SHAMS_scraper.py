@@ -1,5 +1,4 @@
 import os
-import re
 import pandas as pd
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
@@ -10,12 +9,10 @@ print = safe_print
 
 
 def scrape_SHAMS_activities():
-
-    url  = "https://shamsfz.ae/business-setup/business-activities/"
+    url = "https://shamsfz.ae/business-setup/business-activities/"
     data = []
 
     with sync_playwright() as p:
-
         browser = p.chromium.launch(
             headless=True,
             executable_path="/snap/bin/chromium",
@@ -26,69 +23,131 @@ def scrape_SHAMS_activities():
                 "--disable-setuid-sandbox",
             ],
         )
+
         context = browser.new_context(
             viewport={"width": 1400, "height": 900},
             user_agent=(
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
             ),
+            java_script_enabled=True,
         )
+
         page = context.new_page()
+        page.set_default_timeout(120000)
+        page.set_default_navigation_timeout(120000)
 
         print("\nOpening Shams Free Zone website...")
         print(f"URL: {url}")
-        page.set_default_timeout(120000)
-        page.set_default_navigation_timeout(120000)
-        print("[DEBUG] About to navigate to page")
-        page.goto(url, wait_until="domcontentloaded", timeout=60000)
-        print("[DEBUG] Page navigation completed")
-        page.wait_for_timeout(3000)
-        print("[DEBUG] Page loaded, checking frames")
+
+        page.goto(url, wait_until="domcontentloaded", timeout=120000)
+        page.wait_for_timeout(5000)
+
+        # Try to let JS/iframe finish loading
+        try:
+            page.wait_for_load_state("networkidle", timeout=15000)
+        except Exception:
+            pass
 
         # ==========================================
-        # GET ZOHO FRAME
+        # FIND ZOHO IFRAME
         # ==========================================
-
-        print(f"[DEBUG] Total frames on page: {len(page.frames)}")
-        for idx, frame in enumerate(page.frames):
-            print(f"[DEBUG] Frame {idx}: {frame.url}")
+        print("[DEBUG] Checking iframe elements on page...")
 
         zoho_frame = None
-        for attempt in range(30):
-            print(f"[DEBUG] Attempt {attempt+1}/30 to find Zoho frame")
-            for f in page.frames:
-                print(f"[DEBUG]   Checking frame: {f.url}")
-                if "zohopublic" in f.url:
-                    zoho_frame = f
-                    print(f"[DEBUG]   FOUND Zoho frame: {f.url}")
-                    break
+
+        # Try for up to 60 seconds
+        for attempt in range(60):
+            print(f"[DEBUG] Attempt {attempt + 1}/60 to find Zoho frame")
+
+            # 1) Print current frames
+            frames = page.frames
+            print(f"[DEBUG] Current frame count: {len(frames)}")
+            for idx, frame in enumerate(frames):
+                print(f"[DEBUG]   Frame {idx}: {frame.url}")
+
+            # 2) Try to locate iframe elements in DOM
+            iframe_elements = page.locator("iframe")
+            iframe_count = iframe_elements.count()
+            print(f"[DEBUG] iframe elements found in DOM: {iframe_count}")
+
+            for i in range(iframe_count):
+                try:
+                    iframe = iframe_elements.nth(i)
+                    src = iframe.get_attribute("src")
+                    print(f"[DEBUG]   iframe[{i}] src = {src}")
+
+                    if src and "zoho" in src.lower():
+                        frame = iframe.content_frame()
+                        if frame:
+                            zoho_frame = frame
+                            print(f"[DEBUG]   FOUND Zoho frame from iframe src: {src}")
+                            break
+                except Exception as exc:
+                    print(f"[DEBUG]   Error reading iframe[{i}]: {exc}")
+
             if zoho_frame:
                 break
+
+            # 3) Fallback: scan Playwright frames directly
+            for frame in page.frames:
+                frame_url = (frame.url or "").lower()
+                if "zoho" in frame_url or "zohopublic" in frame_url:
+                    zoho_frame = frame
+                    print(f"[DEBUG]   FOUND Zoho frame from page.frames: {frame.url}")
+                    break
+
+            if zoho_frame:
+                break
+
             page.wait_for_timeout(1000)
 
         if zoho_frame is None:
-            print("[ERROR] Zoho frame not found. Available frames:")
-            for f in page.frames:
-                print(f"[ERROR]   {f.url}")
+            print("[ERROR] Zoho frame not found.")
+            print("[ERROR] Dumping iframe HTML for debugging...")
+
+            try:
+                html = page.content()
+                snippet = html[:10000]
+                print(snippet)
+            except Exception as exc:
+                print(f"[ERROR] Could not dump page HTML: {exc}")
+
+            context.close()
+            browser.close()
             raise Exception("Zoho frame not found.")
 
         print("Zoho frame found.")
 
-        # Scroll wtHolder to force Zoho to load all rows,
-        # then wait for count to stabilize.
+        # ==========================================
+        # WAIT FOR HANDSONTABLE DATA
+        # ==========================================
         print("Loading all rows...")
 
-        # First wait for initial data
-        for _ in range(20):
-            c = zoho_frame.evaluate(
-                "() => { try { return window.htInstance ? window.htInstance.getData().length : 0; } catch(e) { return 0; } }"
+        count = 0
+        for _ in range(30):
+            count = zoho_frame.evaluate(
+                """
+                () => {
+                    try {
+                        return window.htInstance ? window.htInstance.getData().length : 0;
+                    } catch(e) {
+                        return 0;
+                    }
+                }
+                """
             )
-            if c > 0:
+            print(f"[DEBUG] Initial htInstance row count: {count}")
+            if count > 0:
                 break
             page.wait_for_timeout(1000)
 
-        # Now scroll to bottom repeatedly to trigger full load
-        for i in range(50):
+        if count == 0:
+            print("[DEBUG] htInstance still empty, waiting a bit more...")
+            page.wait_for_timeout(5000)
+
+        # Scroll to force lazy load
+        for i in range(60):
             zoho_frame.evaluate(
                 """
                 () => {
@@ -100,27 +159,46 @@ def scrape_SHAMS_activities():
             page.wait_for_timeout(800)
 
             count = zoho_frame.evaluate(
-                "() => { try { return window.htInstance ? window.htInstance.getData().length : 0; } catch(e) { return 0; } }"
+                """
+                () => {
+                    try {
+                        return window.htInstance ? window.htInstance.getData().length : 0;
+                    } catch(e) {
+                        return 0;
+                    }
+                }
+                """
             )
-            print("  scroll " + str(i+1) + " | rows: " + str(count))
+
+            print(f"  scroll {i + 1} | rows: {count}")
 
             if count >= 900:
                 break
 
         # Final stable check
-        prev_count    = 0
+        prev_count = 0
         stable_streak = 0
 
         for _ in range(20):
             count = zoho_frame.evaluate(
-                "() => { try { return window.htInstance ? window.htInstance.getData().length : 0; } catch(e) { return 0; } }"
+                """
+                () => {
+                    try {
+                        return window.htInstance ? window.htInstance.getData().length : 0;
+                    } catch(e) {
+                        return 0;
+                    }
+                }
+                """
             )
+
             if count == prev_count and count > 0:
                 stable_streak += 1
                 if stable_streak >= 3:
                     break
             else:
                 stable_streak = 0
+
             prev_count = count
             page.wait_for_timeout(500)
 
@@ -128,29 +206,14 @@ def scrape_SHAMS_activities():
 
         # ==========================================
         # EXTRACT ALL DATA FROM htInstance
-        # Column order from sample:
-        # [0] checkbox/nbsp  [1] record obj
-        # [2] Code           [3] Category
-        # [4] Group          [5] Activity Name (HTML)
-        # [6] Arabic Name    [7] Third Party
-        # [8] When           [9] Notes
         # ==========================================
-
         raw_rows = zoho_frame.evaluate(
             """
             () => {
                 try {
-                    // Use getData() — returns what is visible in cells
                     const rows = window.htInstance.getData();
 
-                    // Print first row to console for debugging
-                    if (rows.length > 0) {
-                        console.log('ROW0:', JSON.stringify(rows[0]));
-                        console.log('ROW1:', JSON.stringify(rows[1]));
-                    }
-
                     return rows.map(row => {
-                        // Convert row to plain strings
                         const cells = row.map(c => {
                             if (c === null || c === undefined) return '';
                             if (typeof c === 'object') return JSON.stringify(c);
@@ -165,7 +228,6 @@ def scrape_SHAMS_activities():
             """
         )
 
-        # Print first 3 raw rows to see structure
         print("First 3 raw rows:")
         for r in raw_rows[:3]:
             print("  " + str(r))
@@ -178,62 +240,44 @@ def scrape_SHAMS_activities():
     # ==========================================
     # CLEAN AND BUILD DATA
     # ==========================================
-
     def clean(val):
-        """Strip HTML tags and whitespace from a value."""
         return BeautifulSoup(str(val), "html.parser").get_text(strip=True)
 
     for row in raw_rows:
-
-        # Error row from JS
         if isinstance(row, dict) and row.get("error"):
             raise Exception("JS error: " + row["error"])
 
-        # Must be a list
         if not isinstance(row, list):
             continue
 
-        # Need at least 6 columns
         if len(row) < 6:
             continue
 
-        # Column positions confirmed from debug:
-        # [0]=nbsp [1]=record obj [2]=Code [3]=Category
-        # [4]=Group [5]=Activity Name [6]=Arabic [7]=Third Party
-        # [8]=When [9]=Notes
-        code          = clean(row[2] if len(row) > 2 else "")
-        category      = clean(row[3] if len(row) > 3 else "")
-        group         = clean(row[4] if len(row) > 4 else "")
+        code = clean(row[2] if len(row) > 2 else "")
+        category = clean(row[3] if len(row) > 3 else "")
+        group = clean(row[4] if len(row) > 4 else "")
         activity_name = clean(row[5] if len(row) > 5 else "")
-        arabic_name   = clean(row[6] if len(row) > 6 else "")
-        third_party   = clean(row[7] if len(row) > 7 else "")
-        when          = clean(row[8] if len(row) > 8 else "")
-        notes         = clean(row[9] if len(row) > 9 else "")
+        arabic_name = clean(row[6] if len(row) > 6 else "")
+        third_party = clean(row[7] if len(row) > 7 else "")
+        when = clean(row[8] if len(row) > 8 else "")
+        notes = clean(row[9] if len(row) > 9 else "")
 
         if not activity_name or activity_name in ("&nbsp;", "nbsp;", ""):
             continue
 
         data.append({
-            "Code":          code,
-            "Category":      category,
-            "Group":         group,
+            "Code": code,
+            "Category": category,
+            "Group": group,
             "Activity Name": activity_name,
-            "Arabic Name":   arabic_name,
-            "Third Party":   third_party,
-            "When":          when,
-            "Notes":         notes,
+            "Arabic Name": arabic_name,
+            "Third Party": third_party,
+            "When": when,
+            "Notes": notes,
         })
-
-    # ==========================================
-    # VALIDATE
-    # ==========================================
 
     if not data:
         raise Exception("No data scraped from Shams.")
-
-    # ==========================================
-    # DATAFRAME
-    # ==========================================
 
     df = pd.DataFrame(data)
 
@@ -246,10 +290,6 @@ def scrape_SHAMS_activities():
     df.reset_index(drop=True, inplace=True)
 
     print("Total unique activities: " + str(len(df)))
-
-    # ==========================================
-    # CSV SAVE
-    # ==========================================
 
     output_dir = "exports"
     os.makedirs(output_dir, exist_ok=True)
