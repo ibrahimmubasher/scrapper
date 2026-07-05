@@ -18,12 +18,22 @@ def scrape_SHAMS_activities():
 
         browser = p.chromium.launch(
             headless=True,
+            executable_path="/snap/bin/chromium",
             args=[
                 "--no-sandbox",
-                "--disable-dev-shm-usage"
-            ]
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-setuid-sandbox",
+            ],
         )
-        page    = browser.new_page()
+        context = browser.new_context(
+            viewport={"width": 1400, "height": 900},
+            user_agent=(
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+            ),
+        )
+        page = context.new_page()
 
         print("\nOpening Shams Free Zone website...")
         print(f"URL: {url}")
@@ -162,6 +172,7 @@ def scrape_SHAMS_activities():
 
         print("Raw rows extracted: " + str(len(raw_rows)))
 
+        context.close()
         browser.close()
 
     # ==========================================

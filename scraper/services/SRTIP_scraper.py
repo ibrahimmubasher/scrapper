@@ -14,8 +14,24 @@ class SRTIPScraper:
 
         with sync_playwright() as p:
 
-            browser = p.chromium.launch(headless=True)
-            page    = browser.new_page()
+            browser = p.chromium.launch(
+                headless=True,
+                executable_path="/snap/bin/chromium",
+                args=[
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--disable-setuid-sandbox",
+                ],
+            )
+            context = browser.new_context(
+                viewport={"width": 1400, "height": 900},
+                user_agent=(
+                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                ),
+            )
+            page = context.new_page()
 
             page.goto(
                 self.URL,
@@ -71,6 +87,7 @@ class SRTIPScraper:
                     "description":   ""
                 })
 
+            context.close()
             browser.close()
 
         df = pd.DataFrame(activities)
