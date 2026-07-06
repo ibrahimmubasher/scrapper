@@ -15,6 +15,8 @@ def scrape_SHAMS_activities():
 
     # --- Try API-first approach (faster, avoids browser) ---
     api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
+    print("[SHAMS API] Starting API attempt...")
+    print(f"[SHAMS API] Target URL: {api_base}")
     try:
         per_page = 100
         page = 1
@@ -26,6 +28,7 @@ def scrape_SHAMS_activities():
                 "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
             ),
         }
+        print(f"[SHAMS API] Prepared headers: {headers}")
 
         def extract_list(obj):
             if isinstance(obj, list):
@@ -42,9 +45,11 @@ def scrape_SHAMS_activities():
             return []
 
         while True:
+            print(f"[SHAMS API] Fetching page {page}...")
             resp = requests.get(api_base, params={"page": page, "per_page": per_page}, headers=headers, timeout=30)
-            print(f"[SHAMS API] GET {resp.url} -> {resp.status_code}")
+            print(f"[SHAMS API] Response status: {resp.status_code}")
             if resp.status_code != 200:
+                print(f"[SHAMS API] Non-200 status, stopping. Response text: {resp.text[:200]}")
                 break
             try:
                 parsed = resp.json()
@@ -115,8 +120,11 @@ def scrape_SHAMS_activities():
                 df_api.reset_index(drop=True, inplace=True)
                 return df_api
     except Exception as e:
-        print(f"[SHAMS API] API attempt failed: {e}")
+        import traceback
+        print(f"[SHAMS API] API attempt failed with exception: {e}")
+        print(f"[SHAMS API] Traceback: {traceback.format_exc()}")
         # fall through to Playwright-based scraping
+
     
 
     with sync_playwright() as p:
