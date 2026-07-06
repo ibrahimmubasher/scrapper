@@ -1,14 +1,9 @@
-import time
+import os
 import re
+import time
 import pandas as pd
 from bs4 import BeautifulSoup
-
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait, Select
-from selenium.webdriver.support import expected_conditions as EC
+from playwright.sync_api import sync_playwright
 
 from scraper.services.logger import safe_print
 
@@ -18,177 +13,224 @@ print = safe_print
 class RAKEZScraper:
     URL = "https://rakez.com/en/start-a-business/license-activity-list"
 
-    def _normalize_zone(self, text):
+    def _normalize_text(self, text):
         text = str(text or "")
         text = text.replace("\xa0", " ")
         text = re.sub(r"\s+", " ", text)
-        return text.strip().lower()
+        return text.strip()
+
+    def _normalize_zone(self, text):
+        return self._normalize_text(text).lower()
 
     def scrape(self):
         print("\n[RAKEZ] Starting scraper...")
 
-        options = Options()
-        options.binary_location = "/snap/bin/chromium"
+        all_rows = []
 
-        options.add_argument("--headless=new")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--disable-setuid-sandbox")
-        options.add_argument("--disable-software-rasterizer")
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_argument("--remote-debugging-port=9222")
-        options.add_argument("--window-size=1920,1080")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                executable_path="/snap/bin/chromium",
+                args=[
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--disable-setuid-sandbox",
+                ],
+            )
 
-        service = Service("/usr/bin/chromedriver")
-        driver = webdriver.Chrome(service=service, options=options)
+            context = browser.new_context(
+                viewport={"width": 1400, "height": 900},
+                user_agent=(
+                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                ),
+            )
 
-        wait = WebDriverWait(driver, 30)
+            page = context.new_page()
+            page.set_default_timeout(120000)
+            page.set_default_navigation_timeout(120000)
 
-        try:
             print(f"[RAKEZ] Opening: {self.URL}")
-            driver.get(self.URL)
-            time.sleep(5)
+            page.goto(self.URL, wait_until="domcontentloaded", timeout=120000)
+            page.wait_for_timeout(5000)
 
-            print("[RAKEZ] Looking for zone dropdown...")
+            # =========================================================
+            # 1) TRY TO SELECT FREE ZONE FROM DROPDOWN
+            # =========================================================
             zone_selected = False
 
-            zone_selectors = [
+            possible_selectors = [
                 "select",
                 "select[name*='zone' i]",
                 "select[id*='zone' i]",
                 "select.form-select",
             ]
 
-            for css in zone_selectors:
+            for css in possible_selectors:
                 try:
-                    elems = driver.find_elements(By.CSS_SELECTOR, css)
-                    for elem in elems:
+                    selects = page.locator(css)
+                    count = selects.count()
+
+                    for i in range(count):
+                        sel = selects.nth(i)
+
                         try:
-                            select = Select(elem)
-                            options_text = [o.text.strip() for o in select.options]
-                            print(f"[RAKEZ] Dropdown options found: {options_text[:10]}")
+                            options = sel.locator("option")
+                            opt_count = options.count()
+                            if opt_count == 0:
+                                continue
 
-                            for idx, opt in enumerate(select.options):
-                                zone_text = self._normalize_zone(opt.text)
-                                if "free zone" in zone_text:
-                                    print(f"[RAKEZ] Selecting zone option: {opt.text}")
-                                    select.select_by_index(idx)
-                                    zone_selected = True
-                                    time.sleep(4)
-                                    break
+                            option_texts = []
+                            free_zone_value = None
 
-                            if zone_selected:
+                            for j in range(opt_count):
+                                txt = self._normalize_text(options.nth(j).inner_text())
+                                val = options.nth(j).get_attribute("value")
+                                option_texts.append(txt)
+
+                                zone_txt = self._normalize_zone(txt)
+                                if "free zone" in zone_txt or "freezone" in zone_txt:
+                                    free_zone_value = val if val is not None else txt
+
+                            print(f"[RAKEZ] Dropdown options found: {option_texts[:15]}")
+
+                            if free_zone_value is not None:
+                                print(f"[RAKEZ] Selecting Free Zone using value/text: {free_zone_value}")
+                                try:
+                                    sel.select_option(value=free_zone_value)
+                                except Exception:
+                                    sel.select_option(label=free_zone_value)
+
+                                page.wait_for_timeout(5000)
+                                zone_selected = True
                                 break
+
                         except Exception:
                             continue
+
                     if zone_selected:
                         break
+
                 except Exception:
                     continue
 
             if not zone_selected:
-                print("[RAKEZ] Could not find/select Free Zone in dropdown.")
-                print("[RAKEZ] Continuing anyway to inspect page data...")
+                print("[RAKEZ] Free Zone dropdown not found/selected. Continuing to parse page anyway.")
 
-            print("[RAKEZ] Waiting for activity data to appear...")
+            # =========================================================
+            # 2) WAIT + SCROLL TO LOAD TABLE
+            # =========================================================
+            print("[RAKEZ] Waiting for activity data...")
+            page.wait_for_timeout(4000)
 
-            possible_table_selectors = [
-                "table",
-                "tbody tr",
-                ".table tbody tr",
-                ".table-responsive table tbody tr",
-            ]
-
-            table_found = False
-            for sel in possible_table_selectors:
-                try:
-                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, sel)))
-                    print(f"[RAKEZ] Found table using selector: {sel}")
-                    table_found = True
-                    break
-                except Exception:
-                    continue
-
-            if not table_found:
-                print("[RAKEZ] No standard table found. Dumping page source for parsing anyway...")
-
-            time.sleep(3)
-
-            last_height = driver.execute_script("return document.body.scrollHeight")
-            for _ in range(10):
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(2)
-                new_height = driver.execute_script("return document.body.scrollHeight")
+            last_height = 0
+            for _ in range(12):
+                page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                page.wait_for_timeout(1500)
+                new_height = page.evaluate("document.body.scrollHeight")
                 if new_height == last_height:
                     break
                 last_height = new_height
 
-            html = driver.page_source
+            html = page.content()
             soup = BeautifulSoup(html, "html.parser")
 
-            rows_data = []
-
+            # =========================================================
+            # 3) EXTRACT TABLE DATA
+            # =========================================================
             tables = soup.find_all("table")
             print(f"[RAKEZ] Tables found in HTML: {len(tables)}")
 
+            rows_data = []
+
             for table in tables:
                 rows = table.find_all("tr")
+
                 for row in rows:
                     cells = row.find_all(["td", "th"])
-                    cell_texts = [c.get_text(" ", strip=True) for c in cells]
+                    cell_texts = [self._normalize_text(c.get_text(" ", strip=True)) for c in cells]
+
+                    # skip empty rows
+                    cell_texts = [x for x in cell_texts if x]
+                    if not cell_texts:
+                        continue
+
+                    # skip header rows
+                    joined = " | ".join(cell_texts).lower()
+                    if "activity name" in joined and "activity code" in joined:
+                        continue
 
                     if len(cell_texts) >= 2:
-                        joined = " | ".join(cell_texts).strip()
-                        if joined and "activity" not in joined.lower():
-                            rows_data.append(cell_texts)
+                        rows_data.append(cell_texts)
 
+            # =========================================================
+            # 4) FALLBACK IF TABLE PARSING FAILS
+            # =========================================================
             if not rows_data:
-                print("[RAKEZ] No rows extracted from tables. Trying fallback div parsing...")
+                print("[RAKEZ] No rows extracted from tables. Trying fallback text parsing...")
                 blocks = soup.find_all(["div", "li", "p"])
                 for b in blocks:
-                    txt = b.get_text(" ", strip=True)
-                    if txt and len(txt) > 20:
-                        if any(word in txt.lower() for word in ["trading", "services", "manufacturing", "consultancy", "repair"]):
-                            rows_data.append([txt])
+                    txt = self._normalize_text(b.get_text(" ", strip=True))
+                    if not txt:
+                        continue
+
+                    low = txt.lower()
+                    if any(k in low for k in [
+                        "trading", "services", "manufacturing",
+                        "consultancy", "repair", "activity"
+                    ]):
+                        rows_data.append([txt])
 
             print(f"[RAKEZ] Raw extracted rows: {len(rows_data)}")
 
-            cleaned = []
-            for row in rows_data:
-                row = [str(x).strip() for x in row if str(x).strip()]
-                if not row:
-                    continue
+            context.close()
+            browser.close()
 
-                record = {
-                    "Activity Code": row[0] if len(row) > 0 else "",
-                    "Activity Name": row[1] if len(row) > 1 else row[0],
-                    "Group": row[2] if len(row) > 2 else "",
-                    "Category": row[3] if len(row) > 3 else "",
-                }
+        # =========================================================
+        # 5) CLEAN INTO DATAFRAME
+        # =========================================================
+        cleaned = []
 
-                name = str(record["Activity Name"]).strip().lower()
-                if not name:
-                    continue
-                if name in {"activity name", "activities", "name"}:
-                    continue
+        for row in rows_data:
+            row = [self._normalize_text(x) for x in row if self._normalize_text(x)]
+            if not row:
+                continue
 
-                cleaned.append(record)
+            record = {
+                "Activity Code": row[0] if len(row) > 0 else "",
+                "Activity Name": row[1] if len(row) > 1 else row[0],
+                "Group": row[2] if len(row) > 2 else "",
+                "Category": row[3] if len(row) > 3 else "",
+            }
 
-            df = pd.DataFrame(cleaned)
+            name = str(record["Activity Name"]).strip().lower()
+            if not name:
+                continue
+            if name in {"activity name", "activities", "name"}:
+                continue
 
-            if df.empty:
-                raise Exception("RAKEZ scraper returned no rows after parsing.")
+            cleaned.append(record)
 
-            if "Activity Name" in df.columns:
-                df["Activity Name"] = df["Activity Name"].astype(str).str.strip()
-                df = df[df["Activity Name"] != ""]
-                df.drop_duplicates(subset=["Activity Name"], inplace=True)
+        df = pd.DataFrame(cleaned)
 
-            df.reset_index(drop=True, inplace=True)
+        if df.empty:
+            raise Exception("RAKEZ scraper returned no rows after parsing.")
 
-            print(f"[RAKEZ] Final unique activities: {len(df)}")
-            return df
+        if "Activity Name" in df.columns:
+            df["Activity Name"] = df["Activity Name"].astype(str).str.strip()
+            df = df[df["Activity Name"] != ""]
+            df.drop_duplicates(subset=["Activity Name"], inplace=True)
 
-        finally:
-            driver.quit()
+        df.reset_index(drop=True, inplace=True)
+
+        print(f"[RAKEZ] Final unique activities: {len(df)}")
+
+        # optional save
+        output_dir = "exports"
+        os.makedirs(output_dir, exist_ok=True)
+        csv_path = os.path.join(output_dir, "rakez_activities.csv")
+        df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+        print(f"[RAKEZ] CSV saved at: {csv_path}")
+
+        return df
