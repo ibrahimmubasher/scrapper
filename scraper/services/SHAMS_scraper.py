@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+import requests
 
 from scraper.services.logger import safe_print
 
@@ -11,6 +12,77 @@ print = safe_print
 def scrape_SHAMS_activities():
     url = "https://shamsfz.ae/business-setup/business-activities/"
     data = []
+
+    # --- Try API-first approach (faster, avoids browser) ---
+    api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
+    try:
+        per_page = 100
+        page = 1
+        api_items = []
+        headers = {
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+            ),
+        }
+
+        while True:
+            resp = requests.get(api_base, params={"page": page, "per_page": per_page}, headers=headers, timeout=30)
+            if resp.status_code != 200:
+                break
+            try:
+                items = resp.json()
+            except Exception:
+                break
+
+            if not items:
+                break
+
+            api_items.extend(items)
+
+            if len(items) < per_page:
+                break
+
+            page += 1
+
+        if api_items:
+            print(f"[SHAMS API] Retrieved {len(api_items)} items from API")
+
+            # Helper to pick a field from several candidate keys
+            def pick(obj, candidates):
+                for k in candidates:
+                    if k in obj and obj[k] is not None:
+                        return obj[k]
+                return ""
+
+            for it in api_items:
+                # try common key names observed in similar endpoints
+                activity_name = pick(it, ["activity_name", "Activity Name", "name", "title", "activity"]) or ""
+                code = pick(it, ["activity_code", "code", "Activity Code"]) or ""
+                category = pick(it, ["category", "Category"]) or ""
+                group = pick(it, ["group", "Group", "subcategory"]) or ""
+
+                data.append({
+                    "Code": str(code).strip(),
+                    "Category": str(category).strip(),
+                    "Group": str(group).strip(),
+                    "Activity Name": str(activity_name).strip(),
+                    "Arabic Name": "",
+                    "Third Party": "",
+                    "When": "",
+                    "Notes": "",
+                })
+
+            # Build DataFrame and return early
+            df_api = pd.DataFrame(data)
+            if not df_api.empty:
+                df_api.drop_duplicates(subset=["Activity Name"], inplace=True)
+                df_api.reset_index(drop=True, inplace=True)
+                return df_api
+    except Exception as e:
+        print(f"[SHAMS API] API attempt failed: {e}")
+        # fall through to Playwright-based scraping
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
