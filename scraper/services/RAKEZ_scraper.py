@@ -58,6 +58,7 @@ class RAKEZScraper:
             # =========================================================
             # 1) TRY TO SELECT FREE ZONE FROM DROPDOWN
             # =========================================================
+            print("[RAKEZ] Looking for zone dropdown...")
             zone_selected = False
 
             possible_selectors = [
@@ -82,28 +83,34 @@ class RAKEZScraper:
                                 continue
 
                             option_texts = []
-                            free_zone_value = None
 
                             for j in range(opt_count):
-                                txt = self._normalize_text(options.nth(j).inner_text())
-                                val = options.nth(j).get_attribute("value")
-                                option_texts.append(txt)
+                                raw_text = options.nth(j).inner_text().strip()
+                                option_texts.append(raw_text)
 
-                                zone_txt = self._normalize_zone(txt)
-                                if "free zone" in zone_txt or "freezone" in zone_txt:
-                                    free_zone_value = val if val is not None else txt
+                                zone_txt = self._normalize_zone(raw_text)
+                                print(
+                                    f"[RAKEZ] Checking zone option: raw='{raw_text}' normalized='{zone_txt}'"
+                                )
+
+                                if zone_txt in {"freezone", "free zone"}:
+                                    free_zone_value = options.nth(j).get_attribute("value")
+                                    if free_zone_value is None:
+                                        free_zone_value = raw_text
+
+                                    print(f"[RAKEZ] Selecting Free Zone using value/text: {raw_text}")
+                                    try:
+                                        sel.select_option(value=free_zone_value)
+                                    except Exception:
+                                        sel.select_option(label=raw_text)
+
+                                    page.wait_for_timeout(5000)
+                                    zone_selected = True
+                                    break
 
                             print(f"[RAKEZ] Dropdown options found: {option_texts[:15]}")
 
-                            if free_zone_value is not None:
-                                print(f"[RAKEZ] Selecting Free Zone using value/text: {free_zone_value}")
-                                try:
-                                    sel.select_option(value=free_zone_value)
-                                except Exception:
-                                    sel.select_option(label=free_zone_value)
-
-                                page.wait_for_timeout(5000)
-                                zone_selected = True
+                            if zone_selected:
                                 break
 
                         except Exception:
@@ -116,7 +123,7 @@ class RAKEZScraper:
                     continue
 
             if not zone_selected:
-                print("[RAKEZ] Free Zone dropdown not found/selected. Continuing to parse page anyway.")
+                raise Exception("RAKEZ Freezone option not found in dropdown.")
 
             # =========================================================
             # 2) WAIT + SCROLL TO LOAD TABLE
