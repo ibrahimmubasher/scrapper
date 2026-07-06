@@ -17,6 +17,11 @@ def scrape_SHAMS_activities():
     api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
     try:
         per_page = 100
+                break
+    # --- Try API-first approach (faster, avoids browser) ---
+    api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
+    try:
+        per_page = 100
         page = 1
         api_items = []
         headers = {
@@ -27,10 +32,96 @@ def scrape_SHAMS_activities():
             ),
         }
 
+        def extract_list(obj):
+            if isinstance(obj, list):
+                return obj
+            if isinstance(obj, dict):
+                # common candidate keys
+                for k in ("items", "activities", "data", "results", "rows", "records"):
+                    if k in obj and isinstance(obj[k], list):
+                        return obj[k]
+                # look for the first list-valued entry
+                for v in obj.values():
+                    if isinstance(v, list):
+                        return v
+            return []
+
         while True:
             resp = requests.get(api_base, params={"page": page, "per_page": per_page}, headers=headers, timeout=30)
+            print(f"[SHAMS API] GET {resp.url} -> {resp.status_code}")
             if resp.status_code != 200:
                 break
+            try:
+                parsed = resp.json()
+            except Exception as ex:
+                print(f"[SHAMS API] JSON parse error: {ex}")
+                break
+
+            items = extract_list(parsed)
+
+            # If top-level is a dict mapping numeric keys to items, try to coerce
+            if not items and isinstance(parsed, dict):
+                numeric_vals = [v for k, v in parsed.items() if k.isdigit() and isinstance(v, dict)]
+                if numeric_vals:
+                    items = numeric_vals
+
+            if not items:
+                break
+
+            api_items.extend(items)
+
+            if len(items) < per_page:
+                break
+
+            page += 1
+
+        if api_items:
+            print(f"[SHAMS API] Retrieved {len(api_items)} items from API")
+
+            # Helper to pick a field from several candidate keys
+            def pick(obj, candidates):
+                if not isinstance(obj, dict):
+                    return ""
+                for k in candidates:
+                    if k in obj and obj[k] is not None:
+                        return obj[k]
+                # check lowercased keys
+                for k, v in obj.items():
+                    if k.lower() in [c.lower() for c in candidates] and v is not None:
+                        return v
+                return ""
+
+            for it in api_items:
+                # try common key names observed in similar endpoints
+                activity_name = pick(it, ["activity_name", "Activity Name", "name", "title", "activity"]) or ""
+                code = pick(it, ["activity_code", "code", "Activity Code"]) or ""
+                category = pick(it, ["category", "Category"]) or ""
+                group = pick(it, ["group", "Group", "subcategory"]) or ""
+
+                # some entries may have nested title objects
+                if isinstance(activity_name, dict):
+                    activity_name = pick(activity_name, ["rendered", "text"]) or ""
+
+                data.append({
+                    "Code": str(code).strip(),
+                    "Category": str(category).strip(),
+                    "Group": str(group).strip(),
+                    "Activity Name": str(activity_name).strip(),
+                    "Arabic Name": "",
+                    "Third Party": "",
+                    "When": "",
+                    "Notes": "",
+                })
+
+            # Build DataFrame and return early
+            df_api = pd.DataFrame(data)
+            if not df_api.empty:
+                df_api.drop_duplicates(subset=["Activity Name"], inplace=True)
+                df_api.reset_index(drop=True, inplace=True)
+                return df_api
+    except Exception as e:
+        print(f"[SHAMS API] API attempt failed: {e}")
+        # fall through to Playwright-based scraping
             try:
                 items = resp.json()
             except Exception:
