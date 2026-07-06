@@ -17,11 +17,6 @@ def scrape_SHAMS_activities():
     api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
     try:
         per_page = 100
-                break
-    # --- Try API-first approach (faster, avoids browser) ---
-    api_base = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
-    try:
-        per_page = 100
         page = 1
         api_items = []
         headers = {
@@ -122,58 +117,7 @@ def scrape_SHAMS_activities():
     except Exception as e:
         print(f"[SHAMS API] API attempt failed: {e}")
         # fall through to Playwright-based scraping
-            try:
-                items = resp.json()
-            except Exception:
-                break
-
-            if not items:
-                break
-
-            api_items.extend(items)
-
-            if len(items) < per_page:
-                break
-
-            page += 1
-
-        if api_items:
-            print(f"[SHAMS API] Retrieved {len(api_items)} items from API")
-
-            # Helper to pick a field from several candidate keys
-            def pick(obj, candidates):
-                for k in candidates:
-                    if k in obj and obj[k] is not None:
-                        return obj[k]
-                return ""
-
-            for it in api_items:
-                # try common key names observed in similar endpoints
-                activity_name = pick(it, ["activity_name", "Activity Name", "name", "title", "activity"]) or ""
-                code = pick(it, ["activity_code", "code", "Activity Code"]) or ""
-                category = pick(it, ["category", "Category"]) or ""
-                group = pick(it, ["group", "Group", "subcategory"]) or ""
-
-                data.append({
-                    "Code": str(code).strip(),
-                    "Category": str(category).strip(),
-                    "Group": str(group).strip(),
-                    "Activity Name": str(activity_name).strip(),
-                    "Arabic Name": "",
-                    "Third Party": "",
-                    "When": "",
-                    "Notes": "",
-                })
-
-            # Build DataFrame and return early
-            df_api = pd.DataFrame(data)
-            if not df_api.empty:
-                df_api.drop_duplicates(subset=["Activity Name"], inplace=True)
-                df_api.reset_index(drop=True, inplace=True)
-                return df_api
-    except Exception as e:
-        print(f"[SHAMS API] API attempt failed: {e}")
-        # fall through to Playwright-based scraping
+    
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
