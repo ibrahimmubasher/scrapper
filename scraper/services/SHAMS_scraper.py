@@ -100,6 +100,19 @@ def scrape_SHAMS_activities():
             if zoho_frame:
                 break
 
+            # 4) Fallback: check for htInstance on the top-level page (some sites expose it
+            #     without an iframe). If present, use the page as the frame target.
+            try:
+                has_ht = page.evaluate(
+                    "() => { try { return !!(window.htInstance); } catch(e) { return false; } }"
+                )
+                if has_ht:
+                    zoho_frame = page
+                    print("[DEBUG]   FOUND htInstance on top-level page (no iframe)")
+                    break
+            except Exception as exc:
+                print(f"[DEBUG]   Error checking top-level htInstance: {exc}")
+
             page.wait_for_timeout(1000)
 
         if zoho_frame is None:
