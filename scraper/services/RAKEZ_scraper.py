@@ -7,7 +7,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -36,12 +35,14 @@ class RAKEZScraper:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-setuid-sandbox")
+        options.add_argument("--disable-software-rasterizer")
         options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("--remote-debugging-port=9222")
         options.add_argument("--window-size=1920,1080")
 
         service = Service("/usr/bin/chromedriver")
         driver = webdriver.Chrome(service=service, options=options)
-        driver.maximize_window()
+
         wait = WebDriverWait(driver, 30)
 
         try:
