@@ -31,27 +31,20 @@ class RAKEZScraper:
         options = Options()
         options.binary_location = "/snap/bin/chromium"
 
-        # EC2-safe chrome flags
         options.add_argument("--headless=new")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
-        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--disable-setuid-sandbox")
         options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--window-size=1920,1080")
 
-        # IMPORTANT: force the actual chromedriver path
         service = Service("/usr/bin/chromedriver")
-
-        print("[RAKEZ] Chromium binary:", options.binary_location)
-        print("[RAKEZ] ChromeDriver path: /usr/bin/chromedriver")
-
         driver = webdriver.Chrome(service=service, options=options)
+        driver.maximize_window()
+        wait = WebDriverWait(driver, 30)
 
         try:
-            wait = WebDriverWait(driver, 40)
-
             print(f"[RAKEZ] Opening: {self.URL}")
             driver.get(self.URL)
             time.sleep(5)
