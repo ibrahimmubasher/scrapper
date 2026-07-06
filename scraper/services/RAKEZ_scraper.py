@@ -29,10 +29,9 @@ class RAKEZScraper:
         print("\n[RAKEZ] Starting scraper...")
 
         options = Options()
-
-        # IMPORTANT FOR AWS / UBUNTU / EC2
         options.binary_location = "/snap/bin/chromium"
 
+        # EC2-safe chrome flags
         options.add_argument("--headless=new")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
@@ -42,8 +41,13 @@ class RAKEZScraper:
         options.add_argument("--disable-infobars")
         options.add_argument("--remote-debugging-port=9222")
 
-        # Use Selenium Manager / system chromedriver
-        driver = webdriver.Chrome(options=options)
+        # IMPORTANT: force the actual chromedriver path
+        service = Service("/usr/bin/chromedriver")
+
+        print("[RAKEZ] Chromium binary:", options.binary_location)
+        print("[RAKEZ] ChromeDriver path: /usr/bin/chromedriver")
+
+        driver = webdriver.Chrome(service=service, options=options)
 
         try:
             wait = WebDriverWait(driver, 40)
@@ -52,14 +56,9 @@ class RAKEZScraper:
             driver.get(self.URL)
             time.sleep(5)
 
-            # =========================
-            # STEP 1: SELECT FREE ZONE
-            # =========================
             print("[RAKEZ] Looking for zone dropdown...")
-
             zone_selected = False
 
-            # Try multiple selectors because site structure can change
             zone_selectors = [
                 "select",
                 "select[name*='zone' i]",
@@ -98,12 +97,8 @@ class RAKEZScraper:
                 print("[RAKEZ] Could not find/select Free Zone in dropdown.")
                 print("[RAKEZ] Continuing anyway to inspect page data...")
 
-            # =========================
-            # STEP 2: LOAD TABLE / ROWS
-            # =========================
             print("[RAKEZ] Waiting for activity data to appear...")
 
-            # Wait for any table-ish content
             possible_table_selectors = [
                 "table",
                 "tbody tr",
@@ -126,9 +121,8 @@ class RAKEZScraper:
 
             time.sleep(3)
 
-            # Sometimes rows lazy-load, so scroll
             last_height = driver.execute_script("return document.body.scrollHeight")
-            for i in range(10):
+            for _ in range(10):
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(2)
                 new_height = driver.execute_script("return document.body.scrollHeight")
@@ -136,15 +130,11 @@ class RAKEZScraper:
                     break
                 last_height = new_height
 
-            # =========================
-            # STEP 3: PARSE PAGE HTML
-            # =========================
             html = driver.page_source
             soup = BeautifulSoup(html, "html.parser")
 
             rows_data = []
 
-            # Try to parse normal HTML tables first
             tables = soup.find_all("table")
             print(f"[RAKEZ] Tables found in HTML: {len(tables)}")
 
@@ -154,36 +144,28 @@ class RAKEZScraper:
                     cells = row.find_all(["td", "th"])
                     cell_texts = [c.get_text(" ", strip=True) for c in cells]
 
-                    # We expect activity rows to have at least a few columns
                     if len(cell_texts) >= 2:
                         joined = " | ".join(cell_texts).strip()
                         if joined and "activity" not in joined.lower():
                             rows_data.append(cell_texts)
 
-            # Fallback: sometimes page content is in divs instead of table
             if not rows_data:
                 print("[RAKEZ] No rows extracted from tables. Trying fallback div parsing...")
                 blocks = soup.find_all(["div", "li", "p"])
                 for b in blocks:
                     txt = b.get_text(" ", strip=True)
                     if txt and len(txt) > 20:
-                        # Very loose fallback — only keep lines that look like business activities
                         if any(word in txt.lower() for word in ["trading", "services", "manufacturing", "consultancy", "repair"]):
                             rows_data.append([txt])
 
             print(f"[RAKEZ] Raw extracted rows: {len(rows_data)}")
 
-            # =========================
-            # STEP 4: BUILD DATAFRAME
-            # =========================
             cleaned = []
-
             for row in rows_data:
                 row = [str(x).strip() for x in row if str(x).strip()]
                 if not row:
                     continue
 
-                # Flexible mapping because site columns may vary
                 record = {
                     "Activity Code": row[0] if len(row) > 0 else "",
                     "Activity Name": row[1] if len(row) > 1 else row[0],
@@ -191,7 +173,6 @@ class RAKEZScraper:
                     "Category": row[3] if len(row) > 3 else "",
                 }
 
-                # Skip obvious junk/header rows
                 name = str(record["Activity Name"]).strip().lower()
                 if not name:
                     continue
@@ -205,7 +186,6 @@ class RAKEZScraper:
             if df.empty:
                 raise Exception("RAKEZ scraper returned no rows after parsing.")
 
-            # Clean duplicates
             if "Activity Name" in df.columns:
                 df["Activity Name"] = df["Activity Name"].astype(str).str.strip()
                 df = df[df["Activity Name"] != ""]
