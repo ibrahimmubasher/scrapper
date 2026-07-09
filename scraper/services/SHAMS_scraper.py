@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
@@ -8,12 +9,105 @@ from scraper.services.logger import safe_print
 print = safe_print
 
 
+def _clean_shams_value(val):
+    if val is None:
+        return ""
+    if isinstance(val, (int, float)):
+        return str(val)
+    return BeautifulSoup(str(val), "html.parser").get_text(strip=True)
+
+
+def normalize_shams_api_payload(payload):
+    if isinstance(payload, list):
+        items = payload
+    elif isinstance(payload, dict):
+        items = payload.get("items", [])
+    else:
+        items = []
+
+    if not isinstance(items, list):
+        items = []
+
+    rows = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+
+        activity_name = _clean_shams_value(
+            item.get("title_eng") or item.get("title") or item.get("activity_name") or ""
+        )
+        if not activity_name:
+            continue
+
+        if activity_name.lower().strip() in {"activity name", "none", "nan", "&nbsp;"}:
+            continue
+
+        rows.append({
+            "Code": _clean_shams_value(item.get("activity_code") or item.get("code") or ""),
+            "Category": _clean_shams_value(item.get("category") or ""),
+            "Group": _clean_shams_value(item.get("groups") or item.get("group") or ""),
+            "Activity Name": activity_name,
+            "Arabic Name": _clean_shams_value(item.get("title_ar") or item.get("arabic_name") or ""),
+            "Third Party": _clean_shams_value(item.get("authority_name") or item.get("third_party") or ""),
+            "When": _clean_shams_value(item.get("approval_status") or item.get("when") or ""),
+            "Notes": _clean_shams_value(item.get("comments") or item.get("notes") or ""),
+        })
+
+    if not rows:
+        return pd.DataFrame(columns=["Code", "Category", "Group", "Activity Name", "Arabic Name", "Third Party", "When", "Notes"])
+
+    df = pd.DataFrame(rows)
+    df.drop_duplicates(subset=["Activity Name"], inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+def fetch_shams_api_data():
+    api_url = "https://shamsfz.ae/wp-json/shams-activities/v1/activities"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    all_items = []
+    page = 1
+
+    while True:
+        response = requests.get(api_url, timeout=60, headers=headers, params={"page": page, "per_page": 100})
+        response.raise_for_status()
+
+        payload = response.json()
+        items = payload.get("items", [])
+        if not isinstance(items, list):
+            break
+
+        all_items.extend(items)
+
+        total_pages = payload.get("total_pages")
+        if total_pages is None:
+            break
+
+        if page >= int(total_pages):
+            break
+
+        page += 1
+
+    return {"items": all_items}
+
+
 def scrape_SHAMS_activities():
     url = "https://shamsfz.ae/business-setup/business-activities/"
     data = []
 
     def clean(val):
-        return BeautifulSoup(str(val), "html.parser").get_text(strip=True)
+        return _clean_shams_value(val)
+
+    try:
+        print("[API] Fetching SHAMS activities from REST endpoint...")
+        payload = fetch_shams_api_data()
+        df = normalize_shams_api_payload(payload)
+        if not df.empty:
+            print(f"[API] Loaded {len(df)} SHAMS activities from REST API")
+            return df
+        raise ValueError("No SHAMS activities returned from REST API")
+    except Exception as exc:
+        print(f"[API] REST API fallback failed: {exc}")
 
     with sync_playwright() as p:
         # --------------------------------------------------
