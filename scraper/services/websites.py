@@ -3,6 +3,7 @@ from scraper.services.SPC_scraper import scrape_SPC_activities
 from scraper.services.Ajman_scraper import scrape_AFZ_activities
 from scraper.services.SHAMS_scraper import scrape_SHAMS_activities
 from scraper.services.IFZA_scraper import scrape_IFZA_activities
+from scraper.services.DWTC_scraper import scrape_DWTC_activities
 from scraper.services.SRTIP_scraper import SRTIPScraper
 from scraper.services.RAKEZ_scraper import RAKEZScraper
 from scraper.services.ANCF_scraper import ANCFScraper
@@ -48,6 +49,11 @@ WEBSITES = {
     "SRTIP": {
         "scraper": lambda: SRTIPScraper().scrape(),
         "jurisdiction": "SRTIP"
-    }
+    },
+
+    "DWTC": {
+        "scraper": scrape_DWTC_activities,
+        "jurisdiction": "DWTC"
+    },
 
 }

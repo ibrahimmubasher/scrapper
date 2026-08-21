@@ -18,7 +18,7 @@ from scraper.management.commands.run_scrapers import update_progress_status
 BASE_DIR = Path(__file__).resolve().parent.parent
 MANAGE_PY = BASE_DIR / "manage.py"
 OUTPUT_DIR = Path(_OUTPUT_DIR_STR)
-WEBSITES = ["ALL", "RAKEZ", "MEYDAN", "ANCF", "IFZA", "SHAMS", "SPC", "AFZ", "SRTIP"]
+WEBSITES = ["ALL", "RAKEZ", "MEYDAN", "ANCF", "IFZA", "SHAMS", "SPC", "AFZ", "SRTIP", "DWTC"]
 
 
 def view_log(request, run_id):
